@@ -36,7 +36,7 @@ const STEPS = [
 
 export function Process() {
   return (
-    <section id="process" className="py-20 lg:py-28">
+    <section id="process" className="bg-page-wash py-20 lg:py-28">
       <div className="container">
         <div className="max-w-2xl">
           <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">

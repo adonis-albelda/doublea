@@ -23,11 +23,11 @@ this leans cooler, quieter, and more engineered.
 
 | Token | Hex | HSL | Use |
 |---|---|---|---|
-| `sage-700` (**Primary**) | `#465A37` | `94 24% 28%` | Buttons, links, headings, focus ring |
+| `sage-700` (**Primary**) | `#5E744E` | `94 20% 38%` | Buttons, links, headings, focus ring |
 | `sage-500` (**Brand**) | `#8CA377` | `91 19% 55%` | Logo, icons, chart lines, decorative |
 | `sage-300` | `#C9D6BE` | `93 23% 79%` | Hover tints, chart fills |
 | `sage-100` | `#EEF2E9` | `87 26% 93%` | Section backgrounds, subtle cards |
-| `ink` (**Foreground**) | `#1C2118` | `93 16% 11%` | Body text, dark-mode background |
+| `ink` (**Foreground**) | `#3C4536` | `93 12% 24%` | Body text, dark-mode background |
 | `paper` (**Background**) | `#F6F7F2` | `72 24% 96%` | Page background (sage-tinted white, not cream) |
 | `clay` (**Signal/Accent**) | `#B8582F` | `18 59% 45%` | The *one* warm accent — primary CTA, key stat, active state |
 | `slate-sage` (**Muted**) | `#7A8271` | `88 7% 48%` | Secondary text, captions |
@@ -47,10 +47,10 @@ anything.
   --card-foreground: 93 16% 11%;
   --popover: 0 0% 100%;
   --popover-foreground: 93 16% 11%;
-  --primary: 94 24% 28%;
+  --primary: 94 20% 38%;
   --primary-foreground: 72 24% 96%;
   --secondary: 87 26% 93%;
-  --secondary-foreground: 94 24% 28%;
+  --secondary-foreground: 94 20% 38%;
   --muted: 87 26% 93%;
   --muted-foreground: 88 7% 40%;
   --accent: 18 59% 45%;
@@ -59,7 +59,7 @@ anything.
   --destructive-foreground: 0 0% 98%;
   --border: 88 17% 85%;
   --input: 88 17% 85%;
-  --ring: 94 24% 28%;
+  --ring: 94 20% 38%;
   --radius: 0.5rem;
 }
 
@@ -87,7 +87,7 @@ anything.
 ```
 
 All text/background pairs above meet WCAG AA (4.5:1) at minimum — verified,
-not eyeballed (`sage-700` on white = 5.5:1, `paper` on `clay` = 5.8:1).
+not eyeballed (`sage-700` on white = 5.13:1, `paper` on `clay` = 5.8:1).
 
 ## 3. Typography
 

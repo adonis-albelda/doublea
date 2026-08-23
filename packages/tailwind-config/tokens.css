@@ -17,10 +17,10 @@
   --card-foreground: 93 16% 11%;
   --popover: 0 0% 100%;
   --popover-foreground: 93 16% 11%;
-  --primary: 94 24% 28%;
+  --primary: 94 20% 38%;
   --primary-foreground: 72 24% 96%;
   --secondary: 87 26% 93%;
-  --secondary-foreground: 94 24% 28%;
+  --secondary-foreground: 94 20% 38%;
   --muted: 87 26% 93%;
   --muted-foreground: 88 7% 40%;
   --accent: 18 59% 45%;
@@ -29,16 +29,16 @@
   --destructive-foreground: 0 0% 98%;
   --border: 88 17% 85%;
   --input: 88 17% 85%;
-  --ring: 94 24% 28%;
+  --ring: 94 20% 38%;
   --radius: 0.5rem;
 
   /* Named brand scale, referenced directly in a few spots (e.g. hero dust,
      PixelAscent squares) where the semantic tokens above don't apply. */
-  --sage-700: 94 24% 28%;
+  --sage-700: 94 20% 38%;
   --sage-500: 91 19% 55%;
   --sage-300: 93 23% 79%;
   --sage-100: 87 26% 93%;
-  --ink: 93 16% 11%;
+  --ink: 93 12% 24%;
   --paper: 72 24% 96%;
   --clay: 18 59% 45%;
   --slate-sage: 88 7% 48%;

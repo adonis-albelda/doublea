@@ -34,7 +34,7 @@ const TESTIMONIALS = [
 
 export function Testimonials() {
   return (
-    <section id="testimonials" className="py-20 lg:py-28">
+    <section id="testimonials" className="bg-background py-20 lg:py-28">
       <div className="container">
         <div className="max-w-2xl">
           <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">

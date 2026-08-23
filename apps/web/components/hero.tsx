@@ -14,7 +14,7 @@ import { PixelAscent } from "@/components/pixel-ascent";
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden">
+    <section id="top" className="relative overflow-hidden bg-page-wash">
       <div className="container grid gap-12 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-32">
         <div>
           <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">

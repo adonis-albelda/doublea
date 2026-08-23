@@ -34,7 +34,7 @@ export default function Home() {
         <Faqs />
         <CtaBand />
 
-        <section id="contact" className="py-20 lg:py-28">
+        <section id="contact" className="bg-page-wash py-20 lg:py-28">
           <div className="container grid gap-12 lg:grid-cols-2">
             <div>
               <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">

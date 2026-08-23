@@ -62,7 +62,7 @@ export function Nav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border-sage bg-background/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border-sage bg-card/95 backdrop-blur">
       <div className="container flex h-20 items-center justify-between">
         <Link href="#top" className="flex items-center gap-3" aria-label="Double A Digital Solutions, home">
           <Image src="/logo.png" alt="" width={40} height={40} className="h-10 w-10" priority />

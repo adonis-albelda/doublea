@@ -21,3 +21,23 @@
     }
   }
 }
+
+@layer components {
+  /* Continuous white-to-sage wash for the main content column — replaces
+     hard per-section background blocks. White stays dominant; sage-300
+     only shows as two soft passes so the mix reads as a gradient, not
+     alternating panels. */
+  .bg-page-wash {
+    background-image: linear-gradient(
+      180deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--background)) 10%,
+      hsl(var(--sage-300) / 0.35) 22%,
+      hsl(var(--background)) 34%,
+      hsl(var(--background)) 54%,
+      hsl(var(--sage-300) / 0.3) 66%,
+      hsl(var(--background)) 78%,
+      hsl(var(--background)) 100%
+    );
+  }
+}

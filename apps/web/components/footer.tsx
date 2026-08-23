@@ -13,7 +13,7 @@ const NAV_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border-sage py-12">
+    <footer className="border-t border-border-sage bg-sage-100 py-12">
       <div className="container flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
         <div className="flex items-center gap-3">
           <Image src="/logo.png" alt="" width={28} height={28} className="h-7 w-7" />
