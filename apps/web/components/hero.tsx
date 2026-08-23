@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@repo/ui/components/ui/button";
 
 import { RotatingCtaLabel } from "@/components/rotating-cta-label";
+import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 
 // H1 options considered:
 // 1. "We turn your idea into software that ships, runs, and keeps working."
@@ -73,7 +74,12 @@ export function Hero() {
                 className="animate-[cta-attention_5s_ease-in-out_infinite]"
                 asChild
               >
-                <Link href="#contact" aria-label="Contact Us">
+                <Link
+                  href={FACEBOOK_MESSENGER_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Message us on Facebook"
+                >
                   <RotatingCtaLabel textWidthClassName="w-[7.5rem]" />
                 </Link>
               </Button>

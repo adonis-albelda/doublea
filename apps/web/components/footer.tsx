@@ -2,13 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Github, Linkedin, Mail } from "lucide-react";
 
+import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
+
 const NAV_LINKS = [
   { href: "#services", label: "Services" },
   { href: "#products", label: "Products" },
   { href: "#process", label: "Process" },
   { href: "#about", label: "About" },
   { href: "#faqs", label: "FAQ" },
-  { href: "#contact", label: "Contact" },
+  { href: FACEBOOK_MESSENGER_URL, label: "Contact" },
 ];
 
 export function Footer() {
@@ -31,15 +33,20 @@ export function Footer() {
         </div>
 
         <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-2">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isExternal = !link.href.startsWith("#");
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-4">

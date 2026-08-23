@@ -8,7 +8,7 @@ import { Hand, MessageCircle, PhoneCall, Send } from "lucide-react";
 // each pulse. Shared between nav.tsx and hero.tsx so both CTAs stay in sync
 // and swapping the message set only happens in one place.
 const CTA_MESSAGES = [
-  { text: "Contact Us", icon: MessageCircle },
+  { text: "Message Us", icon: MessageCircle },
   { text: "Let's Talk", icon: PhoneCall },
   { text: "Say Hello", icon: Hand },
   { text: "Get in Touch", icon: Send },

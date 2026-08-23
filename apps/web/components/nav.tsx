@@ -21,6 +21,7 @@ import {
 } from "@repo/ui/components/ui/sheet";
 import { cn } from "@repo/ui/lib/utils";
 
+import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 import { RotatingCtaLabel } from "@/components/rotating-cta-label";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -30,11 +31,14 @@ const NAV_LINKS = [
   { href: "#process", label: "Process" },
   { href: "#about", label: "About" },
   { href: "#faqs", label: "FAQ" },
-  { href: "#contact", label: "Contact" },
+  { href: FACEBOOK_MESSENGER_URL, label: "Contact" },
 ];
 
-// Section ids tracked for scroll-spy, in document order.
-const SECTION_IDS = NAV_LINKS.map((link) => link.href.slice(1));
+// Section ids tracked for scroll-spy, in document order — only in-page
+// anchors are sections; the Facebook link isn't one.
+const SECTION_IDS = NAV_LINKS.filter((link) => link.href.startsWith("#")).map((link) =>
+  link.href.slice(1),
+);
 
 export function Nav() {
   const [open, setOpen] = React.useState(false);
@@ -76,11 +80,14 @@ export function Nav() {
           <NavigationMenu>
             <NavigationMenuList>
               {NAV_LINKS.map((link) => {
-                const isActive = activeId === link.href.slice(1);
+                const isExternal = !link.href.startsWith("#");
+                const isActive = !isExternal && activeId === link.href.slice(1);
                 return (
                   <NavigationMenuItem key={link.href}>
                     <NavigationMenuLink
                       href={link.href}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
                       aria-current={isActive ? "true" : undefined}
                       className={cn(isActive && "text-primary font-semibold")}
                     >
@@ -98,7 +105,12 @@ export function Nav() {
             className="animate-[cta-attention_5s_ease-in-out_infinite]"
             asChild
           >
-            <Link href="#contact" aria-label="Contact Us">
+            <Link
+              href={FACEBOOK_MESSENGER_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Message us on Facebook"
+            >
               <RotatingCtaLabel />
             </Link>
           </Button>
@@ -118,11 +130,14 @@ export function Nav() {
               </SheetHeader>
               <nav className="mt-8 flex flex-col gap-1" aria-label="Mobile">
                 {NAV_LINKS.map((link) => {
-                  const isActive = activeId === link.href.slice(1);
+                  const isExternal = !link.href.startsWith("#");
+                  const isActive = !isExternal && activeId === link.href.slice(1);
                   return (
                     <Link
                       key={link.href}
                       href={link.href}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
                       onClick={() => setOpen(false)}
                       aria-current={isActive ? "true" : undefined}
                       className={cn(
@@ -135,7 +150,13 @@ export function Nav() {
                   );
                 })}
                 <Button variant="accent" size="default" className="mt-4" asChild>
-                  <Link href="#contact" onClick={() => setOpen(false)}>
+                  <Link
+                    href={FACEBOOK_MESSENGER_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setOpen(false)}
+                    aria-label="Message us on Facebook"
+                  >
                     <MessageCircle className="h-4 w-4" aria-hidden="true" />
                     Contact Us
                   </Link>
