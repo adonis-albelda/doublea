@@ -80,14 +80,13 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative mx-auto aspect-[8/5] w-full max-w-md lg:max-w-none">
+        <div className="relative mx-auto aspect-square w-full max-w-md [perspective:1200px] lg:max-w-none">
           <Image
-            src="/logo.webp"
+            src="/logo-3d.png"
             alt="Double A Digital Solutions"
             fill
             priority
-            unoptimized
-            className="object-contain"
+            className="animate-[spin-y_9s_linear_infinite] object-contain [transform-style:preserve-3d]"
           />
         </div>
       </div>
