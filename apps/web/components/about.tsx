@@ -34,9 +34,14 @@ export function About() {
           <h2 className="mt-3 font-display text-h2 text-foreground">Why teams work with us</h2>
           <p className="mt-6 font-display text-h3 text-primary">8 years building production software</p>
           <p className="mt-4 text-body-lg text-muted-foreground">
-            We&apos;ve spent eight years shipping custom software, sites, and internal tools for
-            founders and ops teams — long enough that most of our work now comes from past
-            clients referring the next one, not cold outreach.
+            We&apos;re a team of professionals based in Calbayog City, united by the same read on
+            where the world is headed: AI has changed what&apos;s possible for how a business
+            runs, and we build around that shift instead of ignoring it.
+          </p>
+          <p className="mt-4 text-body-lg text-muted-foreground">
+            We put AI to work for business owners who are still running things by hand —
+            automating and digitizing the manual processes eating their time, from paperwork
+            and scheduling to the workflows stitched together with spreadsheets and sticky notes.
           </p>
           <p className="mt-4 text-body-lg text-muted-foreground">
             We keep every project on a small, senior team — no account manager relaying
