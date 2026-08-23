@@ -11,6 +11,7 @@ import { Products } from "@/components/products";
 import { Services } from "@/components/services";
 import { Team } from "@/components/team";
 import { Testimonials } from "@/components/testimonials";
+import { TrustedBy } from "@/components/trusted-by";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <TrustedBy />
         <Services />
         <Products />
         <Testimonials />

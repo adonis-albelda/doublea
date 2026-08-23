@@ -1,5 +1,6 @@
 import { Check, Code2, Globe, LayoutDashboard, Workflow } from "lucide-react";
 
+import { Badge } from "@repo/ui/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
 
 import { TechBadge } from "@/components/tech-badge";
@@ -49,7 +50,10 @@ export function Services() {
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((service) => (
-            <Card key={service.title} className="group">
+            <Card key={service.title} className="group relative">
+              <Badge variant="status" className="absolute right-4 top-4">
+                {service.stack[0]}
+              </Badge>
               <CardHeader>
                 <service.icon
                   className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110"

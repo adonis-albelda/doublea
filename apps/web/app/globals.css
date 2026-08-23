@@ -22,6 +22,15 @@
   }
 }
 
+@keyframes marquee-3x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-33.3333%);
+  }
+}
+
 @layer components {
   /* Continuous white-to-sage wash for the main content column — replaces
      hard per-section background blocks. White stays dominant; sage-300

@@ -1,9 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
-
-import { PixelAscent } from "@/components/pixel-ascent";
 
 // H1 options considered:
 // 1. "We turn your idea into software that ships, runs, and keeps working."
@@ -40,7 +39,14 @@ export function Hero() {
         </div>
 
         <div className="relative mx-auto aspect-[8/5] w-full max-w-md lg:max-w-none">
-          <PixelAscent variant="hero" className="h-full w-full" />
+          <Image
+            src="/logo.webp"
+            alt="Double A Digital Solutions"
+            fill
+            priority
+            unoptimized
+            className="object-contain"
+          />
         </div>
       </div>
     </section>
