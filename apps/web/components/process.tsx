@@ -50,12 +50,10 @@ export function Process() {
           {STEPS.map((item, i) => (
             <li key={item.step} className="group relative">
               <div className="flex items-center gap-3">
-                <span className="font-mono text-caption text-primary transition-transform duration-300 group-hover:scale-110">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-primary/40 bg-card font-mono text-caption text-primary transition-transform duration-300 group-hover:scale-110">
                   {item.step}
                 </span>
-                {i < STEPS.length - 1 && (
-                  <span className="h-px flex-1 bg-border-sage transition-colors duration-300 group-hover:bg-primary/50" aria-hidden="true" />
-                )}
+                {i < STEPS.length - 1 && <span className="h-0.5 flex-1 dash-flow" aria-hidden="true" />}
               </div>
               <h3 className="mt-4 font-display text-h3 text-foreground">{item.title}</h3>
               <p className="mt-1 font-mono text-xs uppercase tracking-[0.04em] text-slate-sage">
@@ -73,7 +71,9 @@ export function Process() {
               <AccordionItem key={item.step} value={item.step}>
                 <AccordionTrigger>
                   <span className="flex items-center gap-3">
-                    <span className="font-mono text-caption text-primary">{item.step}</span>
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-primary/40 bg-card font-mono text-xs text-primary">
+                      {item.step}
+                    </span>
                     {item.title}
                   </span>
                 </AccordionTrigger>

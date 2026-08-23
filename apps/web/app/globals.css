@@ -22,6 +22,12 @@
   }
 }
 
+@keyframes dash-flow {
+  to {
+    background-position-x: -14px;
+  }
+}
+
 @keyframes marquee-vertical {
   from {
     transform: translateY(0);
@@ -45,6 +51,21 @@
      hard per-section background blocks. White stays dominant; sage-300
      only shows as two soft passes so the mix reads as a gradient, not
      alternating panels. */
+  /* Marching-ants connector for the Process stepper — a lightweight, token-
+     colored stand-in for an animated "path between steps" motif, no motion
+     library needed. */
+  .dash-flow {
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--primary) / 0.5) 50%,
+      transparent 50%
+    );
+    background-size: 14px 2px;
+    background-repeat: repeat-x;
+    background-position-y: center;
+    animation: dash-flow 1s linear infinite;
+  }
+
   .bg-page-wash {
     background-image: linear-gradient(
       180deg,
