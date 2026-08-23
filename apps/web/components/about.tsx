@@ -21,7 +21,7 @@ const PROOF_POINTS = [
 
 export function About() {
   return (
-    <section id="about" className="bg-background py-20 lg:py-28">
+    <section id="about" className="bg-background py-14 lg:py-20">
       <div className="container grid gap-10 lg:grid-cols-2 lg:gap-16">
         <div>
           <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">

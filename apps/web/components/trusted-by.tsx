@@ -26,7 +26,7 @@ export function TrustedBy() {
   return (
     <section
       aria-label="Trusted by"
-      className="border-y border-border-sage bg-background py-10"
+      className="border-y border-border-sage bg-background py-8"
     >
       <div className="container">
         <p className="text-center font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">

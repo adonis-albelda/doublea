@@ -3,9 +3,9 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-
 import { Button } from "@repo/ui/components/ui/button";
+
+import { RotatingCtaLabel } from "@/components/rotating-cta-label";
 
 // H1 options considered:
 // 1. "We turn your idea into software that ships, runs, and keeps working."
@@ -44,7 +44,7 @@ export function Hero() {
 
   return (
     <section id="top" className="relative overflow-hidden bg-page-wash">
-      <div className="container grid gap-12 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-32">
+      <div className="container grid gap-12 py-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-24">
         <div>
           <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">
             Custom software · Websites · Web apps · Automation
@@ -67,10 +67,14 @@ export function Hero() {
               We work with founders and ops teams who need a working product, not a pitch deck.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Button variant="accent" size="lg" asChild>
-                <Link href="#contact">
-                  Start a project
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <Button
+                variant="accent"
+                size="lg"
+                className="animate-[cta-attention_5s_ease-in-out_infinite]"
+                asChild
+              >
+                <Link href="#contact" aria-label="Contact Us">
+                  <RotatingCtaLabel textWidthClassName="w-[7.5rem]" />
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>

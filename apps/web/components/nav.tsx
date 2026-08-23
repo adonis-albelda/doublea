@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, MessageCircle } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
 import {
@@ -21,6 +21,7 @@ import {
 } from "@repo/ui/components/ui/sheet";
 import { cn } from "@repo/ui/lib/utils";
 
+import { RotatingCtaLabel } from "@/components/rotating-cta-label";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const NAV_LINKS = [
@@ -91,8 +92,15 @@ export function Nav() {
             </NavigationMenuList>
           </NavigationMenu>
           <ThemeToggle />
-          <Button variant="accent" size="default" asChild>
-            <Link href="#contact">Start a project</Link>
+          <Button
+            variant="accent"
+            size="sm"
+            className="animate-[cta-attention_5s_ease-in-out_infinite]"
+            asChild
+          >
+            <Link href="#contact" aria-label="Contact Us">
+              <RotatingCtaLabel />
+            </Link>
           </Button>
         </div>
 
@@ -128,7 +136,8 @@ export function Nav() {
                 })}
                 <Button variant="accent" size="default" className="mt-4" asChild>
                   <Link href="#contact" onClick={() => setOpen(false)}>
-                    Start a project
+                    <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                    Contact Us
                   </Link>
                 </Button>
               </nav>

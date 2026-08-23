@@ -22,6 +22,30 @@
   }
 }
 
+@keyframes cta-attention {
+  0%,
+  100% {
+    transform: translateX(0);
+    box-shadow: 0 0 0 0 hsl(var(--accent) / 0.45);
+  }
+  2% {
+    transform: translateX(-5px);
+  }
+  4% {
+    transform: translateX(5px);
+  }
+  6% {
+    transform: translateX(-4px);
+  }
+  8% {
+    transform: translateX(4px);
+  }
+  10% {
+    transform: translateX(0);
+    box-shadow: 0 0 0 10px hsl(var(--accent) / 0);
+  }
+}
+
 @keyframes spin-y {
   from {
     transform: rotateY(0deg);

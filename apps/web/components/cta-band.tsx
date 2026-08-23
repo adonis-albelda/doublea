@@ -5,7 +5,7 @@ import { Button } from "@repo/ui/components/ui/button";
 
 export function CtaBand() {
   return (
-    <section className="bg-accent py-16">
+    <section className="bg-accent py-12">
       <div className="container flex flex-col items-center gap-6 text-center lg:flex-row lg:justify-between lg:text-left">
         <div>
           <h2 className="font-display text-h2 text-ink">
@@ -18,7 +18,7 @@ export function CtaBand() {
         {/* --primary fill here, not clay-on-clay, per design-system.md §2. */}
         <Button variant="default" size="lg" className="group shrink-0" asChild>
           <Link href="#contact">
-            Start a project
+            Contact Us
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
           </Link>
         </Button>

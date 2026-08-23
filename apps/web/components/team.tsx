@@ -40,7 +40,7 @@ const TEAM = [
 
 export function Team() {
   return (
-    <section id="team" className="bg-page-wash py-20 lg:py-28">
+    <section id="team" className="bg-page-wash py-14 lg:py-20">
       <div className="container">
         <div className="max-w-2xl">
           <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">

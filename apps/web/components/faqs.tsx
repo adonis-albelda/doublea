@@ -90,7 +90,7 @@ export function Faqs() {
   const right = FAQS.slice(midpoint);
 
   return (
-    <section id="faqs" className="bg-background py-20 lg:py-28">
+    <section id="faqs" className="bg-background py-14 lg:py-20">
       <div className="container">
         <div className="max-w-2xl">
           <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">
