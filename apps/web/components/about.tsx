@@ -1,9 +1,5 @@
 import { Bot, GitBranch, MessageSquare, Rows3 } from "lucide-react";
 
-import { TechBadge } from "@/components/tech-badge";
-
-const STACK = ["TypeScript", "Next.js", "PostgreSQL", "n8n", "Tailwind CSS"] as const;
-
 const PROOF_POINTS = [
   {
     icon: GitBranch,
@@ -48,16 +44,14 @@ export function About() {
             messages, no junior developer learning on your invoice. You talk directly to the
             person writing your code, from kickoff to launch and after.
           </p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {STACK.map((tech) => (
-              <TechBadge key={tech} name={tech} />
-            ))}
-          </div>
         </div>
 
-        <ul className="flex flex-col gap-6">
+        <ul className="flex flex-col gap-4 lg:self-center">
           {PROOF_POINTS.map((point) => (
-            <li key={point.text} className="flex gap-4">
+            <li
+              key={point.text}
+              className="flex gap-4 rounded-lg border border-border-sage bg-card p-5 transition-colors hover:border-primary/40"
+            >
               <point.icon className="mt-0.5 h-6 w-6 shrink-0 text-primary" aria-hidden="true" />
               <p className="text-body text-foreground">{point.text}</p>
             </li>

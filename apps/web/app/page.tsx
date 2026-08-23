@@ -19,9 +19,9 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <TrustedBy />
         <Services />
         <Products />
+        <TrustedBy />
         <Testimonials />
 
         {/* Second (and last) use of PixelAscent — a section-divider punctuation
