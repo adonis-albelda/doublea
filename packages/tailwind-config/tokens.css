@@ -1,0 +1,91 @@
+/*
+  Double A Digital Solutions — design tokens.
+  Source of truth: design-system.md at repo root. Do not duplicate values
+  per-app — apps/web/app/globals.css imports this file.
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 72 24% 96%;
+  --foreground: 93 16% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 93 16% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 93 16% 11%;
+  --primary: 94 24% 28%;
+  --primary-foreground: 72 24% 96%;
+  --secondary: 87 26% 93%;
+  --secondary-foreground: 94 24% 28%;
+  --muted: 87 26% 93%;
+  --muted-foreground: 88 7% 40%;
+  --accent: 18 59% 45%;
+  --accent-foreground: 72 24% 96%;
+  --destructive: 6 74% 52%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 88 17% 85%;
+  --input: 88 17% 85%;
+  --ring: 94 24% 28%;
+  --radius: 0.5rem;
+
+  /* Named brand scale, referenced directly in a few spots (e.g. hero dust,
+     PixelAscent squares) where the semantic tokens above don't apply. */
+  --sage-700: 94 24% 28%;
+  --sage-500: 91 19% 55%;
+  --sage-300: 93 23% 79%;
+  --sage-100: 87 26% 93%;
+  --ink: 93 16% 11%;
+  --paper: 72 24% 96%;
+  --clay: 18 59% 45%;
+  --slate-sage: 88 7% 48%;
+  --border-sage: 88 17% 85%;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.dark {
+  --background: 93 16% 15%;
+  --foreground: 87 20% 94%;
+  --card: 93 15% 19%;
+  --card-foreground: 87 20% 94%;
+  --popover: 93 15% 19%;
+  --popover-foreground: 87 20% 94%;
+  --primary: 91 30% 65%;
+  --primary-foreground: 93 16% 15%;
+  --secondary: 93 13% 22%;
+  --secondary-foreground: 87 20% 94%;
+  --muted: 93 13% 22%;
+  --muted-foreground: 88 10% 62%;
+  --accent: 18 59% 45%;
+  --accent-foreground: 87 20% 94%;
+  --destructive: 6 60% 45%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 93 12% 27%;
+  --input: 93 12% 27%;
+  --ring: 91 30% 65%;
+
+  --sage-700: 91 30% 65%;
+  --sage-500: 91 19% 55%;
+  --sage-300: 93 23% 40%;
+  --sage-100: 93 13% 22%;
+  --ink: 87 20% 94%;
+  --paper: 93 16% 15%;
+  --clay: 18 59% 45%;
+  --slate-sage: 88 10% 62%;
+  --border-sage: 93 12% 27%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+}
