@@ -1,131 +1,84 @@
-import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, Clock } from "lucide-react";
 
 import { Badge } from "@repo/ui/components/ui/badge";
+import { Button } from "@repo/ui/components/ui/button";
 import { Card, CardContent } from "@repo/ui/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs";
 
-import { TechBadge } from "@/components/tech-badge";
+import { ProjectCover } from "@/components/project-cover";
+import { ProjectLink } from "@/components/project-link";
+import { PROJECTS, type Project } from "@/lib/projects";
 
-// PLACEHOLDER PROJECTS — no real client work was supplied for this build.
-// Swap for actual case studies (name, result, stack, link) before launch.
-const CLIENT_WORK = [
-  {
-    name: "Fernbank Orthodontics",
-    description: "Cut phone scheduling calls 40% after moving booking online.",
-    stack: ["Next.js", "Cal.com", "Tailwind CSS"],
-    status: "Live",
-    timeline: "4-week build",
-    href: "#",
-  },
-  {
-    name: "Loop Fulfillment",
-    description: "Replaced three spreadsheets with one dashboard the warehouse team checks every morning.",
-    stack: ["React", "tRPC", "PostgreSQL"],
-    status: "Live",
-    timeline: "6-week build",
-    href: "#",
-  },
-  {
-    name: "Harbor & Vine",
-    description: "Grew online orders 22% after a full checkout rebuild.",
-    stack: ["Next.js", "Shopify", "Stripe"],
-    status: "Live",
-    timeline: "5-week build",
-    href: "#",
-  },
-  {
-    name: "Northline Logistics",
-    description: "Automated invoice matching, saving the finance team six hours a week.",
-    stack: ["n8n", "QuickBooks API", "Slack"],
-    status: "Live",
-    timeline: "3-week build",
-    href: "#",
-  },
-  {
-    name: "Kestrel Coworking",
-    description: "Members book rooms and manage billing without emailing the front desk.",
-    stack: ["React", "Stripe", "PostgreSQL"],
-    status: "In build",
-    timeline: "8-week build",
-    href: "#",
-  },
-] as const;
-
-// PLACEHOLDER PERSONAL PRODUCTS — in-house tools we built for our own use
-// and now offer directly. No real roadmap/pricing implied; swap for actual
-// products before launch.
-const PERSONAL_PRODUCTS = [
-  {
-    name: "Ledgerline",
-    description: "Started as our own invoicing automation, now a lightweight billing tool for small teams.",
-    stack: ["Next.js", "Stripe", "PostgreSQL"],
-    status: "Live",
-    timeline: "Built in-house, 2023",
-    href: "#",
-  },
-  {
-    name: "Fieldnote",
-    description: "Turns scattered call notes and Slack threads into one searchable project log.",
-    stack: ["Next.js", "tRPC", "PostgreSQL"],
-    status: "In build",
-    timeline: "Built in-house, 2025",
-    href: "#",
-  },
-] as const;
-
-interface Project {
-  name: string;
-  description: string;
-  stack: readonly string[];
-  status: string;
-  timeline: string;
-  href: string;
-}
+const CLIENT_WORK = PROJECTS.filter((p) => p.category === "client");
+const PERSONAL_PRODUCTS = PROJECTS.filter((p) => p.category === "personal");
 
 function ProjectGrid({ projects }: { projects: readonly Project[] }) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {/* .group lives on the outer wrapper, not Card itself — group-has-*
+          targets descendants of .group, and Card can't target itself. */}
       {projects.map((project) => (
-        <Card key={project.name} className="group overflow-hidden p-0">
-          <Link href={project.href} aria-label={`View project: ${project.name}`}>
-            <div
-              className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-sage-100"
-              aria-hidden="true"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-sage-300/60 via-sage-100 to-paper transition-transform duration-300 group-hover:scale-105" />
-              <span className="relative font-display text-3xl font-medium text-sage-700/70">
-                {project.name
-                  .split(" ")
-                  .map((w) => w[0])
-                  .join("")
-                  .slice(0, 2)}
-              </span>
+        <div key={project.slug} className="group relative hover:z-20">
+          <Card className="flex flex-col overflow-hidden p-0 group-hover:overflow-visible">
+            <ProjectLink href={`/products/${project.slug}`} aria-label={`View project: ${project.name}`}>
+              <div
+                className="relative z-0 flex aspect-[4/3] items-center justify-center overflow-hidden bg-sage-100 transition-all duration-300 ease-out group-hover:z-20 group-hover:scale-125 group-hover:overflow-visible group-hover:shadow-2xl"
+                aria-hidden="true"
+              >
+                <ProjectCover project={project} />
+                {!project.screenshotsDesktop?.[0] && !project.screenshots?.[0] && (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-br from-sage-300/60 via-sage-100 to-paper" />
+                    <span className="relative font-display text-3xl font-medium text-sage-700/70">
+                      {project.name
+                        .split(" ")
+                        .map((w) => w[0])
+                        .join("")
+                        .slice(0, 2)}
+                    </span>
+                  </>
+                )}
+              </div>
+              <CardContent className="p-6 pb-0">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    {project.logo && (
+                      <Image
+                        src={project.logo}
+                        alt=""
+                        width={24}
+                        height={24}
+                        className="h-6 w-6 shrink-0 object-contain"
+                      />
+                    )}
+                    <h3 className="font-display text-h3 text-foreground">{project.name}</h3>
+                  </div>
+                  <Badge variant="status" className="shrink-0">
+                    {project.status}
+                  </Badge>
+                </div>
+                <p className="mt-2 text-sm font-medium text-primary">{project.tagline}</p>
+                <p className="mt-2 flex items-center gap-1.5 font-mono text-xs text-slate-sage">
+                  <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                  {project.timeline}
+                </p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 group-has-[[data-cta=view-project]:hover]:!opacity-0">
+                  View project
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </span>
+              </CardContent>
+            </ProjectLink>
+            <div className="mt-auto p-6 pt-4">
+              <Button variant="outline" size="sm" className="w-full" asChild>
+                <ProjectLink href={`/products/${project.slug}`} data-cta="view-project">
+                  View Project
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </ProjectLink>
+              </Button>
             </div>
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between gap-2">
-                <h3 className="font-display text-h3 text-foreground">{project.name}</h3>
-                <Badge variant="status" className="shrink-0">
-                  {project.status}
-                </Badge>
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">{project.description}</p>
-              <p className="mt-2 flex items-center gap-1.5 font-mono text-xs text-slate-sage">
-                <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-                {project.timeline}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {project.stack.map((tech) => (
-                  <TechBadge key={tech} name={tech} />
-                ))}
-              </div>
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100">
-                View project
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              </span>
-            </CardContent>
-          </Link>
-        </Card>
+          </Card>
+        </div>
       ))}
     </div>
   );

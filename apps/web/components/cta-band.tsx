@@ -10,10 +10,10 @@ export function CtaBand() {
     <section className="bg-accent py-12">
       <div className="container flex flex-col items-center gap-6 text-center lg:flex-row lg:justify-between lg:text-left">
         <div>
-          <h2 className="font-display text-h2 text-ink">
+          <h2 className="font-display text-h2 text-white">
             Got a project that needs to ship? Let&apos;s talk about what it&apos;ll take.
           </h2>
-          <p className="mt-2 text-body text-ink/80">
+          <p className="mt-2 text-body text-white">
             Message us on Facebook — no cost, no obligation, we&apos;ll tell you honestly if we&apos;re the right fit.
           </p>
         </div>

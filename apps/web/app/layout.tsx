@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { ProjectTransitionProvider } from "@/components/project-transition";
 import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
@@ -18,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className="font-body antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <ProjectTransitionProvider>{children}</ProjectTransitionProvider>
         </ThemeProvider>
       </body>
     </html>

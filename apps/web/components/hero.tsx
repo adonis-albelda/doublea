@@ -3,6 +3,8 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
 import { Button } from "@repo/ui/components/ui/button";
 
 import { RotatingCtaLabel } from "@/components/rotating-cta-label";
@@ -84,7 +86,10 @@ export function Hero() {
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link href="#products">See our products</Link>
+                <Link href="/#products">
+                  See our products
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
               </Button>
             </div>
           </div>

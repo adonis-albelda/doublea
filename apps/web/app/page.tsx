@@ -7,6 +7,7 @@ import { Nav } from "@/components/nav";
 import { PixelAscent } from "@/components/pixel-ascent";
 import { Process } from "@/components/process";
 import { Products } from "@/components/products";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { Services } from "@/components/services";
 import { Team } from "@/components/team";
 import { Testimonials } from "@/components/testimonials";
@@ -17,23 +18,45 @@ export default function Home() {
     <>
       <Nav />
       <main>
-        <Hero />
-        <Services />
-        <Products />
-        <TrustedBy />
-        <Testimonials />
+        <ScrollReveal>
+          <Hero />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Services />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Products />
+        </ScrollReveal>
+        <ScrollReveal>
+          <TrustedBy />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Testimonials />
+        </ScrollReveal>
 
         {/* Second (and last) use of PixelAscent — a section-divider punctuation
             mark, not a repeating background. design-system.md §5. */}
-        <div className="container">
-          <PixelAscent variant="divider" className="py-4" />
-        </div>
+        <ScrollReveal>
+          <div className="container">
+            <PixelAscent variant="divider" className="py-4" />
+          </div>
+        </ScrollReveal>
 
-        <Process />
-        <About />
-        <Team />
-        <Faqs />
-        <CtaBand />
+        <ScrollReveal>
+          <Process />
+        </ScrollReveal>
+        <ScrollReveal>
+          <About />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Team />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Faqs />
+        </ScrollReveal>
+        <ScrollReveal>
+          <CtaBand />
+        </ScrollReveal>
       </main>
       <Footer />
     </>

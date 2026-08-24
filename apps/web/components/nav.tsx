@@ -26,18 +26,20 @@ import { RotatingCtaLabel } from "@/components/rotating-cta-label";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const NAV_LINKS = [
-  { href: "#services", label: "Services" },
-  { href: "#products", label: "Products" },
-  { href: "#process", label: "Process" },
-  { href: "#about", label: "About" },
-  { href: "#faqs", label: "FAQ" },
+  { href: "/#services", label: "Services" },
+  { href: "/#products", label: "Products" },
+  { href: "/#process", label: "Process" },
+  { href: "/#about", label: "About" },
+  { href: "/#faqs", label: "FAQ" },
   { href: FACEBOOK_MESSENGER_URL, label: "Contact" },
 ];
 
 // Section ids tracked for scroll-spy, in document order — only in-page
-// anchors are sections; the Facebook link isn't one.
-const SECTION_IDS = NAV_LINKS.filter((link) => link.href.startsWith("#")).map((link) =>
-  link.href.slice(1),
+// anchors are sections; the Facebook link isn't one. Scroll-spy only makes
+// sense while actually on the homepage, so this stays inert on other routes
+// (no element with a matching id exists to observe).
+const SECTION_IDS = NAV_LINKS.filter((link) => link.href.startsWith("/#")).map((link) =>
+  link.href.slice(2),
 );
 
 export function Nav() {
@@ -69,7 +71,7 @@ export function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border-sage bg-card/95 backdrop-blur">
       <div className="container flex h-20 items-center justify-between">
-        <Link href="#top" className="flex items-center gap-3" aria-label="Double A Digital Solutions, home">
+        <Link href="/#top" className="flex items-center gap-3" aria-label="Double A Digital Solutions, home">
           <Image src="/logo.png" alt="" width={40} height={40} className="h-10 w-10" priority />
           <span className="font-display text-lg font-medium tracking-tight">
             Double A Digital Solutions
@@ -80,8 +82,8 @@ export function Nav() {
           <NavigationMenu>
             <NavigationMenuList>
               {NAV_LINKS.map((link) => {
-                const isExternal = !link.href.startsWith("#");
-                const isActive = !isExternal && activeId === link.href.slice(1);
+                const isExternal = !link.href.startsWith("/#");
+                const isActive = !isExternal && activeId === link.href.slice(2);
                 return (
                   <NavigationMenuItem key={link.href}>
                     <NavigationMenuLink
