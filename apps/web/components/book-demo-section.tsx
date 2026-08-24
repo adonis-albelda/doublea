@@ -1,0 +1,246 @@
+"use client";
+
+import * as React from "react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { SiGoogle } from "@icons-pack/react-simple-icons";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import { CalendarCheck, Clock } from "lucide-react";
+
+import { Button } from "@repo/ui/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@repo/ui/components/ui/dialog";
+import { cn } from "@repo/ui/lib/utils";
+
+import { BookDemoCalendar } from "@/components/book-demo-calendar";
+import { api } from "@/convex/_generated/api";
+import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
+
+const TIME_SLOTS = [
+  "9:00 AM",
+  "10:00 AM",
+  "11:00 AM",
+  "1:00 PM",
+  "2:00 PM",
+  "3:00 PM",
+  "4:00 PM",
+];
+const PENDING_KEY = "book-demo-pending";
+
+function formatDateKey(dateKey: string) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  return new Date(year!, month! - 1, day!).toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+// Inline section version of the old booking dialog — full calendar always
+// visible, picking a date reveals its time list next to it. Booked slots
+// come from Convex's `appointments` table (convex/appointments.ts), keyed
+// by project, so a date/time already taken by a real visitor greys out for
+// everyone. Confirming requires Google sign-in (Convex Auth), writes the
+// appointment row, then hands off to Facebook Messenger.
+export function BookDemoSection({ projectName, projectSlug }: { projectName: string; projectSlug: string }) {
+  const [selectedDate, setSelectedDate] = React.useState<string | null>(null);
+  const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
+
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const [scheduling, setScheduling] = React.useState(false);
+  const [scheduleError, setScheduleError] = React.useState<string | null>(null);
+
+  const { isAuthenticated } = useConvexAuth();
+  const { signIn } = useAuthActions();
+  const viewer = useQuery(api.users.viewer);
+  const booked = useQuery(api.appointments.listByProject, { projectSlug });
+  const createAppointment = useMutation(api.appointments.create);
+
+  const bookedTimesByDate = React.useMemo(() => {
+    const map = new Map<string, Set<string>>();
+    for (const row of booked ?? []) {
+      const set = map.get(row.date) ?? new Set<string>();
+      set.add(row.time);
+      map.set(row.date, set);
+    }
+    return map;
+  }, [booked]);
+
+  // Whole day disabled once every slot on it is taken.
+  const blockedDates = React.useMemo(() => {
+    const dates = new Set<string>();
+    for (const [date, times] of bookedTimesByDate) {
+      if (times.size >= TIME_SLOTS.length) dates.add(date);
+    }
+    return dates;
+  }, [bookedTimesByDate]);
+
+  const bookedTimesForSelectedDate = selectedDate
+    ? (bookedTimesByDate.get(selectedDate) ?? new Set<string>())
+    : new Set<string>();
+
+  // Google sign-in is a full-page redirect — restore the in-progress
+  // selection (and reopen the confirm dialog) once the user lands back here
+  // signed in, since component state doesn't survive the round trip.
+  React.useEffect(() => {
+    if (!isAuthenticated) return;
+    try {
+      const raw = sessionStorage.getItem(PENDING_KEY);
+      if (!raw) return;
+      const pending = JSON.parse(raw) as { date: string | null; time: string | null };
+      if (pending.date) setSelectedDate(pending.date);
+      if (pending.time) setSelectedTime(pending.time);
+      setConfirmOpen(true);
+      sessionStorage.removeItem(PENDING_KEY);
+    } catch {
+      sessionStorage.removeItem(PENDING_KEY);
+    }
+  }, [isAuthenticated]);
+
+  function handleSelectDate(dateKey: string) {
+    setSelectedDate(dateKey);
+    setSelectedTime(null);
+  }
+
+  function handleGoogleSignIn() {
+    try {
+      sessionStorage.setItem(PENDING_KEY, JSON.stringify({ date: selectedDate, time: selectedTime }));
+    } catch {
+      // Storage can fail (private mode, quota) — sign-in still proceeds,
+      // the selection just won't survive the redirect round trip.
+    }
+    void signIn("google");
+  }
+
+  async function handleConfirm() {
+    if (!selectedDate || !selectedTime) return;
+    setScheduling(true);
+    setScheduleError(null);
+    try {
+      await createAppointment({ projectSlug, date: selectedDate, time: selectedTime });
+      setConfirmOpen(false);
+      window.open(FACEBOOK_MESSENGER_URL, "_blank", "noopener,noreferrer");
+    } catch (err) {
+      setScheduleError(err instanceof Error ? err.message : "Something went wrong — try again.");
+    } finally {
+      setScheduling(false);
+    }
+  }
+
+  return (
+    <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div className="rounded-2xl border border-border-sage bg-card p-6 sm:p-8">
+        <BookDemoCalendar selectedDate={selectedDate} onSelectDate={handleSelectDate} blockedDates={blockedDates} />
+      </div>
+
+      <div className="rounded-2xl border border-border-sage bg-card p-6 sm:p-8">
+        {selectedDate ? (
+          <>
+            <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">
+              {formatDateKey(selectedDate)}
+            </p>
+            <h3 className="mt-2 font-display text-h3 text-foreground">Pick a time</h3>
+
+            <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {TIME_SLOTS.map((time) => {
+                const isBooked = bookedTimesForSelectedDate.has(time);
+                const isSelected = selectedTime === time;
+                return (
+                  <button
+                    key={time}
+                    type="button"
+                    disabled={isBooked}
+                    onClick={() => setSelectedTime(time)}
+                    aria-pressed={isSelected}
+                    aria-label={isBooked ? `${time}, already booked` : time}
+                    className={cn(
+                      "flex items-center justify-center gap-1.5 rounded-lg border px-3 py-2.5 text-sm transition-colors",
+                      isBooked && "cursor-not-allowed border-border-sage text-slate-sage/40 line-through",
+                      !isBooked && !isSelected && "border-border-sage text-foreground hover:border-primary/40",
+                      isSelected && "border-primary bg-primary font-semibold text-primary-foreground",
+                    )}
+                  >
+                    <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                    {time}
+                  </button>
+                );
+              })}
+            </div>
+
+            <p className="mt-6 text-sm text-muted-foreground">
+              {selectedTime
+                ? `Selected: ${formatDateKey(selectedDate)} at ${selectedTime}`
+                : "Choose an available time to continue."}
+            </p>
+
+            <Button
+              variant="accent"
+              size="lg"
+              className="mt-4 w-full"
+              disabled={!selectedTime}
+              onClick={() => {
+                setScheduleError(null);
+                setConfirmOpen(true);
+              }}
+            >
+              Schedule Appointment
+            </Button>
+          </>
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center text-center">
+            <CalendarCheck className="h-8 w-8 text-primary" aria-hidden="true" />
+            <p className="mt-4 text-body text-foreground">Pick a date for your {projectName} demo</p>
+            <p className="mt-2 max-w-xs text-sm text-muted-foreground">
+              Available times show up here once you choose a day on the calendar.
+            </p>
+          </div>
+        )}
+      </div>
+
+      <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <DialogContent>
+          {isAuthenticated ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Confirm your appointment</DialogTitle>
+                <DialogDescription>
+                  {selectedDate && selectedTime
+                    ? `${formatDateKey(selectedDate)} at ${selectedTime} — ${projectName} demo`
+                    : null}
+                </DialogDescription>
+              </DialogHeader>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Signed in as {viewer?.email ?? viewer?.name ?? "you"} — confirming locks in this slot, then continue
+                through Messenger to finish.
+              </p>
+              {scheduleError && <p className="mt-2 text-sm text-destructive">{scheduleError}</p>}
+              <Button variant="accent" size="lg" className="mt-4 w-full" disabled={scheduling} onClick={handleConfirm}>
+                {scheduling ? "Scheduling…" : "Confirm & Message Us"}
+              </Button>
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle>Sign in to continue</DialogTitle>
+                <DialogDescription>Sign in with Google to confirm this appointment.</DialogDescription>
+              </DialogHeader>
+              <Button
+                variant="outline"
+                size="lg"
+                className="mt-2 w-full gap-2"
+                onClick={handleGoogleSignIn}
+              >
+                <SiGoogle className="h-4 w-4" aria-hidden="true" />
+                Sign in with Google
+              </Button>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

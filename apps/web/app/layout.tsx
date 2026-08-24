@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 
+import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { CustomCursor } from "@/components/custom-cursor";
 import { ProjectTransitionProvider } from "@/components/project-transition";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -17,13 +19,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="font-body antialiased">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <CustomCursor />
-          <ProjectTransitionProvider>{children}</ProjectTransitionProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ConvexAuthNextjsServerProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body className="font-body antialiased">
+          <ConvexClientProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <CustomCursor />
+              <ProjectTransitionProvider>{children}</ProjectTransitionProvider>
+            </ThemeProvider>
+          </ConvexClientProvider>
+        </body>
+      </html>
+    </ConvexAuthNextjsServerProvider>
   );
 }

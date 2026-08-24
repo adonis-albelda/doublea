@@ -30,14 +30,12 @@ export interface Project {
   logo?: string;
   // Real client locations — update the count as new clients sign on.
   storeLocations?: readonly { city: string; stores: number }[];
-  // Live demo access — real admin dashboard credentials + APK download.
-  // apkUrl is a SAMPLE placeholder, swap for the real hosted APK link.
-  demoAccess?: {
-    adminUrl: string;
-    apkUrl: string;
-    email: string;
-    password: string;
-  };
+  // Live demo access exists for this project — the actual admin dashboard
+  // URL, APK link, and credentials live in Convex (convex/demoAccess.ts),
+  // keyed by slug, and are only served to signed-in visitors. Not stored
+  // here since anything in this file ships in the client bundle regardless
+  // of sign-in state.
+  hasDemoAccess?: boolean;
 }
 
 export const PROJECTS: readonly Project[] = [
@@ -46,10 +44,10 @@ export const PROJECTS: readonly Project[] = [
     name: "POSPro",
     logo: "/projects/products/propos/logo.webp",
     category: "client",
-    tagline: "One system for every register, every shelf.",
-    description: "Point of sale and inventory that keeps every terminal, every shelf, and every receipt in sync.",
+    tagline: "Monitor sales and inventory live — even offline, even away from the store.",
+    description: "Sales, inventory, and reports stay in sync across every terminal — even without internet. Check in on your store anytime, from anywhere.",
     longDescription:
-      "POSPro runs the register and the stockroom from one system — sales, inventory, receipts, and reports stay in sync across every terminal, even when the internet doesn't.",
+      "POSPro keeps your register and stockroom connected in real time — sales, stock counts, receipts, and reports stay accurate across every terminal, whether you're on the floor, at home, or the internet drops. Check in anytime, from anywhere, and always know exactly where your store stands.",
     status: "Live",
     timeline: "Built for store owners",
     features: [
@@ -108,13 +106,7 @@ export const PROJECTS: readonly Project[] = [
       "/projects/products/propos/tablet/Screenshot_1787559275.webp",
     ],
     storeLocations: [{ city: "Calbayog City", stores: 2 }],
-    demoAccess: {
-      adminUrl: "https://tally.doubleadigitalsolutions.store/login",
-      // SAMPLE link — swap for the real hosted APK before launch.
-      apkUrl: "https://doubleadigitalsolutions.store/downloads/pospro-demo.apk",
-      email: "demo@store.com",
-      password: "123456789",
-    },
+    hasDemoAccess: true,
   },
   {
     slug: "loop-fulfillment",

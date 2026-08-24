@@ -8,12 +8,14 @@ import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
 
 import { BookDemoCta } from "@/components/book-demo-cta";
+import { BookDemoSection } from "@/components/book-demo-section";
 import { CtaBand } from "@/components/cta-band";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
 import { ProjectLink } from "@/components/project-link";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { TypewriterText } from "@/components/typewriter-text";
 import { ClientLocationsShowcase } from "@/components/client-locations-showcase";
 import { DemoAccessCard } from "@/components/demo-access-card";
 import { DEFAULT_FEATURE_ICON, FEATURE_ICONS } from "@/lib/feature-icons";
@@ -74,12 +76,14 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                       {project.timeline}
                     </span>
                   </div>
-                  <h1 className="mt-4 font-display text-display-lg text-foreground">{project.name}</h1>
+                  <h1 className="mt-4 font-display text-display-lg text-foreground">
+                    <TypewriterText text={project.name} />
+                  </h1>
                   <p className="mt-3 text-h3 font-display text-primary">{project.tagline}</p>
                   <p className="mt-5 max-w-xl text-body-lg text-muted-foreground">{project.longDescription}</p>
                   <div className="mt-6 flex flex-wrap items-center gap-3">
                     <BookDemoCta projectName={project.name} />
-                    {project.demoAccess && (
+                    {project.hasDemoAccess && (
                       <Button
                         variant="outline"
                         size="lg"
@@ -166,6 +170,19 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </section>
         </ScrollReveal>
 
+        {/* Book a demo — inline calendar + time picker, see book-demo-section.tsx */}
+        <ScrollReveal>
+          <section id="book-demo" className="scroll-mt-24 bg-background py-14 lg:py-20">
+            <div className="container">
+              <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Book a demo</p>
+              <h2 className="mt-3 font-display text-h2 text-foreground">Pick a date and time</h2>
+              <div className="mt-10">
+                <BookDemoSection projectName={project.name} projectSlug={project.slug} />
+              </div>
+            </div>
+          </section>
+        </ScrollReveal>
+
         {/* Client hub — real client locations, see client-locations-showcase.tsx */}
         {project.storeLocations && (
           <ScrollReveal>
@@ -184,7 +201,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         )}
 
         {/* Try it — live demo access, see demo-access-card.tsx */}
-        {project.demoAccess && (
+        {project.hasDemoAccess && (
           <ScrollReveal>
             <section id="try-it" className="scroll-mt-24 py-14 lg:py-20">
               <div className="container">

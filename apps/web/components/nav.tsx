@@ -31,7 +31,6 @@ const NAV_LINKS = [
   { href: "/#process", label: "Process" },
   { href: "/#about", label: "About" },
   { href: "/#faqs", label: "FAQ" },
-  { href: FACEBOOK_MESSENGER_URL, label: "Contact" },
 ];
 
 // Section ids tracked for scroll-spy, in document order — only in-page

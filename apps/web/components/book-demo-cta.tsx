@@ -5,51 +5,11 @@ import Link from "next/link";
 import { CalendarCheck } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@repo/ui/components/ui/dialog";
 
-import { BookDemoCalendar } from "@/components/book-demo-calendar";
-import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
-
-// PLACEHOLDER blocked dates — there's no booking backend in this repo, so
-// nothing here is actually reserved or shared across visitors. This is a
-// UI-only demo: swap for a real source (e.g. a Cal.com embed, or a real
-// database-backed booking flow) before this can genuinely block dates that
-// are already taken.
-function usePlaceholderBlockedDates() {
-  return React.useMemo(() => {
-    const today = new Date();
-    const offsets = [3, 4, 9, 15, 21];
-    return new Set(
-      offsets.map((days) => {
-        const d = new Date(today);
-        d.setDate(d.getDate() + days);
-        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-      }),
-    );
-  }, []);
-}
-
-function formatDateKey(dateKey: string) {
-  const [year, month, day] = dateKey.split("-").map(Number);
-  return new Date(year!, month! - 1, day!).toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  });
-}
-
-// Renders the inline "Book a Demo" button plus a fixed bottom-right twin
-// that fades/slides in once the inline one scrolls out of view (tracked via
-// IntersectionObserver). Both open the same date-picker dialog; confirming a
-// date hands off to Facebook Messenger (no real slot reservation exists —
-// see usePlaceholderBlockedDates above).
+// Scrolls to the inline #book-demo section (see book-demo-section.tsx)
+// instead of opening a popup — renders the inline trigger plus a fixed
+// bottom-right twin that fades/slides in once the inline one scrolls out of
+// view (tracked via IntersectionObserver).
 export function BookDemoCta({
   projectName,
   className,
@@ -73,9 +33,6 @@ export function BookDemoCta({
 }) {
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const [showFloating, setShowFloating] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [selectedDate, setSelectedDate] = React.useState<string | null>(null);
-  const blockedDates = usePlaceholderBlockedDates();
 
   React.useEffect(() => {
     if (!showFloatingButton) return;
@@ -95,25 +52,20 @@ export function BookDemoCta({
   const label = `Book a demo for ${projectName}`;
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(next) => {
-        setOpen(next);
-        if (!next) setSelectedDate(null);
-      }}
-    >
+    <>
       <div ref={anchorRef} className={className}>
-        <DialogTrigger asChild>
-          <Button
-            variant={buttonVariant}
-            size={buttonSize}
-            className={fullWidth ? "w-full" : undefined}
-            aria-label={label}
-          >
+        <Button
+          variant={buttonVariant}
+          size={buttonSize}
+          className={fullWidth ? "w-full" : undefined}
+          aria-label={label}
+          asChild
+        >
+          <Link href="#book-demo">
             <CalendarCheck className="h-4 w-4" aria-hidden="true" />
             Book a Demo
-          </Button>
-        </DialogTrigger>
+          </Link>
+        </Button>
       </div>
 
       {showFloatingButton && (
@@ -122,54 +74,21 @@ export function BookDemoCta({
             showFloating ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
           }`}
         >
-          <DialogTrigger asChild>
-            <Button
-              variant="accent"
-              size="lg"
-              className="shadow-xl"
-              aria-label={label}
-              tabIndex={showFloating ? undefined : -1}
-            >
+          <Button
+            variant="accent"
+            size="lg"
+            className="shadow-xl"
+            aria-label={label}
+            tabIndex={showFloating ? undefined : -1}
+            asChild
+          >
+            <Link href="#book-demo">
               <CalendarCheck className="h-4 w-4" aria-hidden="true" />
               Book a Demo
-            </Button>
-          </DialogTrigger>
-        </div>
-      )}
-
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Book a demo — {projectName}</DialogTitle>
-          <DialogDescription>
-            Pick a date below, then confirm through Messenger — we&apos;ll reply with a time that works.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="mt-4">
-          <BookDemoCalendar selectedDate={selectedDate} onSelectDate={setSelectedDate} blockedDates={blockedDates} />
-        </div>
-
-        <p className="mt-4 text-sm text-muted-foreground">
-          {selectedDate ? `Selected: ${formatDateKey(selectedDate)}` : "Choose an available date to continue."}
-        </p>
-
-        {selectedDate ? (
-          <Button variant="accent" size="lg" className="mt-2 w-full" asChild>
-            <Link
-              href={FACEBOOK_MESSENGER_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
-            >
-              Continue to Messenger
             </Link>
           </Button>
-        ) : (
-          <Button variant="accent" size="lg" className="mt-2 w-full" disabled>
-            Continue to Messenger
-          </Button>
-        )}
-      </DialogContent>
-    </Dialog>
+        </div>
+      )}
+    </>
   );
 }
