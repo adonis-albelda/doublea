@@ -7,6 +7,13 @@
     scroll-behavior: smooth;
   }
 
+  /* Only applied once custom-cursor.tsx confirms a fine pointer + no
+     prefers-reduced-motion — never a static/unconditional cursor:none. */
+  html.custom-cursor-active,
+  html.custom-cursor-active * {
+    cursor: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;

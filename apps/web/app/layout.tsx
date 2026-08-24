@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { CustomCursor } from "@/components/custom-cursor";
 import { ProjectTransitionProvider } from "@/components/project-transition";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className="font-body antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <CustomCursor />
           <ProjectTransitionProvider>{children}</ProjectTransitionProvider>
         </ThemeProvider>
       </body>

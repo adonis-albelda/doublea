@@ -28,13 +28,23 @@ export interface Project {
   screenshotsDesktop?: readonly string[];
   screenshotsTablet?: readonly string[];
   logo?: string;
+  // Real client locations — update the count as new clients sign on.
+  storeLocations?: readonly { city: string; stores: number }[];
+  // Live demo access — real admin dashboard credentials + APK download.
+  // apkUrl is a SAMPLE placeholder, swap for the real hosted APK link.
+  demoAccess?: {
+    adminUrl: string;
+    apkUrl: string;
+    email: string;
+    password: string;
+  };
 }
 
 export const PROJECTS: readonly Project[] = [
   {
     slug: "pospro",
     name: "POSPro",
-    logo: "/projects/products/propos/logo.png",
+    logo: "/projects/products/propos/logo.webp",
     category: "client",
     tagline: "One system for every register, every shelf.",
     description: "Point of sale and inventory that keeps every terminal, every shelf, and every receipt in sync.",
@@ -70,33 +80,41 @@ export const PROJECTS: readonly Project[] = [
     targetBusiness:
       "Retail store owners running one or more registers who need real inventory and sales numbers, not a guess at closing time.",
     screenshots: [
-      "/projects/products/propos/mobile/Screenshot_1787557053.png",
-      "/projects/products/propos/mobile/Screenshot_1787557068.png",
-      "/projects/products/propos/mobile/Screenshot_1787557072.png",
-      "/projects/products/propos/mobile/Screenshot_1787557077.png",
-      "/projects/products/propos/mobile/Screenshot_1787557256.png",
-      "/projects/products/propos/mobile/Screenshot_1787557266.png",
-      "/projects/products/propos/mobile/Screenshot_1787557268.png",
-      "/projects/products/propos/mobile/Screenshot_1787557272.png",
-      "/projects/products/propos/mobile/Screenshot_1787557304.png",
-      "/projects/products/propos/mobile/Screenshot_1787557366.png",
+      "/projects/products/propos/mobile/Screenshot_1787557053.webp",
+      "/projects/products/propos/mobile/Screenshot_1787557068.webp",
+      "/projects/products/propos/mobile/Screenshot_1787557072.webp",
+      "/projects/products/propos/mobile/Screenshot_1787557077.webp",
+      "/projects/products/propos/mobile/Screenshot_1787557256.webp",
+      "/projects/products/propos/mobile/Screenshot_1787557266.webp",
+      "/projects/products/propos/mobile/Screenshot_1787557268.webp",
+      "/projects/products/propos/mobile/Screenshot_1787557272.webp",
+      "/projects/products/propos/mobile/Screenshot_1787557304.webp",
+      "/projects/products/propos/mobile/Screenshot_1787557366.webp",
     ],
     screenshotsDesktop: [
-      "/projects/products/propos/laptop/pospro-laptop-01.png",
-      "/projects/products/propos/laptop/pospro-laptop-02.png",
-      "/projects/products/propos/laptop/pospro-laptop-03.png",
-      "/projects/products/propos/laptop/pospro-laptop-04.png",
-      "/projects/products/propos/laptop/pospro-laptop-05.png",
+      "/projects/products/propos/laptop/pospro-laptop-01.webp",
+      "/projects/products/propos/laptop/pospro-laptop-02.webp",
+      "/projects/products/propos/laptop/pospro-laptop-03.webp",
+      "/projects/products/propos/laptop/pospro-laptop-04.webp",
+      "/projects/products/propos/laptop/pospro-laptop-05.webp",
     ],
     screenshotsTablet: [
-      "/projects/products/propos/tablet/Screenshot_1787559173.png",
-      "/projects/products/propos/tablet/Screenshot_1787559196.png",
-      "/projects/products/propos/tablet/Screenshot_1787559239.png",
-      "/projects/products/propos/tablet/Screenshot_1787559253.png",
-      "/projects/products/propos/tablet/Screenshot_1787559263.png",
-      "/projects/products/propos/tablet/Screenshot_1787559268.png",
-      "/projects/products/propos/tablet/Screenshot_1787559275.png",
+      "/projects/products/propos/tablet/Screenshot_1787559173.webp",
+      "/projects/products/propos/tablet/Screenshot_1787559196.webp",
+      "/projects/products/propos/tablet/Screenshot_1787559239.webp",
+      "/projects/products/propos/tablet/Screenshot_1787559253.webp",
+      "/projects/products/propos/tablet/Screenshot_1787559263.webp",
+      "/projects/products/propos/tablet/Screenshot_1787559268.webp",
+      "/projects/products/propos/tablet/Screenshot_1787559275.webp",
     ],
+    storeLocations: [{ city: "Calbayog City", stores: 2 }],
+    demoAccess: {
+      adminUrl: "https://tally.doubleadigitalsolutions.store/login",
+      // SAMPLE link — swap for the real hosted APK before launch.
+      apkUrl: "https://doubleadigitalsolutions.store/downloads/pospro-demo.apk",
+      email: "demo@store.com",
+      password: "123456789",
+    },
   },
   {
     slug: "loop-fulfillment",

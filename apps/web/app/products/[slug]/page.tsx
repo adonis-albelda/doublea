@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Building2, Check, Clock, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, Building2, Check, Clock, Smartphone, Zap } from "lucide-react";
 
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
@@ -14,6 +14,8 @@ import { Nav } from "@/components/nav";
 import { ProjectLink } from "@/components/project-link";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { ClientLocationsShowcase } from "@/components/client-locations-showcase";
+import { DemoAccessCard } from "@/components/demo-access-card";
 import { DEFAULT_FEATURE_ICON, FEATURE_ICONS } from "@/lib/feature-icons";
 import { getProjectBySlug, PROJECTS } from "@/lib/projects";
 
@@ -75,7 +77,22 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   <h1 className="mt-4 font-display text-display-lg text-foreground">{project.name}</h1>
                   <p className="mt-3 text-h3 font-display text-primary">{project.tagline}</p>
                   <p className="mt-5 max-w-xl text-body-lg text-muted-foreground">{project.longDescription}</p>
-                  <BookDemoCta projectName={project.name} className="mt-6" />
+                  <div className="mt-6 flex flex-wrap items-center gap-3">
+                    <BookDemoCta projectName={project.name} />
+                    {project.demoAccess && (
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="bg-primary text-primary-foreground border-primary hover:bg-primary/90 dark:bg-transparent dark:text-foreground dark:border-border-sage dark:hover:bg-secondary"
+                        asChild
+                      >
+                        <Link href="#try-it">
+                          <Smartphone className="h-4 w-4" aria-hidden="true" />
+                          Try the App
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
                 </div>
 
                 <ProjectShowcase project={project} />
@@ -148,6 +165,34 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             </div>
           </section>
         </ScrollReveal>
+
+        {/* Client hub — real client locations, see client-locations-showcase.tsx */}
+        {project.storeLocations && (
+          <ScrollReveal>
+            <section className="bg-background py-14 lg:py-20">
+              <div className="container">
+                <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">
+                  Clients
+                </p>
+                <h2 className="mt-3 font-display text-h2 text-foreground">Where it&apos;s already live</h2>
+                <div className="mt-10">
+                  <ClientLocationsShowcase project={project} />
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
+
+        {/* Try it — live demo access, see demo-access-card.tsx */}
+        {project.demoAccess && (
+          <ScrollReveal>
+            <section id="try-it" className="scroll-mt-24 py-14 lg:py-20">
+              <div className="container">
+                <DemoAccessCard project={project} />
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
 
         {/* More work */}
         {otherProjects.length > 0 && (
