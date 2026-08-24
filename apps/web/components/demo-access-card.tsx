@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
 import { useConvexAuth, useQuery } from "convex/react";
-import { Check, Copy, Download, KeyRound, LayoutDashboard, Mail, ShieldCheck } from "lucide-react";
+import { Check, Copy, Download, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
 
@@ -95,8 +95,14 @@ export function DemoAccessCard({ project }: { project: Project }) {
   const { isAuthenticated } = useConvexAuth();
   const { signIn } = useAuthActions();
   const demo = useQuery(api.demoAccess.getBySlug, isAuthenticated ? { slug: project.slug } : "skip");
+  const [signingIn, setSigningIn] = React.useState(false);
 
   if (!project.hasDemoAccess) return null;
+
+  function handleSignIn() {
+    setSigningIn(true);
+    void signIn("google");
+  }
 
   return (
     <div className="relative overflow-hidden rounded-2xl p-px">
@@ -128,9 +134,13 @@ export function DemoAccessCard({ project }: { project: Project }) {
             <p className="max-w-xs text-xs text-muted-foreground">
               We verify you first to keep the demo account from getting spammed.
             </p>
-            <Button variant="outline" size="sm" className="mt-1 gap-2" onClick={() => void signIn("google")}>
-              <SiGoogle className="h-3.5 w-3.5" aria-hidden="true" />
-              Sign in with Google
+            <Button variant="outline" size="sm" className="mt-1 gap-2" disabled={signingIn} onClick={handleSignIn}>
+              {signingIn ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+              ) : (
+                <SiGoogle className="h-3.5 w-3.5" aria-hidden="true" />
+              )}
+              {signingIn ? "Redirecting…" : "Sign in with Google"}
             </Button>
           </div>
         ) : demo === undefined ? (

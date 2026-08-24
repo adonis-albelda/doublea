@@ -4,7 +4,7 @@ import * as React from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
-import { CalendarCheck, Clock } from "lucide-react";
+import { CalendarCheck, Clock, Loader2 } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
 import {
@@ -53,6 +53,7 @@ export function BookDemoSection({ projectName, projectSlug }: { projectName: str
   const [confirmOpen, setConfirmOpen] = React.useState(false);
   const [scheduling, setScheduling] = React.useState(false);
   const [scheduleError, setScheduleError] = React.useState<string | null>(null);
+  const [signingIn, setSigningIn] = React.useState(false);
 
   const { isAuthenticated } = useConvexAuth();
   const { signIn } = useAuthActions();
@@ -113,6 +114,7 @@ export function BookDemoSection({ projectName, projectSlug }: { projectName: str
       // Storage can fail (private mode, quota) — sign-in still proceeds,
       // the selection just won't survive the redirect round trip.
     }
+    setSigningIn(true);
     void signIn("google");
   }
 
@@ -232,10 +234,15 @@ export function BookDemoSection({ projectName, projectSlug }: { projectName: str
                 variant="outline"
                 size="lg"
                 className="mt-2 w-full gap-2"
+                disabled={signingIn}
                 onClick={handleGoogleSignIn}
               >
-                <SiGoogle className="h-4 w-4" aria-hidden="true" />
-                Sign in with Google
+                {signingIn ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                ) : (
+                  <SiGoogle className="h-4 w-4" aria-hidden="true" />
+                )}
+                {signingIn ? "Redirecting…" : "Sign in with Google"}
               </Button>
             </>
           )}
