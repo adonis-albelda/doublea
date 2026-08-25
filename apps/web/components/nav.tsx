@@ -24,6 +24,7 @@ import { cn } from "@repo/ui/lib/utils";
 import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 import { RotatingCtaLabel } from "@/components/rotating-cta-label";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { UserMenu } from "@/components/user-menu";
 
 const NAV_LINKS = [
   { href: "/#services", label: "Services" },
@@ -115,9 +116,11 @@ export function Nav() {
               <RotatingCtaLabel />
             </Link>
           </Button>
+          <UserMenu />
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
+          <UserMenu />
           <ThemeToggle />
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>

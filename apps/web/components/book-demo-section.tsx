@@ -31,6 +31,31 @@ const TIME_SLOTS = [
 ];
 const PENDING_KEY = "book-demo-pending";
 
+function toDateKey(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function parseTimeSlot(time: string) {
+  const match = /^(\d+):(\d+)\s*(AM|PM)$/i.exec(time);
+  if (!match) return null;
+  let hour = Number(match[1]);
+  const minute = Number(match[2]);
+  const period = match[3]!.toUpperCase();
+  if (period === "PM" && hour !== 12) hour += 12;
+  if (period === "AM" && hour === 12) hour = 0;
+  return { hour, minute };
+}
+
+// Only relevant for today — a slot on a future date is never "past."
+function isPastTimeSlot(dateKey: string, time: string) {
+  const now = new Date();
+  if (dateKey !== toDateKey(now)) return false;
+  const parsed = parseTimeSlot(time);
+  if (!parsed) return false;
+  const slot = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parsed.hour, parsed.minute);
+  return slot.getTime() <= now.getTime();
+}
+
 function formatDateKey(dateKey: string) {
   const [year, month, day] = dateKey.split("-").map(Number);
   return new Date(year!, month! - 1, day!).toLocaleDateString("en-US", {
@@ -115,7 +140,10 @@ export function BookDemoSection({ projectName, projectSlug }: { projectName: str
       // the selection just won't survive the redirect round trip.
     }
     setSigningIn(true);
-    void signIn("google");
+    // Send the user back to this exact section (not Convex Auth's default
+    // landing page) once Google hands control back — the sessionStorage
+    // entry above then restores the date/time picks on remount.
+    void signIn("google", { redirectTo: `${window.location.pathname}#book-demo` });
   }
 
   async function handleConfirm() {
@@ -150,19 +178,23 @@ export function BookDemoSection({ projectName, projectSlug }: { projectName: str
             <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
               {TIME_SLOTS.map((time) => {
                 const isBooked = bookedTimesForSelectedDate.has(time);
+                const isPast = !isBooked && isPastTimeSlot(selectedDate, time);
+                const isDisabled = isBooked || isPast;
                 const isSelected = selectedTime === time;
                 return (
                   <button
                     key={time}
                     type="button"
-                    disabled={isBooked}
+                    disabled={isDisabled}
                     onClick={() => setSelectedTime(time)}
                     aria-pressed={isSelected}
-                    aria-label={isBooked ? `${time}, already booked` : time}
+                    aria-label={
+                      isBooked ? `${time}, already booked` : isPast ? `${time}, has already passed` : time
+                    }
                     className={cn(
                       "flex items-center justify-center gap-1.5 rounded-lg border px-3 py-2.5 text-sm transition-colors",
-                      isBooked && "cursor-not-allowed border-border-sage text-slate-sage/40 line-through",
-                      !isBooked && !isSelected && "border-border-sage text-foreground hover:border-primary/40",
+                      isDisabled && "cursor-not-allowed border-border-sage text-slate-sage/40 line-through",
+                      !isDisabled && !isSelected && "border-border-sage text-foreground hover:border-primary/40",
                       isSelected && "border-primary bg-primary font-semibold text-primary-foreground",
                     )}
                   >

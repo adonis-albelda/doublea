@@ -101,7 +101,9 @@ export function DemoAccessCard({ project }: { project: Project }) {
 
   function handleSignIn() {
     setSigningIn(true);
-    void signIn("google");
+    // Send the user back to this exact section (not Convex Auth's default
+    // landing page) once Google hands control back.
+    void signIn("google", { redirectTo: `${window.location.pathname}#try-it` });
   }
 
   return (
