@@ -19,7 +19,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ConvexAuthNextjsServerProvider>
+    <ConvexAuthNextjsServerProvider verbose>
+      {/* verbose logs the auth handshake to the browser console — temporary
+          while diagnosing why sign-in isn't sticking in production. */}
       <html lang="en" suppressHydrationWarning>
         <body className="font-body antialiased">
           <ConvexClientProvider>
