@@ -1,7 +1,8 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 
-import { internalMutation, query } from "./_generated/server";
+import { api } from "./_generated/api";
+import { action, internalMutation, query } from "./_generated/server";
 
 // Server-enforced gate — an unauthenticated caller gets null back, so
 // credentials never leave the deployment for a signed-out visitor (unlike
@@ -40,5 +41,36 @@ export const seed = internalMutation({
       return existing._id;
     }
     return await ctx.db.insert("demoAccess", args);
+  },
+});
+
+// Fetches a per-user demo access code from the Tally superadmin API — the
+// URL and API key are Convex env vars (server-side only, never in client
+// code). Requires sign-in since the call is keyed off the caller's email.
+export const fetchAccessCode = action({
+  args: {},
+  handler: async (ctx): Promise<{ code: string }> => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Sign in required to fetch an access code.");
+
+    const viewer = await ctx.runQuery(api.users.viewer, {});
+    if (!viewer?.email) throw new Error("No email on your account — can't fetch an access code.");
+
+    const apiUrl = process.env.TALLY_API_URL;
+    const apiKey = process.env.TALLY_API_KEY;
+    if (!apiUrl || !apiKey) throw new Error("Demo access codes aren't configured yet.");
+
+    const url = new URL(apiUrl);
+    url.searchParams.set("email", viewer.email);
+
+    const response = await fetch(url, { headers: { ap_key: apiKey } });
+    if (!response.ok) {
+      throw new Error(`Access code request failed (${response.status}).`);
+    }
+
+    const data: { code?: string } = await response.json();
+    if (!data.code) throw new Error("Access code response was missing `code`.");
+
+    return { code: data.code };
   },
 });

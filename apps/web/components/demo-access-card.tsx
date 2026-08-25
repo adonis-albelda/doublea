@@ -4,8 +4,8 @@ import * as React from "react";
 import Link from "next/link";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
-import { useConvexAuth, useQuery } from "convex/react";
-import { Check, Copy, Download, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
+import { useAction, useConvexAuth, useQuery } from "convex/react";
+import { Check, Copy, Download, Hash, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
 
@@ -87,6 +87,62 @@ function FieldSkeleton() {
   return <div className="h-[58px] animate-pulse rounded-lg border border-border-sage bg-background" />;
 }
 
+function accessCodeStorageKey(slug: string) {
+  return `demo-access-code:${slug}`;
+}
+
+// Fetches the signed-in user's demo access code from the Tally superadmin
+// API (convex/demoAccess.ts `fetchAccessCode`) once, then caches it in
+// localStorage so it survives reloads without hitting the API again.
+function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
+  const fetchAccessCode = useAction(api.demoAccess.fetchAccessCode);
+  const [code, setCode] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const storageKey = accessCodeStorageKey(slug);
+    try {
+      const cached = localStorage.getItem(storageKey);
+      if (cached) {
+        setCode(cached);
+        return;
+      }
+    } catch {
+      // Storage can fail (private mode, quota) — fall through and fetch.
+    }
+
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    fetchAccessCode({})
+      .then((result) => {
+        if (cancelled) return;
+        setCode(result.code);
+        try {
+          localStorage.setItem(storageKey, result.code);
+        } catch {
+          // Non-fatal — code still shows for this session.
+        }
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setError(err instanceof Error ? err.message : "Couldn't load access code.");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [slug, isAuthenticated, fetchAccessCode]);
+
+  return { code, loading, error };
+}
+
 // Real demo access for the project's live app — admin dashboard login, APK
 // link, and credentials live in Convex (convex/demoAccess.ts), not in this
 // bundle. getBySlug returns null for a signed-out visitor (server-enforced
@@ -96,6 +152,7 @@ export function DemoAccessCard({ project }: { project: Project }) {
   const { signIn } = useAuthActions();
   const demo = useQuery(api.demoAccess.getBySlug, isAuthenticated ? { slug: project.slug } : "skip");
   const [signingIn, setSigningIn] = React.useState(false);
+  const accessCode = useDemoAccessCode(project.slug, isAuthenticated);
 
   if (!project.hasDemoAccess) return null;
 
@@ -176,6 +233,17 @@ export function DemoAccessCard({ project }: { project: Project }) {
               </div>
               <CopyField icon={Mail} label="Email" value={demo.email} />
               <CopyField icon={KeyRound} label="Password" value={demo.password} />
+              {accessCode.code ? (
+                <div className="sm:col-span-2">
+                  <CopyField icon={Hash} label="Access code" value={accessCode.code} />
+                </div>
+              ) : accessCode.loading ? (
+                <div className="sm:col-span-2">
+                  <FieldSkeleton />
+                </div>
+              ) : accessCode.error ? (
+                <p className="sm:col-span-2 text-sm text-destructive">{accessCode.error}</p>
+              ) : null}
             </div>
           </>
         )}
