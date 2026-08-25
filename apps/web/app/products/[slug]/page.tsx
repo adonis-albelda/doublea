@@ -9,6 +9,7 @@ import { Button } from "@repo/ui/components/ui/button";
 
 import { BookDemoCta } from "@/components/book-demo-cta";
 import { BookDemoSection } from "@/components/book-demo-section";
+import { PricingSection } from "@/components/pricing-section";
 import { CtaBand } from "@/components/cta-band";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
@@ -169,6 +170,21 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             </div>
           </section>
         </ScrollReveal>
+
+        {/* Pricing — dummy user counts, see pricing-section.tsx */}
+        {project.pricingPlans && (
+          <ScrollReveal>
+            <section className="bg-background py-14 lg:py-20">
+              <div className="container">
+                <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Pricing</p>
+                <h2 className="mt-3 font-display text-h2 text-foreground">Plans for every store size</h2>
+                <div className="mt-10">
+                  <PricingSection project={project} />
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
 
         {/* Book a demo — inline calendar + time picker, see book-demo-section.tsx */}
         <ScrollReveal>

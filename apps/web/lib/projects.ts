@@ -36,6 +36,16 @@ export interface Project {
   // here since anything in this file ships in the client bundle regardless
   // of sign-in state.
   hasDemoAccess?: boolean;
+  // Subscription pricing — prices are real, everything else (user counts,
+  // per-plan feature tiering) is DUMMY placeholder data. Swap for the real
+  // tier breakdown and subscriber numbers once they exist.
+  pricingPlans?: readonly {
+    name: string;
+    price: string | null; // null = "Contact us" tier, no listed price
+    priceNote?: string;
+    users: string;
+    features: readonly string[];
+  }[];
 }
 
 export const PROJECTS: readonly Project[] = [
@@ -107,6 +117,48 @@ export const PROJECTS: readonly Project[] = [
     ],
     storeLocations: [{ city: "Calbayog City", stores: 2 }],
     hasDemoAccess: true,
+    pricingPlans: [
+      {
+        name: "Starter",
+        price: "₱500",
+        priceNote: "/month",
+        users: "120+ stores",
+        features: [
+          "1 register terminal",
+          "Real-time sales tracking",
+          "Basic inventory management",
+          "Bluetooth receipt printing",
+          "Email support",
+        ],
+      },
+      {
+        name: "Business",
+        price: "₱1,000",
+        priceNote: "/month",
+        users: "45+ stores",
+        features: [
+          "Up to 5 register terminals",
+          "Everything in Starter",
+          "Barcode & QR scanning and generation",
+          "Purchase orders and supplier payments",
+          "Voice search",
+          "Priority chat support",
+        ],
+      },
+      {
+        name: "Enterprise",
+        price: null,
+        priceNote: "Custom pricing",
+        users: "12+ stores",
+        features: [
+          "Unlimited terminals",
+          "Everything in Business",
+          "Multi-location reporting",
+          "Custom receipt branding",
+          "Dedicated account manager",
+        ],
+      },
+    ],
   },
   {
     slug: "loop-fulfillment",
