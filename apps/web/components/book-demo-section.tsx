@@ -143,7 +143,13 @@ export function BookDemoSection({ projectName, projectSlug }: { projectName: str
     // Send the user back to this exact section (not Convex Auth's default
     // landing page) once Google hands control back — the sessionStorage
     // entry above then restores the date/time picks on remount.
-    void signIn("google", { redirectTo: `${window.location.pathname}#book-demo` });
+    // Temporary logging — remove once sign-in is confirmed reflecting correctly.
+    signIn("google", { redirectTo: `${window.location.pathname}#book-demo` })
+      .then((result) => console.log("[BookDemoSection] signIn result:", result))
+      .catch((err) => {
+        console.error("[BookDemoSection] signIn failed:", err);
+        setSigningIn(false);
+      });
   }
 
   async function handleConfirm() {

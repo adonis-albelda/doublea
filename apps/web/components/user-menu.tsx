@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useConvexAuth, useQuery } from "convex/react";
 import { LogOut } from "lucide-react";
@@ -27,9 +28,14 @@ function initials(name?: string | null, email?: string | null) {
 // Signed-in Google identity, shown in the nav once Convex Auth has a
 // session — see convex/users.ts `viewer`. Renders nothing while signed out.
 export function UserMenu() {
-  const { isAuthenticated } = useConvexAuth();
+  const { isAuthenticated, isLoading } = useConvexAuth();
   const { signOut } = useAuthActions();
   const viewer = useQuery(api.users.viewer, isAuthenticated ? {} : "skip");
+
+  // Temporary — remove once sign-in is confirmed reflecting correctly.
+  React.useEffect(() => {
+    console.log("[UserMenu] isLoading:", isLoading, "isAuthenticated:", isAuthenticated, "viewer:", viewer);
+  }, [isLoading, isAuthenticated, viewer]);
 
   if (!isAuthenticated) return null;
 

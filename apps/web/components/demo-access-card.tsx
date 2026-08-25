@@ -159,13 +159,24 @@ export function DemoAccessCard({ project }: { project: Project }) {
   const [signingIn, setSigningIn] = React.useState(false);
   const accessCode = useDemoAccessCode(project.slug, isAuthenticated);
 
+  // Temporary — remove once sign-in is confirmed reflecting correctly.
+  React.useEffect(() => {
+    console.log("[DemoAccessCard] isAuthenticated:", isAuthenticated, "demo:", demo);
+  }, [isAuthenticated, demo]);
+
   if (!project.hasDemoAccess) return null;
 
   function handleSignIn() {
     setSigningIn(true);
     // Send the user back to this exact section (not Convex Auth's default
     // landing page) once Google hands control back.
-    void signIn("google", { redirectTo: `${window.location.pathname}#try-it` });
+    // Temporary logging — remove once sign-in is confirmed reflecting correctly.
+    signIn("google", { redirectTo: `${window.location.pathname}#try-it` })
+      .then((result) => console.log("[DemoAccessCard] signIn result:", result))
+      .catch((err) => {
+        console.error("[DemoAccessCard] signIn failed:", err);
+        setSigningIn(false);
+      });
   }
 
   return (
