@@ -97,6 +97,7 @@ function accessCodeStorageKey(slug: string) {
 function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
   const fetchAccessCode = useAction(api.demoAccess.fetchAccessCode);
   const [code, setCode] = React.useState<string | null>(null);
+  const [validForDate, setValidForDate] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -107,11 +108,14 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
     try {
       const cached = localStorage.getItem(storageKey);
       if (cached) {
-        setCode(cached);
+        const parsed = JSON.parse(cached) as { code: string; validForDate: string | null };
+        setCode(parsed.code);
+        setValidForDate(parsed.validForDate);
         return;
       }
     } catch {
-      // Storage can fail (private mode, quota) — fall through and fetch.
+      // Storage can fail (private mode, quota) or hold a stale/invalid
+      // shape — fall through and fetch fresh.
     }
 
     let cancelled = false;
@@ -121,8 +125,9 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
       .then((result) => {
         if (cancelled) return;
         setCode(result.code);
+        setValidForDate(result.validForDate);
         try {
-          localStorage.setItem(storageKey, result.code);
+          localStorage.setItem(storageKey, JSON.stringify(result));
         } catch {
           // Non-fatal — code still shows for this session.
         }
@@ -140,7 +145,7 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
     };
   }, [slug, isAuthenticated, fetchAccessCode]);
 
-  return { code, loading, error };
+  return { code, validForDate, loading, error };
 }
 
 // Real demo access for the project's live app — admin dashboard login, APK
@@ -236,6 +241,11 @@ export function DemoAccessCard({ project }: { project: Project }) {
               {accessCode.code ? (
                 <div className="sm:col-span-2">
                   <CopyField icon={Hash} label="Access code" value={accessCode.code} />
+                  {accessCode.validForDate && (
+                    <p className="mt-1.5 px-1 text-xs text-muted-foreground">
+                      Valid for {accessCode.validForDate}
+                    </p>
+                  )}
                 </div>
               ) : accessCode.loading ? (
                 <div className="sm:col-span-2">

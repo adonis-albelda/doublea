@@ -49,7 +49,7 @@ export const seed = internalMutation({
 // code). Requires sign-in since the call is keyed off the caller's email.
 export const fetchAccessCode = action({
   args: {},
-  handler: async (ctx): Promise<{ code: string }> => {
+  handler: async (ctx): Promise<{ code: string; validForDate: string | null }> => {
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Sign in required to fetch an access code.");
 
@@ -63,14 +63,20 @@ export const fetchAccessCode = action({
     const url = new URL(apiUrl);
     url.searchParams.set("email", viewer.email);
 
-    const response = await fetch(url, { headers: { ap_key: apiKey } });
+    // POST + `X-Demo-Access-Key` header — confirmed via manual curl testing
+    // against the real endpoint (GET / other header names all 401).
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "X-Demo-Access-Key": apiKey },
+    });
     if (!response.ok) {
       throw new Error(`Access code request failed (${response.status}).`);
     }
 
-    const data: { code?: string } = await response.json();
-    if (!data.code) throw new Error("Access code response was missing `code`.");
+    const body: { data?: { code?: string; valid_for_date?: string } } = await response.json();
+    const code = body.data?.code;
+    if (!code) throw new Error("Access code response was missing `data.code`.");
 
-    return { code: data.code };
+    return { code, validForDate: body.data?.valid_for_date ?? null };
   },
 });
