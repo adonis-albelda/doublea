@@ -10,13 +10,7 @@ import { Button } from "@repo/ui/components/ui/button";
 import { RotatingCtaLabel } from "@/components/rotating-cta-label";
 import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 
-// H1 options considered:
-// 1. "We turn your idea into software that ships, runs, and keeps working."
-// 2. "Your idea, built into software people actually use."
-// 3. "From sketch to shipped product, without the agency runaround."
-// Went with #1 — it's the only one that names the full arc (idea → shipped →
-// maintained) in one active-voice sentence, which is the actual promise.
-const HEADLINE = "We turn your idea into software that ships, runs, and keeps working.";
+const HEADLINE = "Digital Solutions Built Around Your Business";
 const TYPE_SPEED_MS = 28;
 
 export function Hero() {
@@ -67,7 +61,10 @@ export function Hero() {
             className={`transition-opacity duration-500 ${typingDone ? "opacity-100" : "opacity-0"}`}
           >
             <p className="mt-6 max-w-xl text-body-lg text-muted-foreground">
-              We work with founders and ops teams who need a working product, not a pitch deck.
+              We design and build websites and software that make your business easier to run,
+              easier to manage, and easier for your customers to connect with. Whether you need a
+              professional website or a custom system, we create practical digital solutions
+              tailored to your goals.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button

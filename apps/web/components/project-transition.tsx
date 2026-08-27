@@ -8,9 +8,9 @@ interface Origin {
   y: number;
 }
 
-const ProjectTransitionContext = React.createContext<((href: string, origin: Origin) => void) | null>(
-  null,
-);
+const ProjectTransitionContext = React.createContext<
+  ((href: string, origin: Origin, color?: string) => void) | null
+>(null);
 
 // Circle-wipe page transition: a filled circle grows from the click point
 // to cover the whole viewport, the route change happens underneath it once
@@ -24,9 +24,10 @@ export function ProjectTransitionProvider({ children }: { children: React.ReactN
   const [covered, setCovered] = React.useState(false);
   const [origin, setOrigin] = React.useState<Origin>({ x: 0, y: 0 });
   const [radius, setRadius] = React.useState(0);
+  const [color, setColor] = React.useState<string | undefined>(undefined);
   const pendingHrefRef = React.useRef<string | null>(null);
 
-  const start = React.useCallback((href: string, clickOrigin: Origin) => {
+  const start = React.useCallback((href: string, clickOrigin: Origin, wipeColor?: string) => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
       router.push(href);
@@ -40,6 +41,7 @@ export function ProjectTransitionProvider({ children }: { children: React.ReactN
     pendingHrefRef.current = href;
     setOrigin(clickOrigin);
     setRadius(r);
+    setColor(wipeColor);
     setActive(true);
     setCovered(false);
 
@@ -77,7 +79,7 @@ export function ProjectTransitionProvider({ children }: { children: React.ReactN
         <div
           aria-hidden="true"
           onTransitionEnd={covered ? handleGrowEnd : handleShrinkEnd}
-          className="pointer-events-none fixed z-[100] rounded-full bg-primary transition-transform duration-500 ease-in-out"
+          className="pointer-events-none fixed z-[100] rounded-full transition-transform duration-500 ease-in-out"
           style={{
             left: origin.x,
             top: origin.y,
@@ -85,6 +87,7 @@ export function ProjectTransitionProvider({ children }: { children: React.ReactN
             height: radius * 2,
             marginLeft: -radius,
             marginTop: -radius,
+            backgroundColor: color ?? "hsl(var(--primary))",
             transform: covered ? "scale(1)" : "scale(0)",
           }}
         />

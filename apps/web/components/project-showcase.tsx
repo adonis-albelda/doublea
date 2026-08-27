@@ -38,14 +38,26 @@ export function ProjectShowcase({ project }: { project: Project }) {
   return (
     <div className="mx-auto w-full max-w-xl">
       <div className="relative">
-        <div className="overflow-hidden">
+        {/* overflow-x-hidden only — this mask is for the horizontal slide,
+            not for clipping the mockups vertically (the phone's the tallest
+            of the three and was getting its bottom cut off by a plain
+            overflow-hidden here). */}
+        <div className="overflow-x-hidden">
           <div
-            className="flex transition-transform duration-500 ease-out"
+            className="flex items-start transition-transform duration-500 ease-out"
             style={{ transform: `translateX(-${index * 100}%)` }}
           >
             {DEVICES.map(({ key, Mockup }) => (
               <div key={key} className="w-full shrink-0 px-2 py-4">
-                <Mockup project={project} />
+                <div className="relative">
+                  <Mockup project={project} />
+                  {/* Floating shadow — reads as the device hovering above the
+                      page rather than sitting flush on it. */}
+                  <div
+                    aria-hidden="true"
+                    className="mx-auto mt-4 h-4 w-2/3 rounded-full bg-ink/20 blur-xl"
+                  />
+                </div>
               </div>
             ))}
           </div>

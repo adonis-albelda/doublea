@@ -2,18 +2,19 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Building2, Check, Clock, Smartphone } from "lucide-react";
+import { ArrowLeft, ArrowRight, Building2, Clock, Smartphone } from "lucide-react";
 
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
 
+import { BenefitsList } from "@/components/benefits-list";
 import { BookDemoCta } from "@/components/book-demo-cta";
 import { BookDemoSection } from "@/components/book-demo-section";
 import { PricingSection } from "@/components/pricing-section";
 import { CtaBand } from "@/components/cta-band";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
-import { ProjectLink } from "@/components/project-link";
+import { OtherProjectsGrid } from "@/components/other-projects-grid";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { TypewriterText } from "@/components/typewriter-text";
@@ -82,9 +83,9 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   </h1>
                   <p className="mt-3 text-h3 font-display text-primary">{project.tagline}</p>
                   <p className="mt-5 max-w-xl text-body-lg text-muted-foreground">{project.longDescription}</p>
-                  <div className="mt-6 flex flex-wrap items-center gap-3">
-                    <BookDemoCta projectName={project.name} />
-                    {project.hasDemoAccess && (
+                  {project.hasDemoAccess && (
+                    <div className="mt-6 flex flex-wrap items-center gap-3">
+                      <BookDemoCta projectName={project.name} />
                       <Button
                         variant="outline"
                         size="lg"
@@ -96,8 +97,8 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                           Try the App
                         </Link>
                       </Button>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
 
                 <ProjectShowcase project={project} />
@@ -124,14 +125,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               <div>
                 <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Benefits</p>
                 <h2 className="mt-3 font-display text-h2 text-foreground">Why it matters</h2>
-                <ul className="mt-6 flex flex-col gap-4">
-                  {project.benefits.map((benefit) => (
-                    <li key={benefit} className="flex items-start gap-3">
-                      <Check className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-                      <p className="text-body text-foreground">{benefit}</p>
-                    </li>
-                  ))}
-                </ul>
+                <BenefitsList benefits={project.benefits} />
               </div>
 
               <div className="rounded-xl border border-border-sage bg-card p-8">
@@ -160,18 +154,21 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </ScrollReveal>
         )}
 
-        {/* Book a demo — inline calendar + time picker, see book-demo-section.tsx */}
-        <ScrollReveal>
-          <section id="book-demo" className="scroll-mt-24 bg-background py-14 lg:py-20">
-            <div className="container">
-              <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Book a demo</p>
-              <h2 className="mt-3 font-display text-h2 text-foreground">Pick a date and time</h2>
-              <div className="mt-10">
-                <BookDemoSection projectName={project.name} projectSlug={project.slug} />
+        {/* Book a demo — only for our own product (POSPro), not one-off
+            client sites like CareConnect. See book-demo-section.tsx. */}
+        {project.hasDemoAccess && (
+          <ScrollReveal>
+            <section id="book-demo" className="scroll-mt-24 bg-background py-14 lg:py-20">
+              <div className="container">
+                <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Book a demo</p>
+                <h2 className="mt-3 font-display text-h2 text-foreground">Pick a date and time</h2>
+                <div className="mt-10">
+                  <BookDemoSection projectName={project.name} projectSlug={project.slug} />
+                </div>
               </div>
-            </div>
-          </section>
-        </ScrollReveal>
+            </section>
+          </ScrollReveal>
+        )}
 
         {/* Client hub — real client locations, see client-locations-showcase.tsx */}
         {project.storeLocations && (
@@ -208,26 +205,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               <div className="container">
                 <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">More work</p>
                 <h2 className="mt-3 font-display text-h2 text-foreground">Other projects</h2>
-                <div className="mt-10 grid gap-6 sm:grid-cols-3">
-                  {otherProjects.map((p) => (
-                    <ProjectLink
-                      key={p.slug}
-                      href={`/products/${p.slug}`}
-                      className="group rounded-xl border border-border-sage bg-card p-6 transition-colors hover:border-primary/40"
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-display text-h3 text-foreground">{p.name}</h3>
-                        <Badge variant="status" className="shrink-0">
-                          {p.status}
-                        </Badge>
-                      </div>
-                      <p className="mt-2 text-sm text-muted-foreground">{p.description}</p>
-                      <span className="mt-4 inline-block text-sm font-medium text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        View project →
-                      </span>
-                    </ProjectLink>
-                  ))}
-                </div>
+                <OtherProjectsGrid projects={otherProjects} />
                 <Button variant="outline" size="lg" className="mt-10" asChild>
                   <Link href="/#products">
                     See all work

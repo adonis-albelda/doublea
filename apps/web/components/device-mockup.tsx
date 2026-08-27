@@ -13,29 +13,29 @@ import type { Project } from "@/lib/projects";
 export function LaptopMockup({ project, className }: { project: Project; className?: string }) {
   return (
     <div className={cn("mx-auto w-full max-w-xl", className)}>
-      <div className="overflow-hidden rounded-t-xl border border-b-0 border-border-sage bg-card shadow-2xl">
-        <div className="flex items-center gap-1.5 border-b border-border-sage bg-sage-100 px-4 py-2.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-        </div>
+      {/* Screen — thin bezel + camera dot, not a browser-window title bar,
+          so this reads as the physical device rather than an app window. */}
+      <div className="relative rounded-t-2xl border-[10px] border-b-0 border-ink bg-ink shadow-2xl">
+        <span className="absolute left-1/2 top-1 z-10 h-1 w-1 -translate-x-1/2 rounded-full bg-slate-sage/50" />
         <div className="aspect-[3024/1720] overflow-hidden">
           {project.screenshotsDesktop && project.screenshotsDesktop.length > 0 ? (
             <ScreenshotCarousel
               images={project.screenshotsDesktop}
               alt={`${project.name} desktop screenshot`}
               sizes="(min-width: 1024px) 576px, 90vw"
+              fit="contain"
             />
           ) : (
             <PlaceholderScreen project={project} variant="desktop" />
           )}
         </div>
       </div>
-      {/* Base/keyboard deck — reads as a laptop, not just a browser window. */}
-      <div className="relative h-3 rounded-b-md bg-ink/80">
-        <div className="absolute left-1/2 top-0 h-1.5 w-1/4 -translate-x-1/2 rounded-b-sm bg-ink/60" />
+      {/* Hinge + keyboard deck + base plate, tapered like a real laptop body. */}
+      <div className="h-[5px] bg-gradient-to-b from-ink to-ink/70" />
+      <div className="relative h-4 rounded-b-lg bg-gradient-to-b from-slate-sage/50 to-slate-sage/70 shadow-inner">
+        <div className="absolute left-1/2 top-0 h-1.5 w-1/6 -translate-x-1/2 rounded-b-full bg-ink/30" />
       </div>
-      <div className="mx-auto h-1.5 w-2/3 rounded-b-2xl bg-ink/50" />
+      <div className="mx-auto h-1 w-3/4 rounded-b-2xl bg-ink/40" />
     </div>
   );
 }
@@ -45,7 +45,7 @@ export function TabletMockup({ project, className }: { project: Project; classNa
   return (
     <div
       className={cn(
-        "relative mx-auto w-full overflow-hidden rounded-[1.5rem] border-[10px] border-ink bg-ink shadow-2xl",
+        "relative mx-auto w-full",
         // Landscape (16:10, matches the real captures) once real screenshots
         // exist; portrait phone-ish shape otherwise, to keep the abstract
         // placeholder distinct from a phone.
@@ -53,17 +53,22 @@ export function TabletMockup({ project, className }: { project: Project; classNa
         className,
       )}
     >
-      <span className="absolute left-1/2 top-1 z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-ink/40 ring-1 ring-slate-sage/40" />
-      <div className={cn("overflow-hidden rounded-xl", hasRealScreenshots ? "aspect-[2560/1600]" : "aspect-[3/4]")}>
-        {hasRealScreenshots ? (
-          <ScreenshotCarousel
-            images={project.screenshotsTablet!}
-            alt={`${project.name} tablet screenshot`}
-            sizes="(min-width: 640px) 512px, 90vw"
-          />
-        ) : (
-          <PlaceholderScreen project={project} variant="tablet" />
-        )}
+      {/* Power button, top edge. */}
+      <span className="absolute -top-[2px] left-1/3 z-10 h-[3px] w-10 rounded-t-sm bg-ink/80" />
+      <div className="relative overflow-hidden rounded-[1.5rem] border-[10px] border-ink bg-ink shadow-2xl">
+        <span className="absolute left-1/2 top-1 z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-ink/40 ring-1 ring-slate-sage/40" />
+        <div className={cn("overflow-hidden rounded-xl", hasRealScreenshots ? "aspect-[2560/1600]" : "aspect-[3/4]")}>
+          {hasRealScreenshots ? (
+            <ScreenshotCarousel
+              images={project.screenshotsTablet!}
+              alt={`${project.name} tablet screenshot`}
+              sizes="(min-width: 640px) 512px, 90vw"
+              fit="contain"
+            />
+          ) : (
+            <PlaceholderScreen project={project} variant="tablet" />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -71,23 +76,27 @@ export function TabletMockup({ project, className }: { project: Project; classNa
 
 export function PhoneMockup({ project, className }: { project: Project; className?: string }) {
   return (
-    <div
-      className={cn(
-        "relative mx-auto w-full max-w-[220px] overflow-hidden rounded-[2.25rem] border-[6px] border-ink bg-ink shadow-2xl",
-        className,
-      )}
-    >
-      <div className="absolute left-1/2 top-0 z-10 h-5 w-24 -translate-x-1/2 rounded-b-2xl bg-ink" />
-      <div className="aspect-[9/19.5] overflow-hidden rounded-[1.75rem]">
-        {project.screenshots && project.screenshots.length > 0 ? (
-          <ScreenshotCarousel
-            images={project.screenshots}
-            alt={`${project.name} app screenshot`}
-            sizes="220px"
-          />
-        ) : (
-          <PlaceholderScreen project={project} variant="mobile" />
-        )}
+    <div className={cn("relative mx-auto w-full max-w-[220px]", className)}>
+      {/* Side buttons — volume rocker (left), power button (right). */}
+      <span className="absolute -left-[2px] top-16 z-10 h-6 w-[3px] rounded-l-sm bg-ink/80" />
+      <span className="absolute -left-[2px] top-24 z-10 h-10 w-[3px] rounded-l-sm bg-ink/80" />
+      <span className="absolute -right-[2px] top-20 z-10 h-14 w-[3px] rounded-r-sm bg-ink/80" />
+      <div className="relative overflow-hidden rounded-[2.25rem] border-[6px] border-ink bg-ink shadow-2xl">
+        <div className="absolute left-1/2 top-0 z-10 h-5 w-24 -translate-x-1/2 rounded-b-2xl bg-ink" />
+        <div className="aspect-[9/19.5] overflow-hidden rounded-[1.75rem]">
+          {project.screenshots && project.screenshots.length > 0 ? (
+            <ScreenshotCarousel
+              images={project.screenshots}
+              alt={`${project.name} app screenshot`}
+              sizes="220px"
+              fit="contain"
+            />
+          ) : (
+            <PlaceholderScreen project={project} variant="mobile" />
+          )}
+        </div>
+        {/* Home indicator. */}
+        <div className="absolute bottom-1.5 left-1/2 z-10 h-1 w-16 -translate-x-1/2 rounded-full bg-white/70" />
       </div>
     </div>
   );

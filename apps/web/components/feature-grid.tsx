@@ -5,6 +5,7 @@ import { Zap } from "lucide-react";
 
 import { cn } from "@repo/ui/lib/utils";
 
+import { useReveal } from "@/hooks/use-reveal";
 import { DEFAULT_FEATURE_ICON, FEATURE_ICONS } from "@/lib/feature-icons";
 
 // One-shot staggered entrance — cards fade/slide in one after another once
@@ -19,25 +20,7 @@ export function FeatureGrid({
   features: readonly string[];
   highlightFeatures?: readonly string[];
 }) {
-  const ref = React.useRef<HTMLUListElement>(null);
-  const [visible, setVisible] = React.useState(false);
-
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry!.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const { ref, visible } = useReveal<HTMLUListElement>();
 
   return (
     <ul ref={ref} className="mt-10 grid gap-4 sm:grid-cols-2">

@@ -12,8 +12,9 @@ import { useProjectTransition } from "@/components/project-transition";
 export function ProjectLink({
   href,
   onClick,
+  transitionColor,
   ...props
-}: React.ComponentProps<typeof Link>) {
+}: React.ComponentProps<typeof Link> & { transitionColor?: string }) {
   const start = useProjectTransition();
 
   return (
@@ -25,7 +26,7 @@ export function ProjectLink({
           return;
         }
         e.preventDefault();
-        start(href.toString(), { x: e.clientX, y: e.clientY });
+        start(href.toString(), { x: e.clientX, y: e.clientY }, transitionColor);
         onClick?.(e);
       }}
       {...props}

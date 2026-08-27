@@ -12,6 +12,7 @@ import { Services } from "@/components/services";
 import { Team } from "@/components/team";
 import { Testimonials } from "@/components/testimonials";
 import { TrustedBy } from "@/components/trusted-by";
+import { WhoWeHelp } from "@/components/who-we-help";
 
 export default function Home() {
   return (
@@ -47,6 +48,9 @@ export default function Home() {
         </ScrollReveal>
         <ScrollReveal>
           <About />
+        </ScrollReveal>
+        <ScrollReveal>
+          <WhoWeHelp />
         </ScrollReveal>
         <ScrollReveal>
           <Team />

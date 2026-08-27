@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Check, Users } from "lucide-react";
 
@@ -5,6 +7,7 @@ import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
 import { cn } from "@repo/ui/lib/utils";
 
+import { useReveal } from "@/hooks/use-reveal";
 import type { Project } from "@/lib/projects";
 import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 
@@ -13,10 +16,11 @@ import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 // numbers once there's real data to report.
 export function PricingSection({ project }: { project: Project }) {
   const plans = project.pricingPlans;
+  const { ref, visible } = useReveal<HTMLDivElement>();
   if (!plans || plans.length === 0) return null;
 
   return (
-    <div className="grid gap-6 sm:grid-cols-3">
+    <div ref={ref} className="grid gap-6 sm:grid-cols-3">
       {plans.map((plan, i) => {
         const isHighlight = i === 1;
         const isContactTier = plan.price === null;
@@ -24,8 +28,10 @@ export function PricingSection({ project }: { project: Project }) {
         return (
           <div
             key={plan.name}
+            style={{ transitionDelay: visible ? `${i * 100}ms` : "0ms" }}
             className={cn(
-              "flex flex-col rounded-2xl border p-6 sm:p-8",
+              "flex flex-col rounded-2xl border p-6 transition-all duration-500 ease-out sm:p-8",
+              visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
               isHighlight ? "border-primary bg-card shadow-lg" : "border-border-sage bg-card",
             )}
           >

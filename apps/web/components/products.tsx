@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { ArrowUpRight, Clock } from "lucide-react";
 
@@ -5,23 +7,41 @@ import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
 import { Card, CardContent } from "@repo/ui/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs";
+import { cn } from "@repo/ui/lib/utils";
 
 import { ProjectCover } from "@/components/project-cover";
 import { ProjectLink } from "@/components/project-link";
+import { useReveal } from "@/hooks/use-reveal";
 import { PROJECTS, type Project } from "@/lib/projects";
 
 const CLIENT_WORK = PROJECTS.filter((p) => p.category === "client");
 const PERSONAL_PRODUCTS = PROJECTS.filter((p) => p.category === "personal");
 
 function ProjectGrid({ projects }: { projects: readonly Project[] }) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
+
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div ref={ref} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {/* .group lives on the outer wrapper, not Card itself — group-has-*
-          targets descendants of .group, and Card can't target itself. */}
-      {projects.map((project) => (
-        <div key={project.slug} className="group relative hover:z-20">
+          targets descendants of .group, and Card can't target itself.
+          Entrance fade applied only to this wrapper's own opacity/transform —
+          the hover scale/z-index escape trick lives one level deeper and is
+          untouched. */}
+      {projects.map((project, i) => (
+        <div
+          key={project.slug}
+          style={{ transitionDelay: visible ? `${i * 100}ms` : "0ms" }}
+          className={cn(
+            "group relative hover:z-20 transition-[opacity,transform] duration-500 ease-out",
+            visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+          )}
+        >
           <Card className="flex flex-col overflow-hidden p-0 group-hover:overflow-visible">
-            <ProjectLink href={`/products/${project.slug}`} aria-label={`View project: ${project.name}`}>
+            <ProjectLink
+              href={`/products/${project.slug}`}
+              aria-label={`View project: ${project.name}`}
+              transitionColor={project.accentColor}
+            >
               <div
                 className="relative z-0 flex aspect-[4/3] items-center justify-center overflow-hidden bg-sage-100 transition-all duration-300 ease-out group-hover:z-20 group-hover:scale-125 group-hover:overflow-visible group-hover:shadow-2xl"
                 aria-hidden="true"
@@ -71,7 +91,11 @@ function ProjectGrid({ projects }: { projects: readonly Project[] }) {
             </ProjectLink>
             <div className="mt-auto p-6 pt-4">
               <Button variant="outline" size="sm" className="w-full" asChild>
-                <ProjectLink href={`/products/${project.slug}`} data-cta="view-project">
+                <ProjectLink
+                  href={`/products/${project.slug}`}
+                  data-cta="view-project"
+                  transitionColor={project.accentColor}
+                >
                   View Project
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </ProjectLink>

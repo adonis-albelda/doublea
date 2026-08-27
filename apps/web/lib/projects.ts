@@ -36,6 +36,10 @@ export interface Project {
   // here since anything in this file ships in the client bundle regardless
   // of sign-in state.
   hasDemoAccess?: boolean;
+  // Tints the circle-wipe page-transition (project-transition.tsx) when
+  // navigating into this project, to match its brand color. Falls back to
+  // the site's own primary (sage) when unset.
+  accentColor?: string;
   // Subscription pricing — prices are real, everything else (user counts,
   // per-plan feature tiering) is DUMMY placeholder data. Swap for the real
   // tier breakdown and subscriber numbers once they exist.
@@ -53,7 +57,7 @@ export const PROJECTS: readonly Project[] = [
     slug: "pospro",
     name: "POSPro",
     logo: "/projects/products/propos/logo.webp",
-    category: "client",
+    category: "personal",
     tagline: "Monitor sales and inventory live — even offline, even away from the store.",
     description: "Sales, inventory, and reports stay in sync across every terminal — even without internet. Check in on your store anytime, from anywhere.",
     longDescription:
@@ -161,28 +165,97 @@ export const PROJECTS: readonly Project[] = [
     ],
   },
   {
-    slug: "loop-fulfillment",
-    name: "Loop Fulfillment",
+    slug: "careconnect",
+    name: "CareConnect",
     category: "client",
-    tagline: "One dashboard instead of three spreadsheets.",
-    description: "Replaced three spreadsheets with one dashboard the warehouse team checks every morning.",
+    accentColor: "#2563eb",
+    tagline: "The people they love most, cared for close to home.",
+    description:
+      "A caregiving website giving families three clear reasons to trust CareConnect with the people they love most.",
     longDescription:
-      "Inventory was split across three separate spreadsheets, updated by hand and often out of sync. We built a single live dashboard the warehouse team checks every morning instead.",
-    stack: ["React", "tRPC", "PostgreSQL"],
+      "CareConnect specializes in care and daily living assistance for an array of individuals — feeling better happens in the comfort of your own home, not a facility. The site is built around three things that earn a family's trust before they ever pick up the phone: caregivers you can trust, an individualized care plan instead of a one-size-fits-all package, and real companionship, not just task completion. We take the time to get to know each family and build a plan around their specific needs, then back it with one-on-one attention that can't be matched in other settings.",
     status: "Live",
-    timeline: "6-week build",
+    timeline: "Built for a home care agency",
     features: [
-      "Live inventory dashboard",
-      "Role-based warehouse and office views",
-      "Automated low-stock alerts",
-      "Daily pick-list export",
+      "Daily or weekly assistance for aging, illness, recovery, or rehabilitation",
+      "Individualized care plans, not one-size-fits-all",
+      "Meal preparation",
+      "Hygiene assistance",
+      "Home cleaning",
+      "Supervision and daily check-ins",
+      "One-on-one companionship with the same caregivers",
+      "Experienced home health aides",
     ],
+    highlightFeatures: ["One-on-one companionship with the same caregivers"],
     benefits: [
-      "Replaced 3 spreadsheets with one source of truth",
-      "Warehouse team checks one screen every morning",
-      "Fewer stock discrepancies",
+      "Care and daily living assistance in the comfort of your own home, not a facility",
+      "Individualized care plans built around what each person actually needs, not a fixed package",
+      "Daily support covering meal preparation, hygiene, cleaning, and supervision",
+      "We take the time to get to know each family before building their care plan",
+      "One-on-one companionship — the same caregivers, not rotating facility staff",
+      "Attention and care that can't compare in other settings",
     ],
-    targetBusiness: "Small warehouse or fulfillment operations still tracking inventory across spreadsheets.",
+    targetBusiness: "Home care and caregiving agencies who want families to trust them before the first call.",
+    screenshots: [
+      "/projects/clients/careconnect/mobile/careconnect-mobile-01.webp",
+      "/projects/clients/careconnect/mobile/careconnect-mobile-02.webp",
+      "/projects/clients/careconnect/mobile/careconnect-mobile-03.webp",
+    ],
+    screenshotsDesktop: [
+      "/projects/clients/careconnect/desktop/careconnect-desktop-01.webp",
+      "/projects/clients/careconnect/desktop/careconnect-desktop-02.webp",
+    ],
+    screenshotsTablet: [
+      "/projects/clients/careconnect/tablet/careconnect-tablet-01.webp",
+      "/projects/clients/careconnect/tablet/careconnect-tablet-02.webp",
+      "/projects/clients/careconnect/tablet/careconnect-tablet-03.webp",
+    ],
+  },
+  {
+    slug: "pickleball-registration",
+    name: "CCPC Registration",
+    category: "client",
+    tagline: "Tournament registration, payment, and check-in in one place.",
+    description:
+      "A tournament registration system for CCPC — players sign up and pay online, organizers track everything from one dashboard.",
+    longDescription:
+      "Built for CCPC's pickleball tournaments, this system takes players through a 6-step registration — event, partner, division, and shirt size — then collects payment over GCash with proof-of-payment upload. Organizers get one dashboard to see registration counts by status and division, manage shirt orders, and filter, search, print, or export the full player list.",
+    status: "Live",
+    timeline: "Built for a pickleball tournament organizer",
+    features: [
+      "6-step guided player registration",
+      "Doubles and mixed-doubles partner pairing",
+      "Skill-division categories — Beginner-Novice through Intermediate High-Advance, plus age brackets",
+      "GCash payment with proof-of-payment upload",
+      "Optional site-wide and per-event access codes",
+      "Registration status tracking — pending, payment verified, confirmed, rejected",
+      "Tournament shirt size ordering and totals",
+      "Filter, search, print, and export the full registration list",
+    ],
+    highlightFeatures: ["GCash payment with proof-of-payment upload"],
+    benefits: [
+      "Players register and pay without a spreadsheet or a manual sign-up sheet",
+      "Organizers see registration and shirt-order counts at a glance instead of tallying by hand",
+      "Every registration is filterable and searchable by event, division, status, or shirt size",
+      "Access codes keep registration limited to the players who should see it",
+    ],
+    targetBusiness: "Tournament and league organizers who need online registration and payment without building it themselves.",
+    screenshots: [
+      "/projects/clients/pickleball-registration/mobile/pickleball-mobile-01.webp",
+      "/projects/clients/pickleball-registration/mobile/pickleball-mobile-02.webp",
+      "/projects/clients/pickleball-registration/mobile/pickleball-mobile-03.webp",
+      "/projects/clients/pickleball-registration/mobile/pickleball-mobile-04.webp",
+      "/projects/clients/pickleball-registration/mobile/pickleball-mobile-05.webp",
+    ],
+    screenshotsDesktop: [
+      "/projects/clients/pickleball-registration/laptop/pickleball-laptop-01.webp",
+      "/projects/clients/pickleball-registration/laptop/pickleball-laptop-02.webp",
+      "/projects/clients/pickleball-registration/laptop/pickleball-laptop-03.webp",
+    ],
+    screenshotsTablet: [
+      "/projects/clients/pickleball-registration/tablet/pickleball-tablet-01.webp",
+      "/projects/clients/pickleball-registration/tablet/pickleball-tablet-02.webp",
+    ],
   },
   {
     slug: "harbor-and-vine",

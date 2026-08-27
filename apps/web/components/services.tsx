@@ -1,31 +1,40 @@
+"use client";
+
 import { Check, Code2, Globe, LayoutDashboard, Workflow } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
+import { cn } from "@repo/ui/lib/utils";
+
+import { useReveal } from "@/hooks/use-reveal";
 
 const SERVICES = [
   {
     icon: Code2,
     title: "Custom Software",
-    description:
-      "You get a system built around how your team actually works, not a template stretched to fit.",
+    description: "Your business is unique. Your software should be, too.",
     details:
-      "Best for teams whose workflow doesn't fit off-the-shelf tools — we design the system around your process, not the other way around.",
+      "We build custom software around your actual processes, helping you save time, reduce repetitive work, organize information, and manage your operations more efficiently. Whether you need a simple internal system or a more advanced business application, we create a solution that fits your needs — not the other way around.",
     includes: [
-      "Requirements mapped before code",
-      "Staging + rollback on every release",
-      "Source code and docs handed over — yours to keep",
+      "We understand your needs before development begins",
+      "A solution designed specifically for your workflow",
+      "We test carefully before launch so your business can keep running smoothly",
+      "Clear documentation and support",
+      "You own your project, including the source code and documentation",
     ],
   },
   {
     icon: Globe,
     title: "Websites",
-    description: "You get a fast, on-brand site that turns visitors into inquiries.",
+    description: "Your website is often the first impression customers have of your business.",
     details:
-      "Built to load fast and rank well from day one, with copy and structure aimed at turning visits into inquiries.",
+      "We create modern, fast, mobile-friendly websites that clearly communicate what you offer and make it easy for customers to take the next step. Whether you're starting a new business, updating an existing website, or looking to generate more inquiries, we'll build a website that represents your brand professionally.",
     includes: [
-      "Core Web Vitals in the green",
-      "Analytics wired in before launch",
-      "Mobile-first layout, tested on real devices",
+      "Clean, modern design",
+      "Mobile-friendly experience",
+      "Fast and user-friendly pages",
+      "Design tailored to your brand",
+      "Clear calls-to-action that encourage inquiries",
+      "Easy-to-manage content",
     ],
   },
   {
@@ -55,6 +64,8 @@ const SERVICES = [
 ] as const;
 
 export function Services() {
+  const { ref, visible } = useReveal<HTMLDivElement>();
+
   return (
     <section id="services" className="bg-background py-14 lg:py-20">
       <div className="container">
@@ -65,9 +76,16 @@ export function Services() {
           <h2 className="mt-3 font-display text-h2 text-foreground">What we build</h2>
         </div>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2">
-          {SERVICES.map((service) => (
-            <Card key={service.title} className="group">
+        <div ref={ref} className="mt-10 grid gap-6 sm:grid-cols-2">
+          {SERVICES.map((service, i) => (
+            <Card
+              key={service.title}
+              style={{ transitionDelay: visible ? `${i * 100}ms` : "0ms" }}
+              className={cn(
+                "group transition-all duration-500 ease-out",
+                visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+              )}
+            >
               <CardHeader>
                 <service.icon
                   className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110"

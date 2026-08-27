@@ -32,9 +32,10 @@ function PhoneFrame({
       )}
     >
       <div className="absolute left-1/2 top-0 z-10 h-4 w-16 -translate-x-1/2 rounded-b-xl bg-ink" />
-      <div className="relative aspect-[9/19.5] overflow-hidden rounded-[1.4rem]">
-        <Image src={src} alt={alt} fill sizes="160px" className="object-cover" priority={priority} />
+      <div className="relative aspect-[9/19.5] overflow-hidden rounded-[1.4rem] bg-ink">
+        <Image src={src} alt={alt} fill sizes="160px" className="object-contain" priority={priority} />
       </div>
+      <div className="absolute bottom-1 left-1/2 z-10 h-[3px] w-10 -translate-x-1/2 rounded-full bg-white/70" />
     </div>
   );
 }
