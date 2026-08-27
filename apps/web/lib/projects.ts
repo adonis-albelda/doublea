@@ -167,6 +167,7 @@ export const PROJECTS: readonly Project[] = [
   {
     slug: "careconnect",
     name: "CareConnect",
+    logo: "/projects/clients/careconnect/logo.webp",
     category: "client",
     accentColor: "#2563eb",
     tagline: "The people they love most, cared for close to home.",
@@ -214,12 +215,13 @@ export const PROJECTS: readonly Project[] = [
   {
     slug: "pickleball-registration",
     name: "CCPC Registration",
+    logo: "/projects/clients/pickleball-registration/logo.webp",
     category: "client",
     tagline: "Tournament registration, payment, and check-in in one place.",
     description:
-      "A tournament registration system for CCPC — players sign up and pay online, organizers track everything from one dashboard.",
+      "A tournament registration system for the Calbayog City Pickleball Club — players sign up and pay online, organizers track everything from one dashboard.",
     longDescription:
-      "Built for CCPC's pickleball tournaments, this system takes players through a 6-step registration — event, partner, division, and shirt size — then collects payment over GCash with proof-of-payment upload. Organizers get one dashboard to see registration counts by status and division, manage shirt orders, and filter, search, print, or export the full player list.",
+      "Built for the Calbayog City Pickleball Club's (CCPC) tournaments, this system takes players through a 6-step registration — event, partner, division, and shirt size — then collects payment over GCash with proof-of-payment upload. Organizers get one dashboard to see registration counts by status and division, manage shirt orders, and filter, search, print, or export the full player list.",
     status: "Live",
     timeline: "Built for a pickleball tournament organizer",
     features: [
