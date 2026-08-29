@@ -119,16 +119,16 @@ export function Products() {
           <h2 className="mt-3 font-display text-h2 text-foreground">What we&apos;ve built</h2>
         </div>
 
-        <Tabs defaultValue="client" className="mt-10">
+        <Tabs defaultValue="personal" className="mt-10">
           <TabsList>
-            <TabsTrigger value="client">Client work</TabsTrigger>
             <TabsTrigger value="personal">Personal products</TabsTrigger>
+            <TabsTrigger value="client">Client work</TabsTrigger>
           </TabsList>
-          <TabsContent value="client">
-            <ProjectGrid projects={CLIENT_WORK} />
-          </TabsContent>
           <TabsContent value="personal">
             <ProjectGrid projects={PERSONAL_PRODUCTS} />
+          </TabsContent>
+          <TabsContent value="client">
+            <ProjectGrid projects={CLIENT_WORK} />
           </TabsContent>
         </Tabs>
       </div>
