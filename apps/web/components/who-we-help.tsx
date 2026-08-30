@@ -13,7 +13,7 @@ import {
 
 import { cn } from "@repo/ui/lib/utils";
 
-import { useReveal } from "@/hooks/use-reveal";
+import { useRevealEach } from "@/hooks/use-reveal";
 
 const AUDIENCE = [
   {
@@ -59,7 +59,7 @@ const AUDIENCE = [
 ] as const;
 
 export function WhoWeHelp() {
-  const { ref, visible } = useReveal<HTMLUListElement>();
+  const { setRef, visible } = useRevealEach<HTMLLIElement>(AUDIENCE.length);
 
   return (
     <section className="bg-page-wash py-14 lg:py-20">
@@ -72,14 +72,14 @@ export function WhoWeHelp() {
           </p>
         </div>
 
-        <ul ref={ref} className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {AUDIENCE.map((item, i) => (
             <li
               key={item.title}
-              style={{ transitionDelay: visible ? `${i * 80}ms` : "0ms" }}
+              ref={setRef(i)}
               className={cn(
                 "flex flex-col gap-3 rounded-lg border border-border-sage bg-card p-5 transition-all duration-500 ease-out hover:border-primary/40",
-                visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+                visible[i] ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
               )}
             >
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">

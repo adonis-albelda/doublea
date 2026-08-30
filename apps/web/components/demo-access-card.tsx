@@ -8,6 +8,7 @@ import { useAction, useConvexAuth, useQuery } from "convex/react";
 import { Check, Copy, Download, Hash, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
+import { cn } from "@repo/ui/lib/utils";
 
 import { api } from "@/convex/_generated/api";
 import type { Project } from "@/lib/projects";
@@ -158,11 +159,23 @@ export function DemoAccessCard({ project }: { project: Project }) {
   const demo = useQuery(api.demoAccess.getBySlug, isAuthenticated ? { slug: project.slug } : "skip");
   const [signingIn, setSigningIn] = React.useState(false);
   const accessCode = useDemoAccessCode(project.slug, isAuthenticated);
+  const [fieldsVisible, setFieldsVisible] = React.useState(false);
 
   // Temporary — remove once sign-in is confirmed reflecting correctly.
   React.useEffect(() => {
     console.log("[DemoAccessCard] isAuthenticated:", isAuthenticated, "demo:", demo);
   }, [isAuthenticated, demo]);
+
+  // Not scroll-triggered — these rows appear once auth/query resolves, so
+  // the stagger fires off that instead of an IntersectionObserver.
+  React.useEffect(() => {
+    if (!demo) {
+      setFieldsVisible(false);
+      return;
+    }
+    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setFieldsVisible(true)));
+    return () => cancelAnimationFrame(raf);
+  }, [demo]);
 
   if (!project.hasDemoAccess) return null;
 
@@ -244,27 +257,54 @@ export function DemoAccessCard({ project }: { project: Project }) {
             </div>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <div className="sm:col-span-2">
+              <div
+                className={cn(
+                  "sm:col-span-2 transition-all duration-500 ease-out",
+                  fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                )}
+              >
                 <CopyField icon={LayoutDashboard} label="Admin dashboard" value={demo.adminUrl} href={demo.adminUrl} />
               </div>
-              <CopyField icon={Mail} label="Email" value={demo.email} />
-              <CopyField icon={KeyRound} label="Password" value={demo.password} />
-              {accessCode.code ? (
-                <div className="sm:col-span-2">
-                  <CopyField icon={Hash} label="Access code" value={accessCode.code} />
-                  {accessCode.validForDate && (
-                    <p className="mt-1.5 px-1 text-xs text-muted-foreground">
-                      Valid for {accessCode.validForDate}
-                    </p>
-                  )}
-                </div>
-              ) : accessCode.loading ? (
-                <div className="sm:col-span-2">
+              <div
+                className={cn(
+                  "transition-all duration-500 ease-out",
+                  fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                )}
+                style={{ transitionDelay: fieldsVisible ? "80ms" : "0ms" }}
+              >
+                <CopyField icon={Mail} label="Email" value={demo.email} />
+              </div>
+              <div
+                className={cn(
+                  "transition-all duration-500 ease-out",
+                  fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                )}
+                style={{ transitionDelay: fieldsVisible ? "160ms" : "0ms" }}
+              >
+                <CopyField icon={KeyRound} label="Password" value={demo.password} />
+              </div>
+              <div
+                className={cn(
+                  "sm:col-span-2 transition-all duration-500 ease-out",
+                  fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                )}
+                style={{ transitionDelay: fieldsVisible ? "240ms" : "0ms" }}
+              >
+                {accessCode.code ? (
+                  <>
+                    <CopyField icon={Hash} label="Access code" value={accessCode.code} />
+                    {accessCode.validForDate && (
+                      <p className="mt-1.5 px-1 text-xs text-muted-foreground">
+                        Valid for {accessCode.validForDate}
+                      </p>
+                    )}
+                  </>
+                ) : accessCode.loading ? (
                   <FieldSkeleton />
-                </div>
-              ) : accessCode.error ? (
-                <p className="sm:col-span-2 text-sm text-destructive">{accessCode.error}</p>
-              ) : null}
+                ) : accessCode.error ? (
+                  <p className="text-sm text-destructive">{accessCode.error}</p>
+                ) : null}
+              </div>
             </div>
           </>
         )}

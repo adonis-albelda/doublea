@@ -9,16 +9,15 @@ import { useProjectTransition } from "@/components/project-transition";
 // links — triggers the circle-wipe transition instead of navigating
 // straight away. Modifier-clicks (open in new tab, etc.) fall through to
 // normal Link behavior.
-export function ProjectLink({
-  href,
-  onClick,
-  transitionColor,
-  ...props
-}: React.ComponentProps<typeof Link> & { transitionColor?: string }) {
+export const ProjectLink = React.forwardRef<
+  HTMLAnchorElement,
+  React.ComponentProps<typeof Link> & { transitionColor?: string }
+>(function ProjectLink({ href, onClick, transitionColor, ...props }, ref) {
   const start = useProjectTransition();
 
   return (
     <Link
+      ref={ref}
       href={href}
       onClick={(e) => {
         if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
@@ -32,4 +31,4 @@ export function ProjectLink({
       {...props}
     />
   );
-}
+});

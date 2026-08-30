@@ -4,8 +4,8 @@ import { LegalPage } from "@/components/legal-page";
 import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — Double A Digital Solutions",
-  description: "Terms for using the Double A Digital Solutions website and product demos.",
+  title: "Terms & Conditions — Double-A IT Solutions",
+  description: "Terms for using the Double-A IT Solutions website and product demos.",
 };
 
 // Grounded in what this site actually does — no payment processing on-site,
@@ -22,7 +22,7 @@ export default function TermsPage() {
       <p>
         This site is for browsing our work, exploring product demos, and getting in touch about a
         project. There is no payment processing on this site — quotes, contracts, and payment are
-        handled directly between you and Double A Digital Solutions via Facebook Messenger.
+        handled directly between you and Double-A IT Solutions via Facebook Messenger.
       </p>
 
       <h2>Product demo accounts</h2>

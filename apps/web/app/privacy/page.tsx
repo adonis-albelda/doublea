@@ -4,8 +4,8 @@ import { LegalPage } from "@/components/legal-page";
 import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Double A Digital Solutions",
-  description: "How Double A Digital Solutions collects, uses, and protects your information.",
+  title: "Privacy Policy — Double-A IT Solutions",
+  description: "How Double-A IT Solutions collects, uses, and protects your information.",
 };
 
 // Grounded in what this site actually does (Google sign-in via Convex Auth,
@@ -16,7 +16,7 @@ export default function PrivacyPolicyPage() {
   return (
     <LegalPage title="Privacy Policy" updated="August 27, 2026">
       <p>
-        This page explains what information Double A Digital Solutions collects when you use this
+        This page explains what information Double-A IT Solutions collects when you use this
         website, and how it&apos;s used.
       </p>
 

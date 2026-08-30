@@ -11,17 +11,17 @@ import { cn } from "@repo/ui/lib/utils";
 
 import { ProjectCover } from "@/components/project-cover";
 import { ProjectLink } from "@/components/project-link";
-import { useReveal } from "@/hooks/use-reveal";
+import { useRevealEach } from "@/hooks/use-reveal";
 import { PROJECTS, type Project } from "@/lib/projects";
 
 const CLIENT_WORK = PROJECTS.filter((p) => p.category === "client");
 const PERSONAL_PRODUCTS = PROJECTS.filter((p) => p.category === "personal");
 
 function ProjectGrid({ projects }: { projects: readonly Project[] }) {
-  const { ref, visible } = useReveal<HTMLDivElement>();
+  const { setRef, visible } = useRevealEach<HTMLDivElement>(projects.length);
 
   return (
-    <div ref={ref} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {/* .group lives on the outer wrapper, not Card itself — group-has-*
           targets descendants of .group, and Card can't target itself.
           Entrance fade applied only to this wrapper's own opacity/transform —
@@ -30,10 +30,10 @@ function ProjectGrid({ projects }: { projects: readonly Project[] }) {
       {projects.map((project, i) => (
         <div
           key={project.slug}
-          style={{ transitionDelay: visible ? `${i * 100}ms` : "0ms" }}
+          ref={setRef(i)}
           className={cn(
             "group relative hover:z-20 transition-[opacity,transform] duration-500 ease-out",
-            visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+            visible[i] ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
           )}
         >
           <Card className="flex flex-col overflow-hidden p-0 group-hover:overflow-visible">

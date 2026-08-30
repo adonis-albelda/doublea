@@ -1,9 +1,14 @@
+"use client";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@repo/ui/components/ui/accordion";
+import { cn } from "@repo/ui/lib/utils";
+
+import { useRevealEach } from "@/hooks/use-reveal";
 
 // PLACEHOLDER FAQS — written to answer the questions a founder/ops lead
 // would actually have before hiring a dev shop. Swap for real FAQs (pricing
@@ -71,20 +76,37 @@ const FAQS = [
   },
 ] as const;
 
-function faqColumn(faqs: readonly (typeof FAQS)[number][], startIndex: number) {
+function faqColumn(
+  faqs: readonly (typeof FAQS)[number][],
+  startIndex: number,
+  visible: boolean[],
+  setRef: (index: number) => (el: HTMLDivElement | null) => void,
+) {
   return (
     <Accordion type="single" collapsible>
-      {faqs.map((faq, i) => (
-        <AccordionItem key={faq.question} value={`faq-${startIndex + i}`}>
-          <AccordionTrigger>{faq.question}</AccordionTrigger>
-          <AccordionContent>{faq.answer}</AccordionContent>
-        </AccordionItem>
-      ))}
+      {faqs.map((faq, i) => {
+        const globalIndex = startIndex + i;
+        return (
+          <AccordionItem
+            key={faq.question}
+            value={`faq-${globalIndex}`}
+            ref={setRef(globalIndex)}
+            className={cn(
+              "transition-all duration-500 ease-out",
+              visible[globalIndex] ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
+            )}
+          >
+            <AccordionTrigger>{faq.question}</AccordionTrigger>
+            <AccordionContent>{faq.answer}</AccordionContent>
+          </AccordionItem>
+        );
+      })}
     </Accordion>
   );
 }
 
 export function Faqs() {
+  const { setRef, visible } = useRevealEach<HTMLDivElement>(FAQS.length);
   const midpoint = Math.ceil(FAQS.length / 2);
   const left = FAQS.slice(0, midpoint);
   const right = FAQS.slice(midpoint);
@@ -100,8 +122,8 @@ export function Faqs() {
         </div>
 
         <div className="mt-10 grid gap-x-12 lg:grid-cols-2">
-          {faqColumn(left, 0)}
-          {faqColumn(right, midpoint)}
+          {faqColumn(left, 0, visible, setRef)}
+          {faqColumn(right, midpoint, visible, setRef)}
         </div>
       </div>
     </section>

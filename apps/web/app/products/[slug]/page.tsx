@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Building2, Clock, Smartphone } from "lucide-react";
+import { ArrowLeft, ArrowRight, Bot, Building2, CheckCircle2, Clock, Layers, ShieldCheck, Smartphone, Sparkles, Zap } from "lucide-react";
 
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
 
+import { AiSpotlight } from "@/components/ai-spotlight";
+import { AnimatedCounter } from "@/components/animated-counter";
 import { BenefitsList } from "@/components/benefits-list";
 import { BookDemoCta } from "@/components/book-demo-cta";
 import { BookDemoSection } from "@/components/book-demo-section";
@@ -20,8 +22,15 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { TypewriterText } from "@/components/typewriter-text";
 import { ClientLocationsShowcase } from "@/components/client-locations-showcase";
 import { DemoAccessCard } from "@/components/demo-access-card";
+import { FeatureCategories } from "@/components/feature-categories";
 import { FeatureGrid } from "@/components/feature-grid";
 import { getProjectBySlug, PROJECTS } from "@/lib/projects";
+
+const FEATURE_STAT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  Core: Layers,
+  "AI-powered": Bot,
+  Security: ShieldCheck,
+};
 
 export function generateStaticParams() {
   return PROJECTS.map((project) => ({ slug: project.slug }));
@@ -31,7 +40,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const project = getProjectBySlug(params.slug);
   if (!project) return {};
   return {
-    title: `${project.name} — Double A Digital Solutions`,
+    title: `${project.name} — Double-A IT Solutions`,
     description: project.description,
   };
 }
@@ -58,7 +67,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 Back to work
               </Link>
 
-              <div className="mt-8 grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-start">
+              <div className="mt-8 grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-center">
                 <div>
                   {project.logo && (
                     <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl border border-border-sage bg-card p-2 shadow-sm">
@@ -108,15 +117,63 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         </ScrollReveal>
 
         {/* Features */}
-        <ScrollReveal>
-          <section className="bg-background py-14 lg:py-20">
-            <div className="container">
-              <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Features</p>
-              <h2 className="mt-3 font-display text-h2 text-foreground">What it does</h2>
-              <FeatureGrid features={project.features} highlightFeatures={project.highlightFeatures} />
+        <section className="bg-background py-14 lg:py-20">
+          <div className="container">
+            <div className="mb-20">
+              {project.featureCategories && (
+                <div className="mb-8 grid w-full grid-cols-1 divide-y divide-border-sage rounded-xl border border-border-sage bg-card sm:grid-cols-2 lg:grid-cols-5 lg:divide-x lg:divide-y-0">
+                  {[
+                    ...project.featureCategories.map((group) => ({
+                      key: group.category,
+                      icon: FEATURE_STAT_ICONS[group.category] ?? CheckCircle2,
+                      value: group.items.length,
+                      label: `${group.category} features`,
+                    })),
+                    {
+                      key: "advanced",
+                      icon: Zap,
+                      value: project.featureCategories.reduce(
+                        (sum, group) => sum + group.items.filter((item) => item.highlight).length,
+                        0,
+                      ),
+                      label: "Advanced features",
+                    },
+                    {
+                      key: "total",
+                      icon: Sparkles,
+                      value: project.featureCategories.reduce((sum, group) => sum + group.items.length, 0),
+                      label: "Total features",
+                    },
+                  ].map((stat) => (
+                    <div key={stat.key} className="flex flex-col items-center gap-2 px-6 py-6 text-center">
+                      <stat.icon className="h-6 w-6 text-primary" aria-hidden="true" />
+                      <AnimatedCounter value={stat.value} />
+                      <p className="font-mono text-xs uppercase tracking-[0.04em] text-slate-sage">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          </section>
-        </ScrollReveal>
+            <p className="mt-6 font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Features</p>
+            <h2 className="mt-3 font-display text-h2 text-foreground">Everything you need, already built in</h2>
+            {project.featureCategories ? (
+              <FeatureCategories categories={project.featureCategories} />
+            ) : (
+              <FeatureGrid features={project.features} highlightFeatures={project.highlightFeatures} />
+            )}
+          </div>
+        </section>
+
+        {/* AI spotlight — concrete "ask in plain language" example */}
+        {project.aiSpotlight && (
+          <ScrollReveal>
+            <section className="py-14 lg:py-20">
+              <div className="container">
+                <AiSpotlight spotlight={project.aiSpotlight} />
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
 
         {/* Benefits + target business */}
         <ScrollReveal>
@@ -170,6 +227,17 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </ScrollReveal>
         )}
 
+        {/* Try it — live demo access, see demo-access-card.tsx */}
+        {project.hasDemoAccess && (
+          <ScrollReveal>
+            <section id="try-it" className="scroll-mt-24 py-14 lg:py-20">
+              <div className="container">
+                <DemoAccessCard project={project} />
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
+
         {/* Client hub — real client locations, see client-locations-showcase.tsx */}
         {project.storeLocations && (
           <ScrollReveal>
@@ -182,17 +250,6 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 <div className="mt-10">
                   <ClientLocationsShowcase project={project} />
                 </div>
-              </div>
-            </section>
-          </ScrollReveal>
-        )}
-
-        {/* Try it — live demo access, see demo-access-card.tsx */}
-        {project.hasDemoAccess && (
-          <ScrollReveal>
-            <section id="try-it" className="scroll-mt-24 py-14 lg:py-20">
-              <div className="container">
-                <DemoAccessCard project={project} />
               </div>
             </section>
           </ScrollReveal>

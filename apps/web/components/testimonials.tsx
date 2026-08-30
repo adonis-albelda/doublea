@@ -1,35 +1,58 @@
 import { Quote } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@repo/ui/components/ui/avatar";
-import { Badge } from "@repo/ui/components/ui/badge";
 import { Card, CardContent } from "@repo/ui/components/ui/card";
 import { cn } from "@repo/ui/lib/utils";
 
-// PLACEHOLDER TESTIMONIALS — no real client quotes were supplied for this
-// build. Swap for actual client feedback (with permission) before launch.
-// Names/companies here match the placeholder projects in products.tsx.
+// Names supplied directly by the user (real people). Quotes are still
+// PLACEHOLDER text — no actual interview/quote was collected from any of
+// them, just written to reflect what our real current projects (POSPro,
+// CareConnect, CCPC Registration) realistically solve. Swap the quotes for
+// real, attributed feedback once we have it.
 const TESTIMONIALS = [
   {
     quote:
-      "Our booking calls dropped almost in half within the first month. It just works, and support answers the same day.",
-    name: "Priya Shah",
-    role: "Owner, Fernbank Orthodontics",
-    initials: "PS",
-    result: "-40% calls",
+      "Sales still come in even when the internet drops, and I can finally see what I'm actually making after expenses.",
+    name: "Jerson Barandino",
+    role: "Store owner, Calbayog City",
+    initials: "JB",
   },
   {
-    quote: "They shipped in six weeks what our last vendor quoted five months for.",
-    name: "Marcus Alden",
-    role: "Operations Lead, Loop Fulfillment",
-    initials: "MA",
-    result: "6 wks vs 5 mo",
+    quote: "Stock counts update on their own now. I used to spend hours counting by hand every night.",
+    name: "Emman Conquillo",
+    role: "Store owner, Calbayog City",
+    initials: "EC",
   },
   {
-    quote: "Checkout used to lose us customers. Now it doesn't. That's the whole review.",
-    name: "Elena Vasquez",
-    role: "Founder, Harbor & Vine",
-    initials: "EV",
-    result: "+22% orders",
+    quote: "Every register shows the same numbers instantly. No more end-of-day surprises.",
+    name: "JDSON Hcs",
+    role: "Store owner, Calbayog City",
+    initials: "JH",
+  },
+  {
+    quote:
+      "Families call us already knowing what we offer. The site does half the explaining before we even pick up the phone.",
+    name: "Renante Albelda",
+    role: "Home care agency owner",
+    initials: "RA",
+  },
+  {
+    quote: "It finally looks like the trustworthy agency we actually are. Inquiries come in ready to book.",
+    name: "Jerico Mancol",
+    role: "Client care coordinator",
+    initials: "JM",
+  },
+  {
+    quote: "Registration and payments used to be a headache to track by hand. Now it's just one dashboard.",
+    name: "Dale Pajarito",
+    role: "Tournament organizer, Calbayog City Pickleball Club",
+    initials: "DP",
+  },
+  {
+    quote: "Players pay through GCash and we see it update right away. Tournament day runs so much smoother.",
+    name: "Dabie So-Rabulan",
+    role: "Club officer, Calbayog City Pickleball Club",
+    initials: "DS",
   },
 ] as const;
 
@@ -37,15 +60,10 @@ function TestimonialCard({ t }: { t: (typeof TESTIMONIALS)[number] }) {
   return (
     <Card className="group flex w-full max-w-xs shrink-0 flex-col justify-between p-0">
       <CardContent className="p-6">
-        <div className="flex items-start justify-between gap-2">
-          <Quote
-            className="h-6 w-6 text-sage-300 transition-colors duration-300 group-hover:text-primary"
-            aria-hidden="true"
-          />
-          <Badge variant="status" className="shrink-0">
-            {t.result}
-          </Badge>
-        </div>
+        <Quote
+          className="h-6 w-6 text-sage-300 transition-colors duration-300 group-hover:text-primary"
+          aria-hidden="true"
+        />
         <p className="mt-4 text-body text-foreground">&ldquo;{t.quote}&rdquo;</p>
         <div className="mt-6 flex items-center gap-3">
           <Avatar className="transition-transform duration-300 group-hover:scale-105">
@@ -63,7 +81,7 @@ function TestimonialCard({ t }: { t: (typeof TESTIMONIALS)[number] }) {
 
 // Vertical marquee — track is duplicated once (translateY(-50%) in the
 // marquee-vertical keyframe, globals.css) so the loop is seamless. Every
-// column cycles the same 3 real testimonials at a different speed, since
+// column cycles the same 7 testimonials at a different speed, since
 // there isn't enough real client content yet to give each column a unique
 // set. Pauses on hover; prefers-reduced-motion freezes it via the global
 // rule in globals.css.

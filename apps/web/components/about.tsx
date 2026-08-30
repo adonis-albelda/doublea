@@ -4,7 +4,7 @@ import { Bot, GitBranch, MessageSquare, Rows3, Target } from "lucide-react";
 
 import { cn } from "@repo/ui/lib/utils";
 
-import { useReveal } from "@/hooks/use-reveal";
+import { useRevealEach } from "@/hooks/use-reveal";
 
 const WHY_US_POINTS = [
   {
@@ -35,7 +35,7 @@ const WHY_US_POINTS = [
 ] as const;
 
 export function About() {
-  const { ref, visible } = useReveal<HTMLUListElement>();
+  const { setRef, visible } = useRevealEach<HTMLLIElement>(WHY_US_POINTS.length);
 
   return (
     <section id="about" className="bg-background py-14 lg:py-20">
@@ -52,14 +52,14 @@ export function About() {
           </p>
         </div>
 
-        <ul ref={ref} className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {WHY_US_POINTS.map((point, i) => (
             <li
               key={point.title}
-              style={{ transitionDelay: visible ? `${i * 100}ms` : "0ms" }}
+              ref={setRef(i)}
               className={cn(
                 "flex flex-col gap-3 rounded-lg border border-border-sage bg-card p-5 transition-all duration-500 ease-out hover:border-primary/40",
-                visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+                visible[i] ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
               )}
             >
               <point.icon className="h-6 w-6 shrink-0 text-primary" aria-hidden="true" />

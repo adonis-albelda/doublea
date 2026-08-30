@@ -9,9 +9,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Double A Digital Solutions — Custom software, websites, web apps, automation",
+  title: "Double-A IT Solutions — Custom software, websites, web apps, automation",
   description:
-    "Double A Digital Solutions builds custom software, websites, web apps, and automations for founders and ops teams who need working product, not a pitch deck.",
+    "Double-A IT Solutions builds custom software, websites, web apps, and automations for founders and ops teams who need working product, not a pitch deck.",
   icons: {
     icon: "/favicon.ico",
   },

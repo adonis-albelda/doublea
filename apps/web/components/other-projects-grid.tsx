@@ -6,23 +6,23 @@ import { Badge } from "@repo/ui/components/ui/badge";
 import { cn } from "@repo/ui/lib/utils";
 
 import { ProjectLink } from "@/components/project-link";
-import { useReveal } from "@/hooks/use-reveal";
+import { useRevealEach } from "@/hooks/use-reveal";
 import type { Project } from "@/lib/projects";
 
 export function OtherProjectsGrid({ projects }: { projects: readonly Project[] }) {
-  const { ref, visible } = useReveal<HTMLDivElement>();
+  const { setRef, visible } = useRevealEach<HTMLAnchorElement>(projects.length);
 
   return (
-    <div ref={ref} className="mt-10 grid gap-6 sm:grid-cols-3">
+    <div className="mt-10 grid gap-6 sm:grid-cols-3">
       {projects.map((p, i) => (
         <ProjectLink
           key={p.slug}
           href={`/products/${p.slug}`}
           transitionColor={p.accentColor}
-          style={{ transitionDelay: visible ? `${i * 100}ms` : "0ms" }}
+          ref={setRef(i)}
           className={cn(
             "group rounded-xl border border-border-sage bg-card p-6 transition-all duration-500 ease-out hover:border-primary/40",
-            visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
+            visible[i] ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
           )}
         >
           <div className="flex items-start justify-between gap-2">

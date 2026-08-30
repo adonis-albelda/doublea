@@ -50,6 +50,23 @@ export interface Project {
     users: string;
     features: readonly string[];
   }[];
+  // Richer, grouped feature list (title + description per item, grouped
+  // under categories like "Core"/"AI-powered"/"Security"). When set, the
+  // detail page renders this instead of the flat `features` list — `features`
+  // stays populated too (flattened) for type-compat and as a fallback.
+  featureCategories?: readonly {
+    category: string;
+    description: string;
+    items: readonly { title: string; description: string; highlight?: boolean }[];
+  }[];
+  // Concrete "ask in plain language" example for an AI-search-style feature —
+  // shown as a mini chat mock (customer question -> what the system surfaces).
+  aiSpotlight?: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    example: { query: string; response: readonly string[] };
+  };
 }
 
 export const PROJECTS: readonly Project[] = [
@@ -58,39 +75,171 @@ export const PROJECTS: readonly Project[] = [
     name: "POSPro",
     logo: "/projects/products/propos/logo.webp",
     category: "personal",
-    tagline: "Monitor sales and inventory live — even offline, even away from the store.",
-    description: "Sales, inventory, and reports stay in sync across every terminal — even without internet. Check in on your store anytime, from anywhere.",
+    tagline:
+      "Run your store from anywhere, even without internet — see your real profit, and keep your account safe.",
+    description: "Sales, stock, and reports stay up to date on every register — even without internet. Check on your store anytime, from anywhere.",
     longDescription:
-      "POSPro keeps your register and stockroom connected in real time — sales, stock counts, receipts, and reports stay accurate across every terminal, whether you're on the floor, at home, or the internet drops. Check in anytime, from anywhere, and always know exactly where your store stands.",
+      "POSPro keeps your registers and stockroom connected — sales, stock counts, receipts, and reports all stay accurate, whether you're on the floor, at home, or the internet is down. Check in anytime, from anywhere, and always know exactly where your store stands.",
     status: "Live",
     timeline: "Built for store owners",
     features: [
-      "Real-time sales tracking across every terminal",
-      "Inventory that updates itself as stock moves",
-      "Cashier accounts, PIN unlock, and shift history",
-      "Bluetooth printer support for instant receipts",
-      "Custom receipt layout, footer, and branding",
-      "Voice search to find and add products hands-free",
-      "Barcode and QR code scanning and generation",
-      "Reports and margins, always up to date",
-      "Purchase orders and supplier payment terms",
-      "Customer accounts with delivery tracking",
-      "Expense logging and true net profit, not just gross",
-      "Runs the floor even when the internet doesn't",
+      "See sales from every register",
+      "Stock counts update themselves",
+      "Still works with no internet",
+      "Cashiers unlock with a PIN",
+      "Print receipts right away",
+      "Your shop's name on every receipt",
+      "Find products by talking",
+      "Scan and print barcodes",
+      "See your real profit",
+      "Order more stock the smart way",
+      "Track customers and deliveries",
+      "See your true take-home profit",
+      "Turn a photo into a product list",
+      "Set up your shop faster",
+      "You approve everything AI adds",
+      "AI help fits your plan",
+      "Extra login check for safety",
+      "Cashiers need a PIN to sell",
+      "Staff only see what they need",
+      "Your shop's data stays private",
     ],
     highlightFeatures: [
-      "Real-time sales tracking across every terminal",
-      "Barcode and QR code scanning and generation",
-      "Runs the floor even when the internet doesn't",
+      "See sales from every register",
+      "Still works with no internet",
+      "See your true take-home profit",
+      "Turn a photo into a product list",
+      "Extra login check for safety",
     ],
+    featureCategories: [
+      {
+        category: "Core",
+        description: "The everyday tools your store uses at the counter and in the stockroom.",
+        items: [
+          {
+            title: "See sales from every register",
+            description: "Watch sales come in from all your registers at once, as they happen.",
+            highlight: true,
+          },
+          {
+            title: "Stock counts update themselves",
+            description: "Every sale, restock, or transfer updates your stock count automatically. No more counting by hand.",
+          },
+          {
+            title: "Still works with no internet",
+            description: "Keep selling even when the internet is down. Everything syncs back up once you're online again.",
+            highlight: true,
+          },
+          {
+            title: "Cashiers unlock with a PIN",
+            description: "Each cashier gets their own PIN, so you always know who made each sale.",
+          },
+          {
+            title: "Print receipts right away",
+            description: "Print a receipt the moment a sale is done, with or without internet.",
+          },
+          {
+            title: "Your shop's name on every receipt",
+            description: "Add your logo and shop name so every receipt looks like it came from you.",
+          },
+          {
+            title: "Find products by talking",
+            description: "Say what you're looking for out loud and it gets added to the sale — no typing needed.",
+          },
+          {
+            title: "Scan and print barcodes",
+            description: "Scan a barcode to ring up a sale, or print new barcode labels for your shelves.",
+          },
+          {
+            title: "See your real profit",
+            description: "Always know how much you're making after costs and discounts — no guessing.",
+          },
+          {
+            title: "Order more stock the smart way",
+            description: "Keep track of orders to your suppliers, what you owe them, and when it's due.",
+          },
+          {
+            title: "Track customers and deliveries",
+            description: "Save your regular customers and keep an eye on which deliveries are still on the way.",
+          },
+          {
+            title: "See your true take-home profit",
+            description: "Log your expenses like rent and wages, so you see what you actually keep, not just total sales.",
+            highlight: true,
+          },
+        ],
+      },
+      {
+        category: "AI-powered",
+        description:
+          "A helping hand that saves you time — instead of typing in every product by hand, let it do the boring work for you.",
+        items: [
+          {
+            title: "Turn a photo into a product list",
+            description: "Take a photo of your products and it reads the names for you, ready to add to your shop.",
+            highlight: true,
+          },
+          {
+            title: "Set up your shop faster",
+            description: "Skip typing in hundreds of products one by one from your notebook or invoices.",
+          },
+          {
+            title: "You approve everything AI adds",
+            description: "Nothing gets added until you check it and say yes — you're always in control.",
+          },
+          {
+            title: "AI help fits your plan",
+            description: "A basic amount of AI help is free. Bigger shops can add more if they need it.",
+          },
+        ],
+      },
+      {
+        category: "Security",
+        description:
+          "Keeps your shop's information safe, and makes sure only the right people can see or change it.",
+        items: [
+          {
+            title: "Extra login check for safety",
+            description: "A second check on top of your password, using an app on your phone, so no one else can get in even if they know your password.",
+            highlight: true,
+          },
+          {
+            title: "Cashiers need a PIN to sell",
+            description: "No shared passwords on the counter — each cashier signs in with their own PIN.",
+          },
+          {
+            title: "Staff only see what they need",
+            description: "Owners, managers, and cashiers each see only the parts of the system that are meant for them.",
+          },
+          {
+            title: "Your shop's data stays private",
+            description: "Your shop's information is kept separate from every other shop using POSPro. No one else can see it.",
+          },
+        ],
+      },
+    ],
+    aiSpotlight: {
+      eyebrow: "AI-Powered POS",
+      title: "Just describe what you need — no need to know the exact product name",
+      description:
+        "Your customers won't always know the exact product name. Just type or say what they're looking for in plain words, and POSPro finds the closest matches for you.",
+      example: {
+        query: "Do you have paint for metal?",
+        response: [
+          "Rust-Oleum Metal Primer",
+          "Enamel Spray Paint — Metal & Wood",
+          "Anti-Rust Coating 1L",
+        ],
+      },
+    },
     benefits: [
-      "One system for every terminal — no more comparing registers at closing",
-      "Stock numbers you can trust, no manual recounts",
-      "Keeps selling through spotty internet, syncs once back online",
-      "See true net profit, not just what came through the register",
+      "One system for every register — no more comparing numbers by hand at closing",
+      "Stock counts you can trust, no need to recount by hand",
+      "Keeps selling even when the internet is spotty, catches up once it's back",
+      "See your real take-home profit, not just what came in at the register",
     ],
     targetBusiness:
-      "Retail store owners running one or more registers who need real inventory and sales numbers, not a guess at closing time.",
+      "Store owners with one or more registers who want to know their real stock and sales numbers, not a guess at closing time.",
     screenshots: [
       "/projects/products/propos/mobile/Screenshot_1787557053.webp",
       "/projects/products/propos/mobile/Screenshot_1787557068.webp",
@@ -125,41 +274,46 @@ export const PROJECTS: readonly Project[] = [
       {
         name: "Starter",
         price: "₱500",
-        priceNote: "/month",
-        users: "120+ stores",
+        priceNote: "every month",
+        users: "120+ stores use this",
         features: [
-          "1 register terminal",
-          "Real-time sales tracking",
-          "Basic inventory management",
-          "Bluetooth receipt printing",
-          "Email support",
+          "1 checkout counter",
+          "1 admin account",
+          "1 store branch",
+          "No AI features",
+          "See your sales as they happen",
+          "See what's in your stock",
+          "Print receipts with a Bluetooth printer",
+          "Help by email",
         ],
       },
       {
         name: "Business",
         price: "₱1,000",
-        priceNote: "/month",
-        users: "45+ stores",
+        priceNote: "every month",
+        users: "45+ stores use this",
         features: [
-          "Up to 5 register terminals",
+          "As many checkout counters as you need",
+          "3 admin accounts",
+          "2 store branches",
           "Everything in Starter",
-          "Barcode & QR scanning and generation",
-          "Purchase orders and supplier payments",
-          "Voice search",
-          "Priority chat support",
+          "Scan and print barcodes",
+          "Keep track of orders to your suppliers",
+          "Find products by talking to it (limited uses, resets every week)",
+          "Faster help through chat",
         ],
       },
       {
         name: "Enterprise",
         price: null,
-        priceNote: "Custom pricing",
-        users: "12+ stores",
+        priceNote: "Talk to us about the price",
+        users: "12+ stores use this",
         features: [
-          "Unlimited terminals",
+          "As many checkout counters as you need",
           "Everything in Business",
-          "Multi-location reporting",
-          "Custom receipt branding",
-          "Dedicated account manager",
+          "See reports for all your store locations",
+          "Your shop's name and logo on every receipt",
+          "A real person to help you, anytime",
         ],
       },
     ],

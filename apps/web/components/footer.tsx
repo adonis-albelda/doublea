@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { BadgeCheck, Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 
 import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 
@@ -24,8 +24,9 @@ const LEGAL_LINKS = [
   { href: "/terms", label: "Terms & Conditions" },
 ];
 
-const CONTACT_EMAIL = "doubleadigitalsolutions@gmail.com";
+const CONTACT_EMAIL = "doublea.itsolutions2026@gmail.com";
 const CONTACT_PHONE = "+63 926 445 0238";
+const DTI_REGISTRATION_NUMBER = "8454115";
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
   return (
@@ -41,30 +42,34 @@ export function Footer() {
           <Image src="/logo.png" alt="" width={28} height={28} className="mt-0.5 h-7 w-7 shrink-0" />
           <div>
             <p className="font-display text-sm font-medium text-foreground">
-              Double A Digital Solutions
+              Double-A IT Solutions
             </p>
             <p className="mt-1 text-xs text-slate-sage">
               Websites. Custom Software. Practical Digital Solutions.
             </p>
             <p className="mt-1 text-xs text-slate-sage">Built around your business. Designed for your goals.</p>
+            <p className="mt-3 flex items-center gap-1.5 text-xs font-medium text-foreground">
+              <BadgeCheck className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+              DTI Registered Business No. {DTI_REGISTRATION_NUMBER}
+            </p>
             <div className="mt-4 flex items-center gap-4">
               <Link
                 href={`mailto:${CONTACT_EMAIL}`}
-                aria-label="Email Double A Digital Solutions"
+                aria-label="Email Double-A IT Solutions"
                 className="text-slate-sage transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
               >
                 <Mail className="h-5 w-5" aria-hidden="true" />
               </Link>
               <Link
                 href="https://github.com"
-                aria-label="Double A Digital Solutions on GitHub"
+                aria-label="Double-A IT Solutions on GitHub"
                 className="text-slate-sage transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
               >
                 <Github className="h-5 w-5" aria-hidden="true" />
               </Link>
               <Link
                 href="https://linkedin.com"
-                aria-label="Double A Digital Solutions on LinkedIn"
+                aria-label="Double-A IT Solutions on LinkedIn"
                 className="text-slate-sage transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
               >
                 <Linkedin className="h-5 w-5" aria-hidden="true" />
@@ -140,7 +145,7 @@ export function Footer() {
 
       <div className="container mt-10 flex flex-col gap-3 border-t border-border-sage pt-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-slate-sage">
-          &copy; {new Date().getFullYear()} Double A Digital Solutions. All rights reserved.
+          &copy; {new Date().getFullYear()} Double-A IT Solutions. All rights reserved.
         </p>
         <div className="flex flex-wrap gap-x-4 gap-y-1">
           {LEGAL_LINKS.map((link) => (

@@ -5,7 +5,7 @@ import { Check, Code2, Globe, LayoutDashboard, Workflow } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
 import { cn } from "@repo/ui/lib/utils";
 
-import { useReveal } from "@/hooks/use-reveal";
+import { useRevealEach } from "@/hooks/use-reveal";
 
 const SERVICES = [
   {
@@ -64,7 +64,7 @@ const SERVICES = [
 ] as const;
 
 export function Services() {
-  const { ref, visible } = useReveal<HTMLDivElement>();
+  const { setRef, visible } = useRevealEach<HTMLDivElement>(SERVICES.length);
 
   return (
     <section id="services" className="bg-background py-14 lg:py-20">
@@ -76,14 +76,14 @@ export function Services() {
           <h2 className="mt-3 font-display text-h2 text-foreground">What we build</h2>
         </div>
 
-        <div ref={ref} className="mt-10 grid gap-6 sm:grid-cols-2">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2">
           {SERVICES.map((service, i) => (
             <Card
               key={service.title}
-              style={{ transitionDelay: visible ? `${i * 100}ms` : "0ms" }}
+              ref={setRef(i)}
               className={cn(
                 "group transition-all duration-500 ease-out",
-                visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+                visible[i] ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
               )}
             >
               <CardHeader>

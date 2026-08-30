@@ -95,7 +95,7 @@ export function Hero() {
         <div className="relative mx-auto aspect-square w-full max-w-md [perspective:1200px] lg:max-w-none">
           <Image
             src="/logo-3d.png"
-            alt="Double A Digital Solutions"
+            alt="Double-A IT Solutions"
             fill
             priority
             className="animate-[spin-y_9s_linear_infinite] object-contain [transform-style:preserve-3d]"

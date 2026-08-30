@@ -8,7 +8,7 @@ import { Badge } from "@repo/ui/components/ui/badge";
 import { Card, CardContent } from "@repo/ui/components/ui/card";
 import { cn } from "@repo/ui/lib/utils";
 
-import { useReveal } from "@/hooks/use-reveal";
+import { useRevealEach } from "@/hooks/use-reveal";
 
 // Social links are "#" placeholders — fill in real profile URLs.
 const TEAM = [
@@ -121,7 +121,7 @@ function SpeechBubble({
 }
 
 export function Team() {
-  const { ref, visible } = useReveal<HTMLDivElement>();
+  const { setRef, visible } = useRevealEach<HTMLDivElement>(TEAM.length);
 
   return (
     <section id="team" className="bg-page-wash py-14 lg:py-20">
@@ -136,17 +136,17 @@ export function Team() {
           </p>
         </div>
 
-        <div ref={ref} className="mt-10 grid gap-6 sm:grid-cols-3">
+        <div className="mt-10 grid gap-6 sm:grid-cols-3">
           {TEAM.map((member, i) => (
             <Card
               key={member.name}
-              style={{ transitionDelay: visible ? `${i * 100}ms` : "0ms" }}
+              ref={setRef(i)}
               className={cn(
                 "group relative p-0 transition-all duration-500 ease-out",
-                visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+                visible[i] ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
               )}
             >
-              <SpeechBubble messages={member.messages} active={visible} startDelayMs={i * 100 + 350} />
+              <SpeechBubble messages={member.messages} active={visible[i] ?? false} startDelayMs={350} />
 
               <Badge variant="status" className="absolute right-4 top-4">
                 {member.role}

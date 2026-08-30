@@ -79,6 +79,7 @@ export function BookDemoSection({ projectName, projectSlug }: { projectName: str
   const [scheduling, setScheduling] = React.useState(false);
   const [scheduleError, setScheduleError] = React.useState<string | null>(null);
   const [signingIn, setSigningIn] = React.useState(false);
+  const [slotsVisible, setSlotsVisible] = React.useState(false);
 
   const { isAuthenticated } = useConvexAuth();
   const { signIn } = useAuthActions();
@@ -132,6 +133,16 @@ export function BookDemoSection({ projectName, projectSlug }: { projectName: str
     setSelectedTime(null);
   }
 
+  // Not scroll-triggered (the list is already on-screen when a date is
+  // picked) — this stagger fires on the click itself, via a mount-flag flip
+  // one frame later so the "from" state actually paints first.
+  React.useEffect(() => {
+    if (!selectedDate) return;
+    setSlotsVisible(false);
+    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setSlotsVisible(true)));
+    return () => cancelAnimationFrame(raf);
+  }, [selectedDate]);
+
   function handleGoogleSignIn() {
     try {
       sessionStorage.setItem(PENDING_KEY, JSON.stringify({ date: selectedDate, time: selectedTime }));
@@ -182,7 +193,7 @@ export function BookDemoSection({ projectName, projectSlug }: { projectName: str
             <h3 className="mt-2 font-display text-h3 text-foreground">Pick a time</h3>
 
             <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {TIME_SLOTS.map((time) => {
+              {TIME_SLOTS.map((time, i) => {
                 const isBooked = bookedTimesForSelectedDate.has(time);
                 const isPast = !isBooked && isPastTimeSlot(selectedDate, time);
                 const isDisabled = isBooked || isPast;
@@ -197,8 +208,10 @@ export function BookDemoSection({ projectName, projectSlug }: { projectName: str
                     aria-label={
                       isBooked ? `${time}, already booked` : isPast ? `${time}, has already passed` : time
                     }
+                    style={{ transitionDelay: slotsVisible ? `${i * 40}ms` : "0ms" }}
                     className={cn(
-                      "flex items-center justify-center gap-1.5 rounded-lg border px-3 py-2.5 text-sm transition-colors",
+                      "flex items-center justify-center gap-1.5 rounded-lg border px-3 py-2.5 text-sm transition-all duration-300 ease-out",
+                      slotsVisible ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
                       isDisabled && "cursor-not-allowed border-border-sage text-slate-sage/40 line-through",
                       !isDisabled && !isSelected && "border-border-sage text-foreground hover:border-primary/40",
                       isSelected && "border-primary bg-primary font-semibold text-primary-foreground",

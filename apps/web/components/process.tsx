@@ -8,7 +8,7 @@ import {
 } from "@repo/ui/components/ui/accordion";
 import { cn } from "@repo/ui/lib/utils";
 
-import { useReveal } from "@/hooks/use-reveal";
+import { useRevealEach } from "@/hooks/use-reveal";
 
 const STEPS = [
   {
@@ -46,7 +46,7 @@ const STEPS = [
 ] as const;
 
 export function Process() {
-  const { ref, visible } = useReveal<HTMLOListElement>();
+  const { setRef, visible } = useRevealEach<HTMLLIElement>(STEPS.length);
 
   return (
     <section id="process" className="bg-page-wash py-14 lg:py-20">
@@ -59,14 +59,14 @@ export function Process() {
         </div>
 
         {/* Desktop: 3x2 grid — six steps, no natural single-row layout. */}
-        <ol ref={ref} className="mt-12 hidden gap-x-6 gap-y-10 lg:grid lg:grid-cols-3">
+        <ol className="mt-12 hidden gap-x-6 gap-y-10 lg:grid lg:grid-cols-3">
           {STEPS.map((item, i) => (
             <li
               key={item.step}
-              style={{ transitionDelay: visible ? `${i * 100}ms` : "0ms" }}
+              ref={setRef(i)}
               className={cn(
                 "group transition-all duration-500 ease-out",
-                visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+                visible[i] ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
               )}
             >
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-primary/40 bg-card font-mono text-caption text-primary transition-transform duration-300 group-hover:scale-110">
