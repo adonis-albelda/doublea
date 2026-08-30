@@ -1,8 +1,6 @@
-// PLACEHOLDER CASE STUDIES — no real client work or product screenshots
-// were supplied for this build. Swap for actual project details, real
-// screenshots, and real outcomes before launch. Single source of truth for
-// both the "What we've built" grid (components/products.tsx) and each
-// project's detail page (app/products/[slug]/page.tsx).
+// Single source of truth for both the "What we've built" grid
+// (components/products.tsx) and each project's detail page
+// (app/products/[slug]/page.tsx).
 export interface Project {
   slug: string;
   name: string;
@@ -59,14 +57,16 @@ export interface Project {
     description: string;
     items: readonly { title: string; description: string; highlight?: boolean }[];
   }[];
-  // Concrete "ask in plain language" example for an AI-search-style feature —
-  // shown as a mini chat mock (customer question -> what the system surfaces).
-  aiSpotlight?: {
+  // Concrete "ask in plain language" examples for AI-powered features — each
+  // shown as its own mini chat mock (what the user does -> what the system
+  // gives back). Rendered as a carousel when there's more than one.
+  aiSpotlight?: readonly {
     eyebrow: string;
     title: string;
     description: string;
     example: { query: string; response: readonly string[] };
-  };
+    note?: string;
+  }[];
 }
 
 export const PROJECTS: readonly Project[] = [
@@ -218,20 +218,52 @@ export const PROJECTS: readonly Project[] = [
         ],
       },
     ],
-    aiSpotlight: {
-      eyebrow: "AI-Powered POS",
-      title: "Just describe what you need — no need to know the exact product name",
-      description:
-        "Your customers won't always know the exact product name. Just type or say what they're looking for in plain words, and POSPro finds the closest matches for you.",
-      example: {
-        query: "Do you have paint for metal?",
-        response: [
-          "Rust-Oleum Metal Primer",
-          "Enamel Spray Paint — Metal & Wood",
-          "Anti-Rust Coating 1L",
-        ],
+    aiSpotlight: [
+      {
+        eyebrow: "AI-Powered POS",
+        title: "Just describe what you need — no need to know the exact product name",
+        description:
+          "Your customers won't always know the exact product name. Just type or say what they're looking for in plain words, and POSPro finds the closest matches for you.",
+        example: {
+          query: "Do you have paint for metal?",
+          response: [
+            "Rust-Oleum Metal Primer",
+            "Enamel Spray Paint — Metal & Wood",
+            "Anti-Rust Coating 1L",
+          ],
+        },
       },
-    },
+      {
+        eyebrow: "AI-Powered POS",
+        title: "Snap a photo of the supplier invoice, skip the manual typing",
+        description:
+          "When a new delivery comes in, take a photo of the supplier's invoice instead of typing every item by hand. AI reads it and pulls out the items and quantities for you to restock.",
+        example: {
+          query: "📷 Photo uploaded: supplier invoice",
+          response: [
+            "12x Rust-Oleum Metal Primer",
+            "6x Enamel Spray Paint — Metal & Wood",
+            "20x Anti-Rust Coating 1L",
+          ],
+        },
+        note: "Nothing updates your stock until you check it over and approve it.",
+      },
+      {
+        eyebrow: "AI-Powered POS",
+        title: "Import your product list, AI cleans up the messy parts",
+        description:
+          "Onboarding products from a spreadsheet? Upload your CSV file and AI fixes entries that don't match the format — wrong columns, missing units, inconsistent names — so you don't have to clean it up by hand.",
+        example: {
+          query: "📄 CSV uploaded: 214 products",
+          response: [
+            "\"red shirt,m\" → Red Shirt — Size M",
+            "\"12pcs\" → Quantity: 12",
+            "\"150\" → Price: ₱150.00",
+          ],
+        },
+        note: "You can review every fix before it's saved.",
+      },
+    ],
     benefits: [
       "One system for every register — no more comparing numbers by hand at closing",
       "Stock counts you can trust, no need to recount by hand",
@@ -412,122 +444,6 @@ export const PROJECTS: readonly Project[] = [
       "/projects/clients/pickleball-registration/tablet/pickleball-tablet-01.webp",
       "/projects/clients/pickleball-registration/tablet/pickleball-tablet-02.webp",
     ],
-  },
-  {
-    slug: "harbor-and-vine",
-    name: "Harbor & Vine",
-    category: "client",
-    tagline: "A checkout that doesn't lose the sale.",
-    description: "Grew online orders 22% after a full checkout rebuild.",
-    longDescription:
-      "The old checkout was slow and dropped mobile customers before payment. We rebuilt it on Shopify and Stripe as a one-page mobile-first flow.",
-    stack: ["Next.js", "Shopify", "Stripe"],
-    status: "Live",
-    timeline: "5-week build",
-    features: [
-      "Rebuilt checkout flow on Shopify and Stripe",
-      "One-page mobile checkout",
-      "Abandoned cart recovery emails",
-      "Real-time shipping rate calculation",
-    ],
-    benefits: ["+22% online orders after launch", "Lower cart abandonment", "Faster page loads on mobile"],
-    targetBusiness: "Ecommerce brands losing sales at an outdated or slow checkout.",
-  },
-  {
-    slug: "northline-logistics",
-    name: "Northline Logistics",
-    category: "client",
-    tagline: "Invoices that match themselves.",
-    description: "Automated invoice matching, saving the finance team six hours a week.",
-    longDescription:
-      "The finance team manually matched every invoice against its purchase order. We automated the matching and routed mismatches straight to Slack.",
-    stack: ["n8n", "QuickBooks API", "Slack"],
-    status: "Live",
-    timeline: "3-week build",
-    features: [
-      "Automated invoice-to-PO matching",
-      "Slack alerts on mismatches",
-      "Direct QuickBooks sync",
-      "Weekly reconciliation summary",
-    ],
-    benefits: [
-      "Saves the finance team about six hours a week",
-      "Fewer manual entry errors",
-      "Mismatches caught same-day, not at month-end",
-    ],
-    targetBusiness: "Logistics or finance teams manually matching invoices against purchase orders.",
-  },
-  {
-    slug: "kestrel-coworking",
-    name: "Kestrel Coworking",
-    category: "client",
-    tagline: "Book a room, skip the front-desk email.",
-    description: "Members book rooms and manage billing without emailing the front desk.",
-    longDescription:
-      "Members were emailing the front desk to book rooms and get billed. We're building a self-serve booking calendar with automated Stripe billing to replace that.",
-    stack: ["React", "Stripe", "PostgreSQL"],
-    status: "In build",
-    timeline: "8-week build",
-    features: [
-      "Self-serve room booking calendar",
-      "Automated member billing via Stripe",
-      "Usage-based invoicing",
-      "Member portal for booking history",
-    ],
-    benefits: [
-      "Removes the front-desk booking bottleneck",
-      "Predictable automated billing",
-      "Members self-manage their own bookings",
-    ],
-    targetBusiness: "Coworking spaces still booking rooms and billing members by email.",
-  },
-  {
-    slug: "ledgerline",
-    name: "Ledgerline",
-    category: "personal",
-    tagline: "Invoicing automation, now a product.",
-    description: "Started as our own invoicing automation, now a lightweight billing tool for small teams.",
-    longDescription:
-      "We built Ledgerline to solve our own invoicing pain point — chasing payments by hand — then turned it into a lightweight billing tool other small teams can use.",
-    stack: ["Next.js", "Stripe", "PostgreSQL"],
-    status: "Live",
-    timeline: "Built in-house, 2023",
-    features: [
-      "Recurring and one-off invoicing",
-      "Stripe-powered payment collection",
-      "Client payment status dashboard",
-      "Automated payment reminders",
-    ],
-    benefits: [
-      "Started as our own invoicing pain point, now battle-tested",
-      "Cuts time spent chasing payments",
-      "One dashboard for every client invoice",
-    ],
-    targetBusiness: "Small teams and freelancers billing multiple clients who need to stop chasing payments by hand.",
-  },
-  {
-    slug: "fieldnote",
-    name: "Fieldnote",
-    category: "personal",
-    tagline: "Every call note and Slack thread, one search bar.",
-    description: "Turns scattered call notes and Slack threads into one searchable project log.",
-    longDescription:
-      "Project history was scattered across calls, Slack threads, and memory. Fieldnote pulls it into one searchable log so nobody has to dig for context.",
-    stack: ["Next.js", "tRPC", "PostgreSQL"],
-    status: "In build",
-    timeline: "Built in-house, 2025",
-    features: [
-      "Central searchable project log",
-      "Ingests notes from calls and Slack threads",
-      "Tagging by client or project",
-      "Full-text search across everything",
-    ],
-    benefits: [
-      "No more digging through Slack history",
-      "One place new team members can catch up from",
-      "Fewer repeated questions on project status",
-    ],
-    targetBusiness: "Small teams whose project history is scattered across calls, Slack, and someone's memory.",
   },
 ] as const;
 

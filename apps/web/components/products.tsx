@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, Clock } from "lucide-react";
+import { ArrowUpRight, Clock, Sparkles } from "lucide-react";
 
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
@@ -16,6 +16,45 @@ import { PROJECTS, type Project } from "@/lib/projects";
 
 const CLIENT_WORK = PROJECTS.filter((p) => p.category === "client");
 const PERSONAL_PRODUCTS = PROJECTS.filter((p) => p.category === "personal");
+
+// Not real projects — no slug, no build, nothing to link to. Just a signal
+// that we're actively building more for the community. Swap for a real
+// project card once one of these actually ships.
+const COMING_SOON = [
+  {
+    name: "Something new",
+    tagline: "We're building another tool for the community. Details soon.",
+  },
+  {
+    name: "Still cooking",
+    tagline: "Another idea in the works, made for the people who need it most.",
+  },
+] as const;
+
+function ComingSoonCard({ name, tagline }: { name: string; tagline: string }) {
+  return (
+    <div className="relative">
+      <Card className="flex flex-col overflow-hidden border-dashed p-0">
+        <div
+          className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-sage-100"
+          aria-hidden="true"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-sage-300/40 via-sage-100 to-paper" />
+          <Sparkles className="relative h-8 w-8 text-sage-700/50" aria-hidden="true" />
+        </div>
+        <CardContent className="p-6">
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="font-display text-h3 text-muted-foreground">{name}</h3>
+            <Badge variant="status" className="shrink-0">
+              Coming soon
+            </Badge>
+          </div>
+          <p className="mt-2 text-sm text-slate-sage">{tagline}</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
 function ProjectGrid({ projects }: { projects: readonly Project[] }) {
   const { setRef, visible } = useRevealEach<HTMLDivElement>(projects.length);
@@ -126,6 +165,11 @@ export function Products() {
           </TabsList>
           <TabsContent value="personal">
             <ProjectGrid projects={PERSONAL_PRODUCTS} />
+            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {COMING_SOON.map((item) => (
+                <ComingSoonCard key={item.name} name={item.name} tagline={item.tagline} />
+              ))}
+            </div>
           </TabsContent>
           <TabsContent value="client">
             <ProjectGrid projects={CLIENT_WORK} />

@@ -169,7 +169,19 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           <ScrollReveal>
             <section className="py-14 lg:py-20">
               <div className="container">
-                <AiSpotlight spotlight={project.aiSpotlight} />
+                <div className="max-w-2xl">
+                  <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">
+                    AI, put to work
+                  </p>
+                  <h2 className="mt-3 font-display text-h2 text-foreground">See it in action</h2>
+                  <p className="mt-3 text-body text-muted-foreground">
+                    A few real ways the AI in {project.name} saves you from typing, searching, and cleaning up
+                    data by hand.
+                  </p>
+                </div>
+                <div className="mt-10">
+                  <AiSpotlight spotlight={project.aiSpotlight} />
+                </div>
               </div>
             </section>
           </ScrollReveal>
