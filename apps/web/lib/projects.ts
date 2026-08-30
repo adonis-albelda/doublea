@@ -309,7 +309,7 @@ export const PROJECTS: readonly Project[] = [
         priceNote: "every month",
         users: "120+ stores use this",
         features: [
-          "1 checkout counter",
+          "1 terminal account",
           "1 admin account",
           "1 store branch",
           "No AI features",
@@ -325,7 +325,7 @@ export const PROJECTS: readonly Project[] = [
         priceNote: "every month",
         users: "45+ stores use this",
         features: [
-          "As many checkout counters as you need",
+          "As many terminal accounts as you need",
           "3 admin accounts",
           "2 store branches",
           "Everything in Starter",
@@ -341,7 +341,7 @@ export const PROJECTS: readonly Project[] = [
         priceNote: "Talk to us about the price",
         users: "12+ stores use this",
         features: [
-          "As many checkout counters as you need",
+          "As many terminal accounts as you need",
           "Everything in Business",
           "See reports for all your store locations",
           "Your shop's name and logo on every receipt",

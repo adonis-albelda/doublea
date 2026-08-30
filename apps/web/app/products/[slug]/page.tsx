@@ -22,6 +22,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { TypewriterText } from "@/components/typewriter-text";
 import { ClientLocationsShowcase } from "@/components/client-locations-showcase";
 import { DemoAccessCard } from "@/components/demo-access-card";
+import { TicketForm } from "@/components/ticket-form";
 import { FeatureCategories } from "@/components/feature-categories";
 import { FeatureGrid } from "@/components/feature-grid";
 import { getProjectBySlug, PROJECTS } from "@/lib/projects";
@@ -245,6 +246,27 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <section id="try-it" className="scroll-mt-24 py-14 lg:py-20">
               <div className="container">
                 <DemoAccessCard project={project} />
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
+
+        {/* Submit a ticket — bug/suggestion/question, see ticket-form.tsx */}
+        {project.hasDemoAccess && (
+          <ScrollReveal>
+            <section id="submit-ticket" className="scroll-mt-24 bg-background py-14 lg:py-20">
+              <div className="container grid gap-10 lg:grid-cols-2 lg:gap-16">
+                <div>
+                  <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Support</p>
+                  <h2 className="mt-3 font-display text-h2 text-foreground">Found a bug? Have an idea?</h2>
+                  <p className="mt-3 text-body text-muted-foreground">
+                    Tell us what happened, and we&apos;ll take a look. Sign in with Google first so we know who to
+                    follow up with.
+                  </p>
+                </div>
+                <div>
+                  <TicketForm projectName={project.name} projectSlug={project.slug} />
+                </div>
               </div>
             </section>
           </ScrollReveal>

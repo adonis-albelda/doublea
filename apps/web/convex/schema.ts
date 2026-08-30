@@ -17,4 +17,14 @@ export default defineSchema({
     time: v.string(),
     userId: v.id("users"),
   }).index("by_project", ["projectSlug"]),
+  tickets: defineTable({
+    projectSlug: v.string(),
+    type: v.union(v.literal("bug"), v.literal("suggestion"), v.literal("question")),
+    title: v.string(),
+    description: v.string(),
+    name: v.string(),
+    storeName: v.optional(v.string()),
+    userId: v.id("users"),
+    createdAt: v.number(),
+  }).index("by_project", ["projectSlug"]),
 });
