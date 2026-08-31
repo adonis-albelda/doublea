@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Check, Users } from "lucide-react";
+import { Check } from "lucide-react";
 
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
@@ -57,11 +57,6 @@ export function PricingSection({ project }: { project: Project }) {
             {isContactTier && plan.priceNote && (
               <p className="mt-1 text-sm text-muted-foreground">{plan.priceNote}</p>
             )}
-
-            <p className="mt-4 flex items-center gap-1.5 text-sm text-slate-sage">
-              <Users className="h-3.5 w-3.5" aria-hidden="true" />
-              {plan.users}
-            </p>
 
             <ul className="mt-6 flex flex-1 flex-col gap-2.5">
               {plan.features.map((feature) => (
