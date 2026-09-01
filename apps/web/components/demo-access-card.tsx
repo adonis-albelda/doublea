@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
 import { useAction, useConvexAuth, useQuery } from "convex/react";
-import { Check, Copy, Download, Eye, EyeOff, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
+import { Check, Copy, Download, Eye, EyeOff, Hash, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
 import { cn } from "@repo/ui/lib/utils";
@@ -110,14 +110,16 @@ function accessCodeStorageKey(slug: string) {
   return `demo-access-code:${slug}`;
 }
 
-// Fetches the signed-in user's real demo login (email + password) from the
-// Tally superadmin API (convex/demoAccess.ts `fetchAccessCode`) once, then
-// caches it in localStorage so it survives reloads without hitting the API
-// again. This is the actual demo login now — no more fixed account.
+// Fetches the signed-in user's real demo login (email + password + PIN
+// code) from the Tally superadmin API (convex/demoAccess.ts
+// `fetchAccessCode`) once, then caches it in localStorage so it survives
+// reloads without hitting the API again. This is the actual demo login now
+// — no more fixed account.
 function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
   const fetchAccessCode = useAction(api.demoAccess.fetchAccessCode);
   const [demoEmail, setDemoEmail] = React.useState<string | null>(null);
   const [password, setPassword] = React.useState<string | null>(null);
+  const [code, setCode] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -128,10 +130,11 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
     try {
       const cached = localStorage.getItem(storageKey);
       if (cached) {
-        const parsed = JSON.parse(cached) as { demoEmail: string; password: string };
-        if (parsed.demoEmail && parsed.password) {
+        const parsed = JSON.parse(cached) as { demoEmail: string; password: string; code: string };
+        if (parsed.demoEmail && parsed.password && parsed.code) {
           setDemoEmail(parsed.demoEmail);
           setPassword(parsed.password);
+          setCode(parsed.code);
           return;
         }
       }
@@ -148,10 +151,11 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
         if (cancelled) return;
         setDemoEmail(result.demoEmail);
         setPassword(result.password);
+        setCode(result.code);
         try {
           localStorage.setItem(
             storageKey,
-            JSON.stringify({ demoEmail: result.demoEmail, password: result.password }),
+            JSON.stringify({ demoEmail: result.demoEmail, password: result.password, code: result.code }),
           );
         } catch {
           // Non-fatal — credentials still show for this session.
@@ -170,7 +174,7 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
     };
   }, [slug, isAuthenticated, fetchAccessCode]);
 
-  return { demoEmail, password, loading, error };
+  return { demoEmail, password, code, loading, error };
 }
 
 // Real demo access for the project's live app — admin dashboard login, APK
@@ -290,13 +294,14 @@ export function DemoAccessCard({ project }: { project: Project }) {
                 <CopyField icon={LayoutDashboard} label="Admin dashboard" value={demo.adminUrl} href={demo.adminUrl} />
               </div>
 
-              {/* Real per-user login — email + password straight from the
-                  Tally API (convex/demoAccess.ts), not the fixed table row. */}
-              {accessCode.demoEmail && accessCode.password ? (
+              {/* Real per-user login — email + password + PIN code straight
+                  from the Tally API (convex/demoAccess.ts), not the fixed
+                  table row. */}
+              {accessCode.demoEmail && accessCode.password && accessCode.code ? (
                 <>
                   <div
                     className={cn(
-                      "transition-all duration-500 ease-out",
+                      "sm:col-span-2 transition-all duration-500 ease-out",
                       fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
                     )}
                     style={{ transitionDelay: fieldsVisible ? "80ms" : "0ms" }}
@@ -312,9 +317,19 @@ export function DemoAccessCard({ project }: { project: Project }) {
                   >
                     <CopyField icon={KeyRound} label="Password" value={accessCode.password} maskable />
                   </div>
+                  <div
+                    className={cn(
+                      "transition-all duration-500 ease-out",
+                      fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                    )}
+                    style={{ transitionDelay: fieldsVisible ? "240ms" : "0ms" }}
+                  >
+                    <CopyField icon={Hash} label="PIN code" value={accessCode.code} maskable />
+                  </div>
                 </>
               ) : accessCode.loading ? (
                 <>
+                  <FieldSkeleton />
                   <FieldSkeleton />
                   <FieldSkeleton />
                 </>
