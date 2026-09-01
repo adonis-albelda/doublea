@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
 import { useAction, useConvexAuth, useQuery } from "convex/react";
-import { Check, Copy, Download, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
+import { Check, Copy, Download, Eye, EyeOff, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
 import { cn } from "@repo/ui/lib/utils";
@@ -53,12 +53,18 @@ function CopyField({
   label,
   value,
   href,
+  maskable,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   value: string;
   href?: string;
+  /** Shows dots instead of the value until toggled — for the password field. */
+  maskable?: boolean;
 }) {
+  const [revealed, setRevealed] = React.useState(!maskable);
+  const displayValue = maskable && !revealed ? "•".repeat(Math.min(value.length, 12)) : value;
+
   return (
     <div className="flex items-center justify-between gap-3 rounded-lg border border-border-sage bg-background px-4 py-3">
       <div className="flex min-w-0 items-center gap-3">
@@ -75,11 +81,23 @@ function CopyField({
               {value}
             </Link>
           ) : (
-            <p className="truncate text-sm text-foreground">{value}</p>
+            <p className="truncate text-sm text-foreground">{displayValue}</p>
           )}
         </div>
       </div>
-      <CopyIconButton value={value} label={label} />
+      <div className="flex shrink-0 items-center gap-1.5">
+        {maskable && (
+          <button
+            type="button"
+            onClick={() => setRevealed((r) => !r)}
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-border-sage text-slate-sage transition-colors hover:border-primary/40 hover:text-primary"
+            aria-label={revealed ? `Hide ${label}` : `Show ${label}`}
+          >
+            {revealed ? <EyeOff className="h-4 w-4" aria-hidden="true" /> : <Eye className="h-4 w-4" aria-hidden="true" />}
+          </button>
+        )}
+        <CopyIconButton value={value} label={label} />
+      </div>
     </div>
   );
 }
@@ -301,7 +319,7 @@ export function DemoAccessCard({ project }: { project: Project }) {
                   )}
                   style={{ transitionDelay: fieldsVisible ? "160ms" : "0ms" }}
                 >
-                  <CopyField icon={KeyRound} label="Password" value={demo.password} />
+                  <CopyField icon={KeyRound} label="Password" value={demo.password} maskable />
                 </div>
               )}
             </div>
