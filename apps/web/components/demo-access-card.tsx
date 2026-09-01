@@ -273,44 +273,37 @@ export function DemoAccessCard({ project }: { project: Project }) {
                 <CopyField icon={LayoutDashboard} label="Admin dashboard" value={demo.adminUrl} href={demo.adminUrl} />
               </div>
 
-              {/* Real per-user login — email + access code straight from the
-                  Tally API (convex/demoAccess.ts), not a fixed shared account. */}
-              {accessCode.code && accessCode.demoEmail ? (
-                <>
-                  <div
-                    className={cn(
-                      "transition-all duration-500 ease-out",
-                      fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-                    )}
-                    style={{ transitionDelay: fieldsVisible ? "80ms" : "0ms" }}
-                  >
-                    <CopyField icon={Mail} label="Email" value={accessCode.demoEmail} />
-                  </div>
-                  <div
-                    className={cn(
-                      "transition-all duration-500 ease-out",
-                      fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-                    )}
-                    style={{ transitionDelay: fieldsVisible ? "160ms" : "0ms" }}
-                  >
-                    <CopyField icon={KeyRound} label="Password" value={accessCode.code} />
-                    {accessCode.validForDate && (
-                      <p className="mt-1.5 px-1 text-xs text-muted-foreground">
-                        Valid for {accessCode.validForDate}
-                      </p>
-                    )}
-                  </div>
-                </>
-              ) : accessCode.loading ? (
-                <>
-                  <FieldSkeleton />
-                  <FieldSkeleton />
-                </>
-              ) : accessCode.error ? (
-                <div className="sm:col-span-2">
-                  <p className="text-sm text-destructive">{accessCode.error}</p>
+              {/* Email is the real per-user demo email from the Tally API
+                  (convex/demoAccess.ts) — password is the fixed demo
+                  account's real password, not the API's access code
+                  (unused for login now, no longer shown). */}
+              {accessCode.demoEmail ? (
+                <div
+                  className={cn(
+                    "transition-all duration-500 ease-out",
+                    fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                  )}
+                  style={{ transitionDelay: fieldsVisible ? "80ms" : "0ms" }}
+                >
+                  <CopyField icon={Mail} label="Email" value={accessCode.demoEmail} />
                 </div>
+              ) : accessCode.loading ? (
+                <FieldSkeleton />
+              ) : accessCode.error ? (
+                <p className="text-sm text-destructive">{accessCode.error}</p>
               ) : null}
+
+              {demo.password && (
+                <div
+                  className={cn(
+                    "transition-all duration-500 ease-out",
+                    fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                  )}
+                  style={{ transitionDelay: fieldsVisible ? "160ms" : "0ms" }}
+                >
+                  <CopyField icon={KeyRound} label="Password" value={demo.password} />
+                </div>
+              )}
             </div>
           </>
         )}
