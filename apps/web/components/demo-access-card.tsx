@@ -119,7 +119,7 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
   const fetchAccessCode = useAction(api.demoAccess.fetchAccessCode);
   const [demoEmail, setDemoEmail] = React.useState<string | null>(null);
   const [password, setPassword] = React.useState<string | null>(null);
-  const [code, setCode] = React.useState<string | null>(null);
+  const [cashierPin, setCashierPin] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -130,11 +130,11 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
     try {
       const cached = localStorage.getItem(storageKey);
       if (cached) {
-        const parsed = JSON.parse(cached) as { demoEmail: string; password: string; code: string };
-        if (parsed.demoEmail && parsed.password && parsed.code) {
+        const parsed = JSON.parse(cached) as { demoEmail: string; password: string; cashierPin: string };
+        if (parsed.demoEmail && parsed.password && parsed.cashierPin) {
           setDemoEmail(parsed.demoEmail);
           setPassword(parsed.password);
-          setCode(parsed.code);
+          setCashierPin(parsed.cashierPin);
           return;
         }
       }
@@ -151,11 +151,15 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
         if (cancelled) return;
         setDemoEmail(result.demoEmail);
         setPassword(result.password);
-        setCode(result.code);
+        setCashierPin(result.cashierPin);
         try {
           localStorage.setItem(
             storageKey,
-            JSON.stringify({ demoEmail: result.demoEmail, password: result.password, code: result.code }),
+            JSON.stringify({
+              demoEmail: result.demoEmail,
+              password: result.password,
+              cashierPin: result.cashierPin,
+            }),
           );
         } catch {
           // Non-fatal — credentials still show for this session.
@@ -174,7 +178,7 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
     };
   }, [slug, isAuthenticated, fetchAccessCode]);
 
-  return { demoEmail, password, code, loading, error };
+  return { demoEmail, password, cashierPin, loading, error };
 }
 
 // Real demo access for the project's live app — admin dashboard login, APK
@@ -297,7 +301,7 @@ export function DemoAccessCard({ project }: { project: Project }) {
               {/* Real per-user login — email + password + PIN code straight
                   from the Tally API (convex/demoAccess.ts), not the fixed
                   table row. */}
-              {accessCode.demoEmail && accessCode.password && accessCode.code ? (
+              {accessCode.demoEmail && accessCode.password && accessCode.cashierPin ? (
                 <>
                   <div
                     className={cn(
@@ -324,7 +328,7 @@ export function DemoAccessCard({ project }: { project: Project }) {
                     )}
                     style={{ transitionDelay: fieldsVisible ? "240ms" : "0ms" }}
                   >
-                    <CopyField icon={Hash} label="PIN code" value={accessCode.code} maskable />
+                    <CopyField icon={Hash} label="PIN code" value={accessCode.cashierPin} maskable />
                   </div>
                 </>
               ) : accessCode.loading ? (
