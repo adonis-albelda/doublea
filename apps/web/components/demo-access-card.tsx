@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
 import { useAction, useConvexAuth, useQuery } from "convex/react";
-import { Check, Copy, Download, Hash, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
+import { Check, Copy, Download, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
 import { cn } from "@repo/ui/lib/utils";
@@ -92,12 +92,15 @@ function accessCodeStorageKey(slug: string) {
   return `demo-access-code:${slug}`;
 }
 
-// Fetches the signed-in user's demo access code from the Tally superadmin
-// API (convex/demoAccess.ts `fetchAccessCode`) once, then caches it in
-// localStorage so it survives reloads without hitting the API again.
+// Fetches the signed-in user's real demo login (email + access code, used
+// as the password) from the Tally superadmin API (convex/demoAccess.ts
+// `fetchAccessCode`) once, then caches it in localStorage so it survives
+// reloads without hitting the API again. This is the actual demo login now
+// — no more fixed account.
 function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
   const fetchAccessCode = useAction(api.demoAccess.fetchAccessCode);
   const [code, setCode] = React.useState<string | null>(null);
+  const [demoEmail, setDemoEmail] = React.useState<string | null>(null);
   const [validForDate, setValidForDate] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -109,10 +112,13 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
     try {
       const cached = localStorage.getItem(storageKey);
       if (cached) {
-        const parsed = JSON.parse(cached) as { code: string; validForDate: string | null };
-        setCode(parsed.code);
-        setValidForDate(parsed.validForDate);
-        return;
+        const parsed = JSON.parse(cached) as { code: string; demoEmail: string; validForDate: string | null };
+        if (parsed.code && parsed.demoEmail) {
+          setCode(parsed.code);
+          setDemoEmail(parsed.demoEmail);
+          setValidForDate(parsed.validForDate);
+          return;
+        }
       }
     } catch {
       // Storage can fail (private mode, quota) or hold a stale/invalid
@@ -126,6 +132,7 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
       .then((result) => {
         if (cancelled) return;
         setCode(result.code);
+        setDemoEmail(result.demoEmail);
         setValidForDate(result.validForDate);
         try {
           localStorage.setItem(storageKey, JSON.stringify(result));
@@ -146,7 +153,7 @@ function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
     };
   }, [slug, isAuthenticated, fetchAccessCode]);
 
-  return { code, validForDate, loading, error };
+  return { code, demoEmail, validForDate, loading, error };
 }
 
 // Real demo access for the project's live app — admin dashboard login, APK
@@ -265,46 +272,45 @@ export function DemoAccessCard({ project }: { project: Project }) {
               >
                 <CopyField icon={LayoutDashboard} label="Admin dashboard" value={demo.adminUrl} href={demo.adminUrl} />
               </div>
-              <div
-                className={cn(
-                  "transition-all duration-500 ease-out",
-                  fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-                )}
-                style={{ transitionDelay: fieldsVisible ? "80ms" : "0ms" }}
-              >
-                <CopyField icon={Mail} label="Email" value={demo.email} />
-              </div>
-              <div
-                className={cn(
-                  "transition-all duration-500 ease-out",
-                  fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-                )}
-                style={{ transitionDelay: fieldsVisible ? "160ms" : "0ms" }}
-              >
-                <CopyField icon={KeyRound} label="Password" value={demo.password} />
-              </div>
-              <div
-                className={cn(
-                  "sm:col-span-2 transition-all duration-500 ease-out",
-                  fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-                )}
-                style={{ transitionDelay: fieldsVisible ? "240ms" : "0ms" }}
-              >
-                {accessCode.code ? (
-                  <>
-                    <CopyField icon={Hash} label="Access code" value={accessCode.code} />
+
+              {/* Real per-user login — email + access code straight from the
+                  Tally API (convex/demoAccess.ts), not a fixed shared account. */}
+              {accessCode.code && accessCode.demoEmail ? (
+                <>
+                  <div
+                    className={cn(
+                      "transition-all duration-500 ease-out",
+                      fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                    )}
+                    style={{ transitionDelay: fieldsVisible ? "80ms" : "0ms" }}
+                  >
+                    <CopyField icon={Mail} label="Email" value={accessCode.demoEmail} />
+                  </div>
+                  <div
+                    className={cn(
+                      "transition-all duration-500 ease-out",
+                      fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                    )}
+                    style={{ transitionDelay: fieldsVisible ? "160ms" : "0ms" }}
+                  >
+                    <CopyField icon={KeyRound} label="Password" value={accessCode.code} />
                     {accessCode.validForDate && (
                       <p className="mt-1.5 px-1 text-xs text-muted-foreground">
                         Valid for {accessCode.validForDate}
                       </p>
                     )}
-                  </>
-                ) : accessCode.loading ? (
+                  </div>
+                </>
+              ) : accessCode.loading ? (
+                <>
                   <FieldSkeleton />
-                ) : accessCode.error ? (
+                  <FieldSkeleton />
+                </>
+              ) : accessCode.error ? (
+                <div className="sm:col-span-2">
                   <p className="text-sm text-destructive">{accessCode.error}</p>
-                ) : null}
-              </div>
+                </div>
+              ) : null}
             </div>
           </>
         )}

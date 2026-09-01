@@ -28,8 +28,8 @@ export const seed = internalMutation({
     slug: v.string(),
     adminUrl: v.string(),
     apkUrl: v.string(),
-    email: v.string(),
-    password: v.string(),
+    email: v.optional(v.string()),
+    password: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const existing = await ctx.db
@@ -44,12 +44,14 @@ export const seed = internalMutation({
   },
 });
 
-// Fetches a per-user demo access code from the Tally superadmin API — the
-// URL and API key are Convex env vars (server-side only, never in client
-// code). Requires sign-in since the call is keyed off the caller's email.
+// Fetches a per-user demo login (email + access code, used as the password)
+// from the Tally superadmin API — the URL and API key are Convex env vars
+// (server-side only, never in client code). Requires sign-in since the call
+// is keyed off the caller's email. This is the real demo login now, not the
+// old fixed account in the `demoAccess` table.
 export const fetchAccessCode = action({
   args: {},
-  handler: async (ctx): Promise<{ code: string; validForDate: string | null }> => {
+  handler: async (ctx): Promise<{ code: string; demoEmail: string; validForDate: string | null }> => {
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Sign in required to fetch an access code.");
 
@@ -73,10 +75,12 @@ export const fetchAccessCode = action({
       throw new Error(`Access code request failed (${response.status}).`);
     }
 
-    const body: { data?: { code?: string; valid_for_date?: string } } = await response.json();
+    const body: { data?: { code?: string; demo_email?: string; valid_for_date?: string } } = await response.json();
     const code = body.data?.code;
+    const demoEmail = body.data?.demo_email;
     if (!code) throw new Error("Access code response was missing `data.code`.");
+    if (!demoEmail) throw new Error("Access code response was missing `data.demo_email`.");
 
-    return { code, validForDate: body.data?.valid_for_date ?? null };
+    return { code, demoEmail, validForDate: body.data?.valid_for_date ?? null };
   },
 });

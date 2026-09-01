@@ -8,8 +8,11 @@ export default defineSchema({
     slug: v.string(),
     adminUrl: v.string(),
     apkUrl: v.string(),
-    email: v.string(),
-    password: v.string(),
+    // Kept optional for backward-compat with the already-seeded row — no
+    // longer used for login. The demo email + password shown to users now
+    // come live from the Tally access-code API (fetchAccessCode below).
+    email: v.optional(v.string()),
+    password: v.optional(v.string()),
   }).index("by_slug", ["slug"]),
   appointments: defineTable({
     projectSlug: v.string(),
