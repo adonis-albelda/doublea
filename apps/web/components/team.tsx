@@ -8,8 +8,6 @@ import { Badge } from "@repo/ui/components/ui/badge";
 import { Card, CardContent } from "@repo/ui/components/ui/card";
 import { cn } from "@repo/ui/lib/utils";
 
-import { useRevealEach } from "@/hooks/use-reveal";
-
 // Social links are "#" placeholders — fill in real profile URLs.
 const TEAM = [
   {
@@ -45,15 +43,24 @@ const TEAM = [
     linkedin: "#",
     twitter: "#",
   },
+  {
+    name: "Annaly Yanzon",
+    role: "Sales Head",
+    credential: "Business Woman",
+    tagline: "Connecting the right store owners to the right solution.",
+    messages: ["Hi, I'm Annaly.", "I connect store owners to the right solution.", "Let's find what fits your business."],
+    image: "/team/annaly.png",
+    facebook: "https://www.facebook.com/Annalyyanzon24",
+    linkedin: "#",
+    twitter: "#",
+  },
 ] as const;
 
 // Types out each message, holds, erases, then moves to the next — loops
-// through all 3 continuously once triggered. Doesn't start until `active`
-// (section scrolled into view) plus its own per-card stagger delay, so
-// cards read as introducing themselves one after another. Decorative only
-// (aria-hidden — the tagline below already gives the same info to screen
-// readers), and skips straight to the first message, fully typed, static,
-// under prefers-reduced-motion.
+// through all 3 continuously once triggered. Decorative only (aria-hidden —
+// the tagline below already gives the same info to screen readers), and
+// skips straight to the first message, fully typed, static, under
+// prefers-reduced-motion.
 function SpeechBubble({
   messages,
   active,
@@ -120,8 +127,98 @@ function SpeechBubble({
   );
 }
 
+function TeamStrip({ active, ariaHidden }: { active: boolean; ariaHidden?: boolean }) {
+  return (
+    <div className="flex shrink-0 items-center gap-6 pr-6">
+      {TEAM.map((member) => (
+        <MemberCard key={member.name} member={member} active={active} ariaHidden={ariaHidden} />
+      ))}
+    </div>
+  );
+}
+
+function MemberCard({
+  member,
+  active,
+  ariaHidden,
+}: {
+  member: (typeof TEAM)[number];
+  active: boolean;
+  ariaHidden?: boolean;
+}) {
+  return (
+    <Card className="group relative w-80 shrink-0 p-0" aria-hidden={ariaHidden}>
+      <SpeechBubble messages={member.messages} active={active} startDelayMs={350} />
+
+      <Badge variant="status" className="absolute right-4 top-4">
+        {member.role}
+      </Badge>
+      <CardContent className="p-6">
+        <Avatar className="h-16 w-16 transition-transform duration-300 group-hover:-translate-y-1">
+          <AvatarImage src={member.image} alt={member.name} className="object-cover" />
+          <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <p className="mt-4 font-display text-h3 text-foreground">{member.name}</p>
+        {member.credential ? (
+          <p className="mt-0.5 text-sm font-medium text-primary">{member.credential}</p>
+        ) : null}
+        <p className="mt-3 text-sm text-muted-foreground">{member.tagline}</p>
+        <div className="mt-4 flex items-center gap-3">
+          <a
+            href={member.facebook}
+            aria-label={`${member.name} on Facebook`}
+            tabIndex={ariaHidden ? -1 : undefined}
+            className="text-slate-sage transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+          >
+            <Facebook className="h-4 w-4" aria-hidden="true" />
+          </a>
+          <a
+            href={member.linkedin}
+            aria-label={`${member.name} on LinkedIn`}
+            tabIndex={ariaHidden ? -1 : undefined}
+            className="text-slate-sage transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+          >
+            <Linkedin className="h-4 w-4" aria-hidden="true" />
+          </a>
+          <a
+            href={member.twitter}
+            aria-label={`${member.name} on Twitter`}
+            tabIndex={ariaHidden ? -1 : undefined}
+            className="text-slate-sage transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+          >
+            <Twitter className="h-4 w-4" aria-hidden="true" />
+          </a>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Auto-running horizontal carousel — track duplicated 3x so the marquee
+// loops seamlessly (translateX(-33.333%) in the marquee-3x keyframe,
+// globals.css), same pattern as trusted-by.tsx. Only the first (real, not
+// aria-hidden) copy runs the speech-bubble animation and stays tabbable —
+// the two duplicate copies are decorative only. Pauses on hover;
+// prefers-reduced-motion freezes it via the global rule in globals.css.
 export function Team() {
-  const { setRef, visible } = useRevealEach<HTMLDivElement>(TEAM.length);
+  const [active, setActive] = React.useState(false);
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setActive(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section id="team" className="bg-page-wash py-14 lg:py-20">
@@ -135,58 +232,16 @@ export function Team() {
             Small crew, no middlemen — the people who scope your project are the same ones writing the code.
           </p>
         </div>
+      </div>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-3">
-          {TEAM.map((member, i) => (
-            <Card
-              key={member.name}
-              ref={setRef(i)}
-              className={cn(
-                "group relative p-0 transition-all duration-500 ease-out",
-                visible[i] ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
-              )}
-            >
-              <SpeechBubble messages={member.messages} active={visible[i] ?? false} startDelayMs={350} />
-
-              <Badge variant="status" className="absolute right-4 top-4">
-                {member.role}
-              </Badge>
-              <CardContent className="p-6">
-                <Avatar className="h-16 w-16 transition-transform duration-300 group-hover:-translate-y-1">
-                  <AvatarImage src={member.image} alt={member.name} className="object-cover" />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <p className="mt-4 font-display text-h3 text-foreground">{member.name}</p>
-                {member.credential ? (
-                  <p className="mt-0.5 text-sm font-medium text-primary">{member.credential}</p>
-                ) : null}
-                <p className="mt-3 text-sm text-muted-foreground">{member.tagline}</p>
-                <div className="mt-4 flex items-center gap-3">
-                  <a
-                    href={member.facebook}
-                    aria-label={`${member.name} on Facebook`}
-                    className="text-slate-sage transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-                  >
-                    <Facebook className="h-4 w-4" aria-hidden="true" />
-                  </a>
-                  <a
-                    href={member.linkedin}
-                    aria-label={`${member.name} on LinkedIn`}
-                    className="text-slate-sage transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-                  >
-                    <Linkedin className="h-4 w-4" aria-hidden="true" />
-                  </a>
-                  <a
-                    href={member.twitter}
-                    aria-label={`${member.name} on Twitter`}
-                    className="text-slate-sage transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-                  >
-                    <Twitter className="h-4 w-4" aria-hidden="true" />
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+      <div
+        ref={sectionRef}
+        className="relative mt-10 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+      >
+        <div className="flex w-max animate-[marquee-3x_36s_linear_infinite] hover:[animation-play-state:paused]">
+          <TeamStrip active={active} />
+          <TeamStrip active={false} ariaHidden />
+          <TeamStrip active={false} ariaHidden />
         </div>
       </div>
     </section>
