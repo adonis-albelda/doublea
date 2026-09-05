@@ -4,8 +4,9 @@ import { LegalPage } from "@/components/legal-page";
 import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Double-A IT Solutions",
+  title: "Privacy Policy",
   description: "How Double-A IT Solutions collects, uses, and protects your information.",
+  alternates: { canonical: "/privacy" },
 };
 
 // Grounded in what this site actually does (Google sign-in via Convex Auth,

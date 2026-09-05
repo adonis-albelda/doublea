@@ -4,8 +4,9 @@ import { LegalPage } from "@/components/legal-page";
 import { FACEBOOK_MESSENGER_URL } from "@/lib/social-links";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — Double-A IT Solutions",
+  title: "Terms & Conditions",
   description: "Terms for using the Double-A IT Solutions website and product demos.",
+  alternates: { canonical: "/terms" },
 };
 
 // Grounded in what this site actually does — no payment processing on-site,

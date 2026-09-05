@@ -40,9 +40,26 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const project = getProjectBySlug(params.slug);
   if (!project) return {};
+  const ogImage = project.logo ?? "/logo-3d.png";
   return {
-    title: `${project.name} — Double-A IT Solutions`,
+    title: project.name,
     description: project.description,
+    alternates: {
+      canonical: `/products/${project.slug}`,
+    },
+    openGraph: {
+      type: "website",
+      title: `${project.name} — Double-A IT Solutions`,
+      description: project.description,
+      url: `/products/${project.slug}`,
+      images: [{ url: ogImage }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.name} — Double-A IT Solutions`,
+      description: project.description,
+      images: [ogImage],
+    },
   };
 }
 
