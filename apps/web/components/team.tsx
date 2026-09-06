@@ -232,16 +232,16 @@ export function Team() {
             Small crew, no middlemen — the people who scope your project are the same ones writing the code.
           </p>
         </div>
-      </div>
 
-      <div
-        ref={sectionRef}
-        className="relative mt-10 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
-      >
-        <div className="flex w-max animate-[marquee-3x_36s_linear_infinite] hover:[animation-play-state:paused]">
-          <TeamStrip active={active} />
-          <TeamStrip active={false} ariaHidden />
-          <TeamStrip active={false} ariaHidden />
+        <div
+          ref={sectionRef}
+          className="relative mt-10 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+        >
+          <div className="flex w-max animate-[marquee-3x_36s_linear_infinite] hover:[animation-play-state:paused]">
+            <TeamStrip active={active} />
+            <TeamStrip active={false} ariaHidden />
+            <TeamStrip active={false} ariaHidden />
+          </div>
         </div>
       </div>
     </section>
