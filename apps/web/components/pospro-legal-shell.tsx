@@ -63,7 +63,7 @@ export function PosProLegalShell({ children }: { children: React.ReactNode }) {
           </>
         )}
 
-        <div className={cn("pb-16", isEmbedded ? "mt-0" : "mt-8")}>{children}</div>
+        <div className={cn("pb-16", isEmbedded ? "mt-0 embedded-compact" : "mt-8")}>{children}</div>
       </div>
     </main>
   );

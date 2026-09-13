@@ -138,3 +138,25 @@
     );
   }
 }
+
+/* Scoped down-scale for the POSPro legal pages when opened inside the
+   app's own webview (?embedded=1) — that's a small mobile viewport, so the
+   marketing-site type scale (built for a full page with a header) reads too
+   large. Targets real font-size sources: the FAQ category heading and
+   accordion question both carry the literal text-h3 class, and the legal
+   doc headings get their size from the .prose-legal arbitrary-selector
+   rules in pospro-privacy-content.tsx / pospro-terms-content.tsx. */
+.embedded-compact .text-h3 {
+  font-size: 1.0625rem;
+  line-height: 1.4;
+}
+.embedded-compact .prose-legal h2 {
+  font-size: 1.0625rem;
+}
+.embedded-compact .prose-legal h3 {
+  font-size: 0.9375rem;
+}
+.embedded-compact,
+.embedded-compact .prose-legal {
+  font-size: 0.875rem;
+}
