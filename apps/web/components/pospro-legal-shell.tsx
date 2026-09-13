@@ -26,7 +26,7 @@ export function PosProLegalShell({ children }: { children: React.ReactNode }) {
   const isEmbedded = searchParams.get("embedded") === "1";
 
   return (
-    <main className="force-light min-h-screen bg-white py-10 [color-scheme:light]">
+    <main className="force-light min-h-screen bg-white py-10 text-foreground [color-scheme:light]">
       <div className="container max-w-3xl">
         {!isEmbedded && (
           <>
