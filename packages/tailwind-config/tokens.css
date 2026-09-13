@@ -85,7 +85,7 @@
    preference — for content embedded elsewhere (e.g. the POSPro app's own
    webview) that must always render the same, not follow the host's theme. */
 .force-light {
-  --background: 72 24% 96%;
+  --background: 0 0% 100%;
   --foreground: 93 16% 11%;
   --card: 0 0% 100%;
   --card-foreground: 93 16% 11%;
