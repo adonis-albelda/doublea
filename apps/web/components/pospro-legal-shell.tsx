@@ -20,7 +20,7 @@ export function PosProLegalShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <main className="min-h-screen bg-page-wash py-10">
+    <main className="force-light min-h-screen bg-page-wash py-10 [color-scheme:light]">
       <div className="container max-w-3xl">
         <div className="flex flex-col items-center text-center">
           <Image
