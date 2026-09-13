@@ -2,7 +2,21 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Bot, Building2, CheckCircle2, Clock, Layers, ShieldCheck, Smartphone, Sparkles, Zap } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Bot,
+  Building2,
+  CheckCircle2,
+  Clock,
+  FileText,
+  HelpCircle,
+  Layers,
+  ShieldCheck,
+  Smartphone,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
@@ -283,6 +297,57 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 </div>
                 <div>
                   <TicketForm projectName={project.name} projectSlug={project.slug} />
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
+
+        {/* Legal & support links — POSPro's own standalone pages (no site
+            Nav/Footer), see app/pospro/*. */}
+        {project.hasDemoAccess && (
+          <ScrollReveal>
+            <section className="py-14 lg:py-20">
+              <div className="container">
+                <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Learn more</p>
+                <h2 className="mt-3 font-display text-h2 text-foreground">Policies &amp; help</h2>
+                <div className="mt-10 grid gap-6 sm:grid-cols-3">
+                  <Link
+                    href="/pospro/privacy-policy"
+                    className="group flex flex-col gap-2 rounded-xl border border-border-sage bg-card p-6 transition-colors hover:border-primary/40"
+                  >
+                    <ShieldCheck className="h-6 w-6 text-primary" aria-hidden="true" />
+                    <p className="font-display text-h3 text-foreground">Privacy Policy</p>
+                    <p className="text-sm text-muted-foreground">How POSPro collects and protects your information.</p>
+                    <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
+                      Read policy
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </Link>
+                  <Link
+                    href="/pospro/terms-of-service"
+                    className="group flex flex-col gap-2 rounded-xl border border-border-sage bg-card p-6 transition-colors hover:border-primary/40"
+                  >
+                    <FileText className="h-6 w-6 text-primary" aria-hidden="true" />
+                    <p className="font-display text-h3 text-foreground">Terms of Service</p>
+                    <p className="text-sm text-muted-foreground">The terms that govern using POSPro.</p>
+                    <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
+                      Read terms
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </Link>
+                  <Link
+                    href="/pospro/faqs"
+                    className="group flex flex-col gap-2 rounded-xl border border-border-sage bg-card p-6 transition-colors hover:border-primary/40"
+                  >
+                    <HelpCircle className="h-6 w-6 text-primary" aria-hidden="true" />
+                    <p className="font-display text-h3 text-foreground">FAQs</p>
+                    <p className="text-sm text-muted-foreground">Common questions about running your store on POSPro.</p>
+                    <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
+                      Browse FAQs
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </Link>
                 </div>
               </div>
             </section>
