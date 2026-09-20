@@ -14,6 +14,7 @@ export const create = mutation({
     description: v.string(),
     name: v.string(),
     storeName: v.optional(v.string()),
+    areas: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);

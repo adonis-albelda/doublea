@@ -27,6 +27,10 @@ export default defineSchema({
     description: v.string(),
     name: v.string(),
     storeName: v.optional(v.string()),
+    // Which app areas the feedback touches — checklist on the POSPro beta
+    // feedback page (app/pospro/feedback). Optional since the generic
+    // per-project ticket form (ticket-form.tsx) doesn't collect this.
+    areas: v.optional(v.array(v.string())),
     userId: v.id("users"),
     createdAt: v.number(),
   }).index("by_project", ["projectSlug"]),
