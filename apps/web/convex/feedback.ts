@@ -3,9 +3,9 @@ import { v } from "convex/values";
 
 import { mutation } from "./_generated/server";
 
-// Sign-in required — the reporter's account (and its email, via userId) is
-// how we follow up, and it keeps the ticket table from being open to anyone
-// with the URL.
+// Sign-in required — same reasoning as convex/tickets.ts: the reporter's
+// account is how we follow up, and it keeps the table from being open to
+// anyone with the URL.
 export const create = mutation({
   args: {
     projectSlug: v.string(),
@@ -14,11 +14,12 @@ export const create = mutation({
     description: v.string(),
     name: v.string(),
     storeName: v.optional(v.string()),
+    areas: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
-    if (!userId) throw new Error("Sign in required to submit a ticket.");
+    if (!userId) throw new Error("Sign in required to send feedback.");
 
-    return await ctx.db.insert("tickets", { ...args, userId, createdAt: Date.now() });
+    return await ctx.db.insert("feedback", { ...args, userId, createdAt: Date.now() });
   },
 });

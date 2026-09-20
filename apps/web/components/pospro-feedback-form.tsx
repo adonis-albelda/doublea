@@ -72,10 +72,11 @@ const QUICK_TEMPLATES = [
   },
 ] as const;
 
-// Closed-beta feedback form for POSPro testers. Builds on the same
-// sign-in-required ticket pipeline as ticket-form.tsx (convex/tickets.ts),
-// with an extra area checklist and quick-insert templates so testers spend
-// their time describing what they noticed, not writing from a blank page.
+// Closed-beta feedback form for POSPro testers. Same sign-in-required
+// pattern as ticket-form.tsx, but writes to its own `feedback` table
+// (convex/feedback.ts) with an area checklist and quick-insert templates so
+// testers spend their time describing what they noticed, not writing from a
+// blank page.
 export function PosProFeedbackForm() {
   const [type, setType] = React.useState<FeedbackType | null>(null);
   const [areas, setAreas] = React.useState<string[]>([]);
@@ -93,7 +94,7 @@ export function PosProFeedbackForm() {
   const { isAuthenticated, isLoading } = useConvexAuth();
   const { signIn } = useAuthActions();
   const viewer = useQuery(api.users.viewer);
-  const createTicket = useMutation(api.tickets.create);
+  const submitFeedback = useMutation(api.feedback.create);
 
   React.useEffect(() => {
     if (viewer?.name) setName((current) => current || viewer.name!);
@@ -123,7 +124,7 @@ export function PosProFeedbackForm() {
     setSubmitting(true);
     setError(null);
     try {
-      await createTicket({
+      await submitFeedback({
         projectSlug: "pospro",
         type,
         title: title.trim(),

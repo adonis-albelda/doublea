@@ -27,9 +27,19 @@ export default defineSchema({
     description: v.string(),
     name: v.string(),
     storeName: v.optional(v.string()),
-    // Which app areas the feedback touches — checklist on the POSPro beta
-    // feedback page (app/pospro/feedback). Optional since the generic
-    // per-project ticket form (ticket-form.tsx) doesn't collect this.
+    userId: v.id("users"),
+    createdAt: v.number(),
+  }).index("by_project", ["projectSlug"]),
+  // Closed-beta feedback from app/pospro/feedback (pospro-feedback-form.tsx)
+  // — own table instead of reusing `tickets` since it carries the area
+  // checklist and isn't tied to the generic per-project ticket form.
+  feedback: defineTable({
+    projectSlug: v.string(),
+    type: v.union(v.literal("bug"), v.literal("suggestion"), v.literal("question")),
+    title: v.string(),
+    description: v.string(),
+    name: v.string(),
+    storeName: v.optional(v.string()),
     areas: v.optional(v.array(v.string())),
     userId: v.id("users"),
     createdAt: v.number(),

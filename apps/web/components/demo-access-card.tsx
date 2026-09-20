@@ -4,11 +4,10 @@ import * as React from "react";
 import Link from "next/link";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
-import { useAction, useConvexAuth, useQuery } from "convex/react";
-import { Check, Copy, Download, Eye, EyeOff, Hash, KeyRound, LayoutDashboard, Loader2, Mail, ShieldCheck } from "lucide-react";
+import { useConvexAuth, useQuery } from "convex/react";
+import { Check, Copy, Download, FlaskConical, Info, Loader2, MessageSquare, ShieldCheck } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
-import { cn } from "@repo/ui/lib/utils";
 
 import { api } from "@/convex/_generated/api";
 import type { Project } from "@/lib/projects";
@@ -48,166 +47,20 @@ function CopyIconButton({ value, label }: { value: string; label: string }) {
   );
 }
 
-function CopyField({
-  icon: Icon,
-  label,
-  value,
-  href,
-  maskable,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-  href?: string;
-  /** Shows dots instead of the value until toggled — for the password field. */
-  maskable?: boolean;
-}) {
-  const [revealed, setRevealed] = React.useState(!maskable);
-  const displayValue = maskable && !revealed ? "•".repeat(Math.min(value.length, 12)) : value;
-
-  return (
-    <div className="flex items-center justify-between gap-3 rounded-lg border border-border-sage bg-background px-4 py-3">
-      <div className="flex min-w-0 items-center gap-3">
-        <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-        <div className="min-w-0">
-          <p className="font-mono text-[0.7rem] uppercase tracking-wide text-slate-sage">{label}</p>
-          {href ? (
-            <Link
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block truncate text-sm text-foreground underline-offset-2 hover:text-primary hover:underline"
-            >
-              {value}
-            </Link>
-          ) : (
-            <p className="truncate text-sm text-foreground">{displayValue}</p>
-          )}
-        </div>
-      </div>
-      <div className="flex shrink-0 items-center gap-1.5">
-        {maskable && (
-          <button
-            type="button"
-            onClick={() => setRevealed((r) => !r)}
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-border-sage text-slate-sage transition-colors hover:border-primary/40 hover:text-primary"
-            aria-label={revealed ? `Hide ${label}` : `Show ${label}`}
-          >
-            {revealed ? <EyeOff className="h-4 w-4" aria-hidden="true" /> : <Eye className="h-4 w-4" aria-hidden="true" />}
-          </button>
-        )}
-        <CopyIconButton value={value} label={label} />
-      </div>
-    </div>
-  );
-}
-
 function FieldSkeleton() {
   return <div className="h-[58px] animate-pulse rounded-lg border border-border-sage bg-background" />;
 }
 
-function accessCodeStorageKey(slug: string) {
-  return `demo-access-code:${slug}`;
-}
-
-// Fetches the signed-in user's real demo login (email + password + PIN
-// code) from the Tally superadmin API (convex/demoAccess.ts
-// `fetchAccessCode`) once, then caches it in localStorage so it survives
-// reloads without hitting the API again. This is the actual demo login now
-// — no more fixed account.
-function useDemoAccessCode(slug: string, isAuthenticated: boolean) {
-  const fetchAccessCode = useAction(api.demoAccess.fetchAccessCode);
-  const [demoEmail, setDemoEmail] = React.useState<string | null>(null);
-  const [password, setPassword] = React.useState<string | null>(null);
-  const [cashierPin, setCashierPin] = React.useState<string | null>(null);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    if (!isAuthenticated) return;
-
-    const storageKey = accessCodeStorageKey(slug);
-    try {
-      const cached = localStorage.getItem(storageKey);
-      if (cached) {
-        const parsed = JSON.parse(cached) as { demoEmail: string; password: string; cashierPin: string };
-        if (parsed.demoEmail && parsed.password && parsed.cashierPin) {
-          setDemoEmail(parsed.demoEmail);
-          setPassword(parsed.password);
-          setCashierPin(parsed.cashierPin);
-          return;
-        }
-      }
-    } catch {
-      // Storage can fail (private mode, quota) or hold a stale/invalid
-      // shape — fall through and fetch fresh.
-    }
-
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
-    fetchAccessCode({})
-      .then((result) => {
-        if (cancelled) return;
-        setDemoEmail(result.demoEmail);
-        setPassword(result.password);
-        setCashierPin(result.cashierPin);
-        try {
-          localStorage.setItem(
-            storageKey,
-            JSON.stringify({
-              demoEmail: result.demoEmail,
-              password: result.password,
-              cashierPin: result.cashierPin,
-            }),
-          );
-        } catch {
-          // Non-fatal — credentials still show for this session.
-        }
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        setError(err instanceof Error ? err.message : "Couldn't load demo credentials.");
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [slug, isAuthenticated, fetchAccessCode]);
-
-  return { demoEmail, password, cashierPin, loading, error };
-}
-
-// Real demo access for the project's live app — admin dashboard login, APK
-// link, and credentials live in Convex (convex/demoAccess.ts), not in this
-// bundle. getBySlug returns null for a signed-out visitor (server-enforced
-// in the query itself), so nothing sensitive ships before Google sign-in.
+// APK download only — admin dashboard login (email/password/PIN) removed
+// per product decision: nothing to log into during closed testing, just
+// install the build. getBySlug returns null for a signed-out visitor
+// (server-enforced in the query itself), so the link never ships before
+// Google sign-in.
 export function DemoAccessCard({ project }: { project: Project }) {
   const { isAuthenticated } = useConvexAuth();
   const { signIn } = useAuthActions();
   const demo = useQuery(api.demoAccess.getBySlug, isAuthenticated ? { slug: project.slug } : "skip");
   const [signingIn, setSigningIn] = React.useState(false);
-  const accessCode = useDemoAccessCode(project.slug, isAuthenticated);
-  const [fieldsVisible, setFieldsVisible] = React.useState(false);
-
-  // Temporary — remove once sign-in is confirmed reflecting correctly.
-  React.useEffect(() => {
-    console.log("[DemoAccessCard] isAuthenticated:", isAuthenticated, "demo:", demo);
-  }, [isAuthenticated, demo]);
-
-  // Not scroll-triggered — these rows appear once auth/query resolves, so
-  // the stagger fires off that instead of an IntersectionObserver.
-  React.useEffect(() => {
-    if (!demo) {
-      setFieldsVisible(false);
-      return;
-    }
-    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setFieldsVisible(true)));
-    return () => cancelAnimationFrame(raf);
-  }, [demo]);
 
   if (!project.hasDemoAccess) return null;
 
@@ -241,18 +94,26 @@ export function DemoAccessCard({ project }: { project: Project }) {
 
       <div className="relative rounded-2xl border border-border-sage bg-card p-6 sm:p-8">
         <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Try it yourself</p>
-        <h3 className="mt-2 font-display text-h3 text-foreground">Log in to the {project.name} demo</h3>
+        <h3 className="mt-2 font-display text-h3 text-foreground">Download the {project.name} app</h3>
         <p className="mt-4 text-sm text-muted-foreground">
-          Install the app, then sign in to the admin dashboard below to add products, suppliers, and inventory —
-          everything a real store owner sets up.
+          Install the app on your own device and try it out — add products, ring up a sale, and see how it runs
+          day to day.
         </p>
+
+        <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-accent/30 bg-accent/5 px-4 py-3">
+          <FlaskConical className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+          <p className="text-sm text-foreground">
+            {project.name} is still in closed testing on Google Play. Until it&apos;s approved there, install it
+            directly with the APK below.
+          </p>
+        </div>
 
         {!isAuthenticated ? (
           <div className="mt-6 flex flex-col items-center gap-3 rounded-lg border border-dashed border-border-sage bg-background px-6 py-8 text-center">
             <ShieldCheck className="h-6 w-6 text-primary" aria-hidden="true" />
-            <p className="text-sm text-foreground">Sign in with Google to view the demo credentials.</p>
+            <p className="text-sm text-foreground">Sign in with Google to download the app.</p>
             <p className="max-w-xs text-xs text-muted-foreground">
-              We verify you first to keep the demo account from getting spammed.
+              We verify you first to keep the download link from getting spammed.
             </p>
             <Button variant="outline" size="sm" className="mt-1 gap-2" disabled={signingIn} onClick={handleSignIn}>
               {signingIn ? (
@@ -264,17 +125,12 @@ export function DemoAccessCard({ project }: { project: Project }) {
             </Button>
           </div>
         ) : demo === undefined ? (
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <FieldSkeleton />
-            <div className="sm:col-span-2">
-              <FieldSkeleton />
-            </div>
-            <FieldSkeleton />
+          <div className="mt-6">
             <FieldSkeleton />
           </div>
         ) : demo === null ? (
           <p className="mt-6 text-sm text-muted-foreground">
-            Demo credentials aren&apos;t set up for this project yet.
+            The download link isn&apos;t set up for this project yet.
           </p>
         ) : (
           <>
@@ -288,60 +144,26 @@ export function DemoAccessCard({ project }: { project: Project }) {
               <CopyIconButton value={demo.apkUrl} label="APK link" />
             </div>
 
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <div
-                className={cn(
-                  "sm:col-span-2 transition-all duration-500 ease-out",
-                  fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-                )}
-              >
-                <CopyField icon={LayoutDashboard} label="Admin dashboard" value={demo.adminUrl} href={demo.adminUrl} />
+            <div className="mt-4 grid gap-3 rounded-lg border border-border-sage bg-background p-4 sm:grid-cols-2">
+              <div className="flex items-start gap-2.5">
+                <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                <p className="text-xs text-muted-foreground">
+                  Android will warn about installing outside the Play Store — allow it for this file, since it&apos;s
+                  the closed-testing build.
+                </p>
               </div>
-
-              {/* Real per-user login — email + password + PIN code straight
-                  from the Tally API (convex/demoAccess.ts), not the fixed
-                  table row. */}
-              {accessCode.demoEmail && accessCode.password && accessCode.cashierPin ? (
-                <>
-                  <div
-                    className={cn(
-                      "sm:col-span-2 transition-all duration-500 ease-out",
-                      fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-                    )}
-                    style={{ transitionDelay: fieldsVisible ? "80ms" : "0ms" }}
-                  >
-                    <CopyField icon={Mail} label="Email" value={accessCode.demoEmail} />
-                  </div>
-                  <div
-                    className={cn(
-                      "transition-all duration-500 ease-out",
-                      fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-                    )}
-                    style={{ transitionDelay: fieldsVisible ? "160ms" : "0ms" }}
-                  >
-                    <CopyField icon={KeyRound} label="Password" value={accessCode.password} maskable />
-                  </div>
-                  <div
-                    className={cn(
-                      "transition-all duration-500 ease-out",
-                      fieldsVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-                    )}
-                    style={{ transitionDelay: fieldsVisible ? "240ms" : "0ms" }}
-                  >
-                    <CopyField icon={Hash} label="PIN code" value={accessCode.cashierPin} maskable />
-                  </div>
-                </>
-              ) : accessCode.loading ? (
-                <>
-                  <FieldSkeleton />
-                  <FieldSkeleton />
-                  <FieldSkeleton />
-                </>
-              ) : accessCode.error ? (
-                <div className="sm:col-span-2">
-                  <p className="text-sm text-destructive">{accessCode.error}</p>
+              {project.slug === "pospro" && (
+                <div className="flex items-start gap-2.5">
+                  <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                  <p className="text-xs text-muted-foreground">
+                    Noticed something?{" "}
+                    <Link href="/pospro/feedback" className="text-primary underline-offset-2 hover:underline">
+                      Send feedback
+                    </Link>{" "}
+                    — it helps us fix things before the Play Store release.
+                  </p>
                 </div>
-              ) : null}
+              )}
             </div>
           </>
         )}
