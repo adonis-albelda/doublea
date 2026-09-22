@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 
 import type { ScreenshotDevice } from "@/lib/pospro/auth-data";
@@ -27,7 +30,23 @@ export function ScreenshotPlaceholder({ title, device, path, size = "sm" }: Scre
   );
 }
 
+// Every switch (menu navigation, prev/next step, device toggle) swaps `path`
+// out from under this component — reset to "loading" and cover the real
+// image with a pulsing skeleton until it reports back in, instead of a bare
+// pop-in once the bytes land.
+function useImageLoaded(path: StaticImageData | undefined) {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(false);
+  }, [path]);
+
+  return [loaded, () => setLoaded(true)] as const;
+}
+
 function PhoneFrame({ title, path, widthClass }: { title: string; path?: StaticImageData; widthClass: string }) {
+  const [loaded, markLoaded] = useImageLoaded(path);
+
   return (
     <div className={`relative mx-auto ${widthClass}`}>
       {/* Side buttons — action button + volume rocker (left), power (right). */}
@@ -39,7 +58,14 @@ function PhoneFrame({ title, path, widthClass }: { title: string; path?: StaticI
         <div className="absolute left-1/2 top-0 z-10 h-5 w-24 -translate-x-1/2 rounded-b-2xl bg-ink" />
         <div className="absolute inset-0 overflow-hidden rounded-[1.75rem]">
           {path ? (
-            <Image src={path} alt={title} fill sizes="400px" className="object-cover" />
+            <>
+              <Image src={path} alt={title} fill sizes="400px" className="object-cover" onLoad={markLoaded} />
+              {!loaded && (
+                <div className="absolute inset-0">
+                  <SkeletonScreen safeArea="pt-7 pb-5" />
+                </div>
+              )}
+            </>
           ) : (
             <SampleScreen title={title} safeArea="pt-7 pb-5" />
           )}
@@ -52,6 +78,8 @@ function PhoneFrame({ title, path, widthClass }: { title: string; path?: StaticI
 }
 
 function TabletFrame({ title, path, maxWidth }: { title: string; path?: StaticImageData; maxWidth: string }) {
+  const [loaded, markLoaded] = useImageLoaded(path);
+
   return (
     <div className={`relative mx-auto w-full ${maxWidth}`}>
       {/* Power button, top edge. */}
@@ -60,7 +88,14 @@ function TabletFrame({ title, path, maxWidth }: { title: string; path?: StaticIm
         <span className="absolute left-1/2 top-1 z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-ink/40 ring-1 ring-slate-sage/40" />
         <div className="absolute inset-0 overflow-hidden rounded-xl">
           {path ? (
-            <Image src={path} alt={title} fill sizes="460px" className="object-cover" />
+            <>
+              <Image src={path} alt={title} fill sizes="460px" className="object-cover" onLoad={markLoaded} />
+              {!loaded && (
+                <div className="absolute inset-0">
+                  <SkeletonScreen />
+                </div>
+              )}
+            </>
           ) : (
             <SampleScreen title={title} />
           )}
@@ -70,6 +105,8 @@ function TabletFrame({ title, path, maxWidth }: { title: string; path?: StaticIm
   );
 }
 
+// No real capture exists for this device at all — a permanent, honest
+// placeholder (not a fabricated screenshot).
 function SampleScreen({ title, safeArea = "" }: { title: string; safeArea?: string }) {
   return (
     <div className={`flex h-full w-full flex-col bg-gradient-to-br from-sage-100 via-paper to-sage-100 ${safeArea}`}>
@@ -82,6 +119,25 @@ function SampleScreen({ title, safeArea = "" }: { title: string; safeArea?: stri
         <span className="h-2 w-1/2 rounded-full bg-sage-300/50" />
         <span className="mt-3 h-8 w-full rounded-md bg-gradient-to-br from-sage-300/50 to-sage-500/30" />
         <span className="h-2 w-2/3 rounded-full bg-sage-300/70" />
+      </div>
+    </div>
+  );
+}
+
+// A real capture is on the way — pulsing skeleton bars, no title (nothing
+// to honestly show yet), covering the image until it finishes loading.
+function SkeletonScreen({ safeArea = "" }: { safeArea?: string }) {
+  return (
+    <div className={`flex h-full w-full animate-pulse flex-col bg-muted ${safeArea}`}>
+      <div className="flex items-center gap-2 border-b border-border-sage/60 bg-card/70 px-3 py-2">
+        <span className="h-2 w-2 shrink-0 rounded-full bg-border-sage" />
+        <span className="h-2 w-16 rounded-full bg-border-sage" />
+      </div>
+      <div className="flex flex-1 flex-col justify-center gap-2 p-4">
+        <span className="h-2 w-3/4 rounded-full bg-border-sage" />
+        <span className="h-2 w-1/2 rounded-full bg-border-sage" />
+        <span className="mt-3 h-8 w-full rounded-md bg-border-sage" />
+        <span className="h-2 w-2/3 rounded-full bg-border-sage" />
       </div>
     </div>
   );

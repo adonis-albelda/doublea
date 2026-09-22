@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-const ADVANCE_DELAY_MS = 900;
+const ARM_DELAY_MS = 500;
 const SCROLLED_THRESHOLD_PX = 40;
 
 // Scrolling to the very bottom auto-advances to the next screen; scrolling
@@ -12,6 +12,11 @@ const SCROLLED_THRESHOLD_PX = 40;
 // The "return to previous" side only arms once the reader has actually
 // scrolled down at least once, so landing fresh on a page (already at the
 // top) never immediately bounces back.
+//
+// The actual router.push runs inside a transition so `isPending` reflects
+// real navigation time (data fetch/compile), not a guess — the reader sees
+// "Loading…" for exactly as long as the page takes, instead of the content
+// silently freezing for a couple seconds with no feedback.
 export function ScreenScrollArea({
   children,
   previousHref,
@@ -22,6 +27,8 @@ export function ScreenScrollArea({
   nextHref?: string;
 }) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [direction, setDirection] = useState<"next" | "previous" | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const topSentinelRef = useRef<HTMLDivElement>(null);
   const bottomSentinelRef = useRef<HTMLDivElement>(null);
@@ -51,7 +58,10 @@ export function ScreenScrollArea({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
-          timer = setTimeout(() => router.push(nextHref), ADVANCE_DELAY_MS);
+          timer = setTimeout(() => {
+            setDirection("next");
+            startTransition(() => router.push(nextHref));
+          }, ARM_DELAY_MS);
         } else if (timer) {
           clearTimeout(timer);
           timer = null;
@@ -78,7 +88,10 @@ export function ScreenScrollArea({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting && hasScrolledRef.current) {
-          timer = setTimeout(() => router.push(previousHref), ADVANCE_DELAY_MS);
+          timer = setTimeout(() => {
+            setDirection("previous");
+            startTransition(() => router.push(previousHref));
+          }, ARM_DELAY_MS);
         } else if (timer) {
           clearTimeout(timer);
           timer = null;
@@ -98,13 +111,23 @@ export function ScreenScrollArea({
   return (
     <div
       ref={containerRef}
-      className="min-w-0 flex-1 scroll-smooth overflow-y-auto px-10 py-10 [scrollbar-color:hsl(var(--border-sage))_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border-sage [&::-webkit-scrollbar-track]:bg-transparent"
+      className="min-w-0 flex-1 scroll-smooth overflow-y-auto px-4 py-6 sm:px-6 lg:px-10 lg:py-10 [scrollbar-color:hsl(var(--border-sage))_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border-sage [&::-webkit-scrollbar-track]:bg-transparent"
     >
       <div className="mx-auto max-w-3xl space-y-10">
         <div ref={topSentinelRef} aria-hidden="true" />
+        {isPending && direction === "previous" && <LoadingHint />}
         {children}
+        {isPending && direction === "next" && <LoadingHint />}
         <div ref={bottomSentinelRef} aria-hidden="true" />
       </div>
     </div>
+  );
+}
+
+function LoadingHint() {
+  return (
+    <p className="animate-pulse text-center text-xs text-muted-foreground" role="status">
+      Loading…
+    </p>
   );
 }
