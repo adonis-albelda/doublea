@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu } from "lucide-react";
+import { ArrowLeft, KeyRound, Lock, LogIn, Mail, Menu, ShieldCheck, UserPlus, type LucideIcon } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@repo/ui/components/ui/sheet";
@@ -12,6 +12,16 @@ import { cn } from "@repo/ui/lib/utils";
 import { AUTH_SCREENS } from "@/lib/pospro/auth-data";
 
 const INDEX_HREF = "/pospro/manual/mobile/authentication";
+const POSPRO_HREF = "/products/pospro";
+
+const SCREEN_ICONS: Record<string, LucideIcon> = {
+  register: UserPlus,
+  "verify-email": Mail,
+  "sign-in": LogIn,
+  "forgot-password": KeyRound,
+  "verify-pin": ShieldCheck,
+  "change-password": Lock,
+};
 
 // Persistent left rail on desktop; a top bar with a slide-out drawer below
 // lg (matches the site's own Nav breakpoint). One feature group (Get
@@ -51,6 +61,14 @@ export function ManualSidebar() {
             <nav aria-label="Manual">
               <NavList pathname={pathname} onNavigate={() => setOpen(false)} className="mt-6" />
             </nav>
+            <Link
+              href={POSPRO_HREF}
+              onClick={() => setOpen(false)}
+              className="mt-6 flex items-center gap-1.5 text-sm font-medium text-slate-sage transition-colors hover:text-primary"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              Back to POSPro
+            </Link>
           </SheetContent>
         </Sheet>
       </div>
@@ -64,6 +82,14 @@ export function ManualSidebar() {
           <p className="px-2 text-caption uppercase tracking-wide text-slate-sage">Get Started</p>
           <NavList pathname={pathname} className="mt-2" />
         </div>
+
+        <Link
+          href={POSPRO_HREF}
+          className="mt-auto flex items-center gap-1.5 px-2 pt-6 text-sm font-medium text-slate-sage transition-colors hover:text-primary"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          Back to POSPro
+        </Link>
       </nav>
     </>
   );
@@ -82,18 +108,20 @@ function NavList({
     <ul className={cn("space-y-1 border-l border-border-sage pl-3", className)}>
       {AUTH_SCREENS.map((screen) => {
         const isActive = pathname === screen.href;
+        const Icon = SCREEN_ICONS[screen.id];
         return (
           <li key={screen.id}>
             <Link
               href={screen.href}
               onClick={onNavigate}
               className={cn(
-                "block rounded-md px-2 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground"
                   : "text-slate-sage hover:bg-muted hover:text-foreground",
               )}
             >
+              {Icon && <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />}
               {screen.title}
             </Link>
           </li>
