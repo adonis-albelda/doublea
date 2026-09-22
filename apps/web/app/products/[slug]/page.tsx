@@ -6,6 +6,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Bot,
+  BookOpen,
   Building2,
   CheckCircle2,
   Clock,
@@ -311,7 +312,19 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               <div className="container">
                 <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Learn more</p>
                 <h2 className="mt-3 font-display text-h2 text-foreground">Policies &amp; help</h2>
-                <div className="mt-10 grid gap-6 sm:grid-cols-3">
+                <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                  <Link
+                    href="/pospro/manual"
+                    className="group flex flex-col gap-2 rounded-xl border border-border-sage bg-card p-6 transition-colors hover:border-primary/40"
+                  >
+                    <BookOpen className="h-6 w-6 text-primary" aria-hidden="true" />
+                    <p className="font-display text-h3 text-foreground">Mobile Manual</p>
+                    <p className="text-sm text-muted-foreground">Screen-by-screen guide to the POSPro One mobile app.</p>
+                    <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
+                      View manual
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </Link>
                   <Link
                     href="/pospro/privacy-policy"
                     className="group flex flex-col gap-2 rounded-xl border border-border-sage bg-card p-6 transition-colors hover:border-primary/40"
