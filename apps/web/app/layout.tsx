@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "web app development",
     "website design Calbayog City",
     "business automation",
-    "POSPro point of sale system",
+    "POSPro One point of sale system",
   ],
   authors: [{ name: SITE_NAME }],
   robots: { index: true, follow: true },

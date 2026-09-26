@@ -6,3 +6,4 @@ export * from "./common/ScreenshotsRail";
 export * from "./common/ScreenLayoutDiagram";
 export * from "./common/NavigationLinks";
 export * from "./common/ManualSidebar";
+export * from "./common/ManualScreenDocs";

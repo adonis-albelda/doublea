@@ -6,7 +6,7 @@ import { cn } from "@repo/ui/lib/utils";
 
 // Names supplied directly by the user (real people). Quotes are still
 // PLACEHOLDER text — no actual interview/quote was collected from any of
-// them, just written to reflect what our real current projects (POSPro,
+// them, just written to reflect what our real current projects (POSPro One,
 // CareConnect, CCPC Registration) realistically solve. Swap the quotes for
 // real, attributed feedback once we have it.
 const TESTIMONIALS = [

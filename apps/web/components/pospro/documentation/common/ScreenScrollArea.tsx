@@ -11,7 +11,8 @@ const SCROLLED_THRESHOLD_PX = 40;
 // short pause so a quick peek at either edge doesn't yank the reader away.
 // The "return to previous" side only arms once the reader has actually
 // scrolled down at least once, so landing fresh on a page (already at the
-// top) never immediately bounces back.
+// top) never immediately bounces back. Likewise "advance to next" needs the
+// page to be scrolled, so a page that fits on screen never auto-advances.
 //
 // The actual router.push runs inside a transition so `isPending` reflects
 // real navigation time (data fetch/compile), not a guess — the reader sees
@@ -57,7 +58,12 @@ export function ScreenScrollArea({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting) {
+        // Only advance once the reader has actually scrolled. A page short
+        // enough to fit on screen (every "coming soon" stub) has its bottom
+        // sentinel visible on arrival — without this check it advanced on
+        // its own after ARM_DELAY_MS, chaining straight through a run of
+        // short pages so the clicked one could never stay open.
+        if (entry?.isIntersecting && container.scrollTop > 0) {
           timer = setTimeout(() => {
             setDirection("next");
             startTransition(() => router.push(nextHref));

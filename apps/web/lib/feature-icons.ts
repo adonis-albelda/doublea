@@ -19,7 +19,7 @@ import {
 // small and finite. Falls back to Sparkles for anything not (yet) mapped,
 // e.g. a new feature added without updating this file.
 export const FEATURE_ICONS: Record<string, LucideIcon> = {
-  // POSPro
+  // POSPro One
   "Real-time sales tracking across every terminal": TrendingUp,
   "Inventory that updates itself as stock moves": Boxes,
   "Cashier accounts, PIN unlock, and shift history": KeyRound,

@@ -72,14 +72,14 @@ export interface Project {
 export const PROJECTS: readonly Project[] = [
   {
     slug: "pospro",
-    name: "POSPro",
+    name: "POSPro One",
     logo: "/projects/products/propos/logo.webp",
     category: "personal",
     tagline:
       "Run your store from anywhere, even without internet — see your real profit, and keep your account safe.",
     description: "Sales, stock, and reports stay up to date on every register — even without internet. Check on your store anytime, from anywhere.",
     longDescription:
-      "POSPro keeps your registers and stockroom connected — sales, stock counts, receipts, and reports all stay accurate, whether you're on the floor, at home, or the internet is down. Check in anytime, from anywhere, and always know exactly where your store stands.",
+      "POSPro One keeps your registers and stockroom connected — sales, stock counts, receipts, and reports all stay accurate, whether you're on the floor, at home, or the internet is down. Check in anytime, from anywhere, and always know exactly where your store stands.",
     status: "Live",
     timeline: "Built for store owners",
     features: [
@@ -213,7 +213,7 @@ export const PROJECTS: readonly Project[] = [
           },
           {
             title: "Your shop's data stays private",
-            description: "Your shop's information is kept separate from every other shop using POSPro. No one else can see it.",
+            description: "Your shop's information is kept separate from every other shop using POSPro One. No one else can see it.",
           },
         ],
       },
@@ -223,7 +223,7 @@ export const PROJECTS: readonly Project[] = [
         eyebrow: "AI-Powered POS",
         title: "Just describe what you need — no need to know the exact product name",
         description:
-          "Your customers won't always know the exact product name. Just type or say what they're looking for in plain words, and POSPro finds the closest matches for you.",
+          "Your customers won't always know the exact product name. Just type or say what they're looking for in plain words, and POSPro One finds the closest matches for you.",
         example: {
           query: "Do you have paint for metal?",
           response: [

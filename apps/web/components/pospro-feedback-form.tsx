@@ -23,7 +23,7 @@ const FEEDBACK_TYPES: { value: FeedbackType; label: string; hint: string; icon: 
   { value: "question", label: "Question", hint: "Something you're not sure how to do.", icon: HelpCircle },
 ];
 
-// Real POSPro modules, grounded in lib/projects.ts featureCategories and the
+// Real POSPro One modules, grounded in lib/projects.ts featureCategories and the
 // FAQ categories (pospro-faq-content.tsx) — so testers pick from areas that
 // actually exist instead of typing free text.
 const APP_AREAS = [
@@ -72,7 +72,7 @@ const QUICK_TEMPLATES = [
   },
 ] as const;
 
-// Closed-beta feedback form for POSPro testers. Same sign-in-required
+// Closed-beta feedback form for POSPro One testers. Same sign-in-required
 // pattern as ticket-form.tsx, but writes to its own `feedback` table
 // (convex/feedback.ts) with an area checklist and quick-insert templates so
 // testers spend their time describing what they noticed, not writing from a
@@ -304,7 +304,7 @@ export function PosProFeedbackForm() {
       </form>
 
       {showToast && (
-        <Toast message="Feedback sent — thanks for testing POSPro. We'll take a look." onDismiss={() => setShowToast(false)} />
+        <Toast message="Feedback sent — thanks for testing POSPro One. We'll take a look." onDismiss={() => setShowToast(false)} />
       )}
     </>
   );

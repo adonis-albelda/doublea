@@ -4,8 +4,8 @@ import { PosProFeedbackShell } from "@/components/pospro-feedback-shell";
 import { PosProFeedbackForm } from "@/components/pospro-feedback-form";
 
 export const metadata: Metadata = {
-  title: "POSPro Beta Feedback",
-  description: "Send feedback while testing POSPro during closed beta.",
+  title: "POSPro One Beta Feedback",
+  description: "Send feedback while testing POSPro One during closed beta.",
 };
 
 export default function PosProFeedbackPage() {

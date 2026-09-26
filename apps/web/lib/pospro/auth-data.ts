@@ -46,9 +46,10 @@ export type ScreenshotDevice = "phone" | "tablet";
 export type ScreenshotSpec = {
   id: string;
   title: string;
-  // Real capture per device. Tablet is optional — no tablet captures exist
-  // yet, so ScreenshotPlaceholder falls back to a wireframe for it.
-  paths: { phone: StaticImageData; tablet?: StaticImageData };
+  // Real capture per device. Both optional — ScreenshotPlaceholder falls
+  // back to a wireframe for any device without a capture yet (no tablet
+  // captures exist, and Backoffice screens are still awaiting phone ones).
+  paths: { phone?: StaticImageData; tablet?: StaticImageData };
 };
 
 // A screenshot of the email a step sends, not an app screen — rendered
@@ -727,12 +728,14 @@ export const CHANGE_PASSWORD_SCREEN: AuthScreenDoc = {
   ],
 };
 
-export const AUTH_SCREENS: {
+export type ManualScreenLink = {
   id: string;
   href: string;
   title: string;
   description: string;
-}[] = [
+};
+
+export const AUTH_SCREENS: ManualScreenLink[] = [
   {
     id: REGISTER_SCREEN.id,
     href: "/pospro/manual/mobile/authentication/register",
@@ -771,6 +774,6 @@ export const AUTH_SCREENS: {
   },
 ];
 
-export function getScreenHref(id?: string): string | undefined {
-  return AUTH_SCREENS.find((screen) => screen.id === id)?.href;
+export function getScreenHref(id?: string, screens: ManualScreenLink[] = AUTH_SCREENS): string | undefined {
+  return screens.find((screen) => screen.id === id)?.href;
 }

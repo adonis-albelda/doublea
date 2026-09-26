@@ -3,7 +3,7 @@
 // [NAME OR DESIGNATION]) — filled with the business's real, already-public
 // contact email and Calbayog City address used elsewhere on this site. No
 // specific person's name was supplied for the DPO contact, so a role
-// designation is used instead of inventing one. Swap these if POSPro should
+// designation is used instead of inventing one. Swap these if POSPro One should
 // use a dedicated privacy inbox instead.
 export function PosProPrivacyContent() {
   return (
@@ -15,8 +15,8 @@ export function PosProPrivacyContent() {
       </p>
 
       <p>
-        POSPro (&ldquo;POSPro&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) respects your
-        privacy and is committed to protecting personal information collected and processed through the POSPro
+        POSPro One (&ldquo;POSPro One&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) respects your
+        privacy and is committed to protecting personal information collected and processed through the POSPro One
         application, website, and related services.
       </p>
 
@@ -26,19 +26,19 @@ export function PosProPrivacyContent() {
       </p>
 
       <p>
-        POSPro operates with the principles of transparency, legitimate purpose, and proportionality in accordance
+        POSPro One operates with the principles of transparency, legitimate purpose, and proportionality in accordance
         with applicable Philippine data protection laws, including Republic Act No. 10173, otherwise known as the
         Data Privacy Act of 2012, and its implementing rules and regulations.
       </p>
 
-      <p>By using POSPro, you acknowledge that you have read and understood this Privacy Policy.</p>
+      <p>By using POSPro One, you acknowledge that you have read and understood this Privacy Policy.</p>
 
-      <h2>1. About POSPro</h2>
+      <h2>1. About POSPro One</h2>
       <p>
-        POSPro is a point-of-sale and business management platform designed to help businesses manage their daily
+        POSPro One is a point-of-sale and business management platform designed to help businesses manage their daily
         operations.
       </p>
-      <p>Depending on the features used, POSPro may provide functionality for:</p>
+      <p>Depending on the features used, POSPro One may provide functionality for:</p>
       <ul>
         <li>Point-of-sale transactions</li>
         <li>Products and product variants</li>
@@ -59,10 +59,10 @@ export function PosProPrivacyContent() {
       </ul>
 
       <h2>2. Information We Collect</h2>
-      <p>The information we collect depends on how you use POSPro.</p>
+      <p>The information we collect depends on how you use POSPro One.</p>
 
       <h3>2.1 Account Information</h3>
-      <p>When you create a POSPro account, we may collect:</p>
+      <p>When you create a POSPro One account, we may collect:</p>
       <ul>
         <li>Name</li>
         <li>Email address</li>
@@ -75,7 +75,7 @@ export function PosProPrivacyContent() {
       </ul>
 
       <h3>2.2 Business Information</h3>
-      <p>Businesses using POSPro may enter information such as:</p>
+      <p>Businesses using POSPro One may enter information such as:</p>
       <ul>
         <li>Business name</li>
         <li>Business locations</li>
@@ -103,7 +103,7 @@ export function PosProPrivacyContent() {
       </p>
 
       <h3>2.3 Customer Information</h3>
-      <p>A POSPro business may choose to store customer information, including:</p>
+      <p>A POSPro One business may choose to store customer information, including:</p>
       <ul>
         <li>Customer name</li>
         <li>Contact number</li>
@@ -116,7 +116,7 @@ export function PosProPrivacyContent() {
       </ul>
       <p>
         Businesses are responsible for ensuring that they have an appropriate legal basis and authority to collect
-        and use customer information through POSPro.
+        and use customer information through POSPro One.
       </p>
 
       <h3>2.4 Employee and User Information</h3>
@@ -136,7 +136,7 @@ export function PosProPrivacyContent() {
       <p>Access to this information is controlled according to the business&apos;s configured roles and permissions.</p>
 
       <h3>2.5 Transaction and Payment Information</h3>
-      <p>POSPro may process information relating to transactions, including:</p>
+      <p>POSPro One may process information relating to transactions, including:</p>
       <ul>
         <li>Items purchased</li>
         <li>Quantities</li>
@@ -153,12 +153,12 @@ export function PosProPrivacyContent() {
         <li>Payment references</li>
       </ul>
       <p>
-        POSPro does not need to store complete payment-card credentials when payment processing is handled by a
+        POSPro One does not need to store complete payment-card credentials when payment processing is handled by a
         third-party payment provider.
       </p>
 
       <h3>2.6 Device and Technical Information</h3>
-      <p>When you use POSPro, we may automatically collect certain technical information, such as:</p>
+      <p>When you use POSPro One, we may automatically collect certain technical information, such as:</p>
       <ul>
         <li>Device type</li>
         <li>Operating system</li>
@@ -176,7 +176,7 @@ export function PosProPrivacyContent() {
       </p>
 
       <h3>2.7 Business Survey Information</h3>
-      <p>POSPro may ask users to voluntarily provide information about their business, such as:</p>
+      <p>POSPro One may ask users to voluntarily provide information about their business, such as:</p>
       <ul>
         <li>Business type</li>
         <li>Industry</li>
@@ -186,18 +186,18 @@ export function PosProPrivacyContent() {
         <li>General business preferences</li>
       </ul>
       <p>
-        For example, POSPro may ask whether a business is a hardware store, grocery store, restaurant, laundry
+        For example, POSPro One may ask whether a business is a hardware store, grocery store, restaurant, laundry
         business, salon, or another type of business.
       </p>
       <p>
-        This information may be used for product analytics, feature planning, and improving POSPro for different
+        This information may be used for product analytics, feature planning, and improving POSPro One for different
         types of businesses.
       </p>
 
       <h2>3. How We Use Information</h2>
-      <p>We may use information collected through POSPro to:</p>
+      <p>We may use information collected through POSPro One to:</p>
       <ul>
-        <li>Provide and operate POSPro</li>
+        <li>Provide and operate POSPro One</li>
         <li>Create and manage user accounts</li>
         <li>Process transactions</li>
         <li>Maintain inventory and business records</li>
@@ -213,7 +213,7 @@ export function PosProPrivacyContent() {
         <li>Monitor system performance</li>
         <li>Improve existing features</li>
         <li>Develop new features</li>
-        <li>Understand how businesses use POSPro</li>
+        <li>Understand how businesses use POSPro One</li>
         <li>Conduct aggregated and statistical analysis</li>
         <li>Communicate important service-related information</li>
         <li>Comply with legal and regulatory obligations</li>
@@ -224,9 +224,9 @@ export function PosProPrivacyContent() {
       </p>
 
       <h2>4. Business Data and Customer Data</h2>
-      <p>POSPro is a platform used by businesses to manage their operations.</p>
+      <p>POSPro One is a platform used by businesses to manage their operations.</p>
       <p>
-        A business using POSPro may enter information about its own customers, employees, suppliers, and other
+        A business using POSPro One may enter information about its own customers, employees, suppliers, and other
         individuals.
       </p>
       <p>Where applicable, the business is responsible for:</p>
@@ -235,15 +235,15 @@ export function PosProPrivacyContent() {
         <li>Ensuring that collection has an appropriate legal basis</li>
         <li>Providing required privacy notices to its customers and employees</li>
         <li>Configuring access to information appropriately</li>
-        <li>Using POSPro in accordance with applicable privacy laws</li>
+        <li>Using POSPro One in accordance with applicable privacy laws</li>
       </ul>
       <p>
-        POSPro processes information as necessary to provide the services requested by the business and according
+        POSPro One processes information as necessary to provide the services requested by the business and according
         to applicable agreements and instructions.
       </p>
 
       <h2>5. Legal Basis for Processing</h2>
-      <p>Depending on the circumstances, POSPro may process personal information based on:</p>
+      <p>Depending on the circumstances, POSPro One may process personal information based on:</p>
       <ul>
         <li>Consent</li>
         <li>Performance of a contract or provision of requested services</li>
@@ -261,7 +261,7 @@ export function PosProPrivacyContent() {
       </p>
 
       <h2>6. Sharing of Information</h2>
-      <p>We may share information with third parties when necessary to operate POSPro or provide requested services.</p>
+      <p>We may share information with third parties when necessary to operate POSPro One or provide requested services.</p>
       <p>These may include:</p>
       <ul>
         <li>Cloud hosting providers</li>
@@ -289,11 +289,11 @@ export function PosProPrivacyContent() {
 
       <h2>7. Payment Information</h2>
       <p>
-        POSPro may support different payment methods, including cash, e-wallets, cards, bank transfers, and other
+        POSPro One may support different payment methods, including cash, e-wallets, cards, bank transfers, and other
         payment methods supported by the system.
       </p>
       <p>Depending on the payment method, payment processing may be handled by third-party payment providers.</p>
-      <p>POSPro may retain transaction-related information such as:</p>
+      <p>POSPro One may retain transaction-related information such as:</p>
       <ul>
         <li>Payment method</li>
         <li>Payment amount</li>
@@ -343,7 +343,7 @@ export function PosProPrivacyContent() {
       <h2>9. Data Retention</h2>
       <p>We retain information only for as long as reasonably necessary for:</p>
       <ul>
-        <li>Providing POSPro</li>
+        <li>Providing POSPro One</li>
         <li>Maintaining business records</li>
         <li>Providing customer support</li>
         <li>Security and fraud prevention</li>
@@ -379,10 +379,10 @@ export function PosProPrivacyContent() {
       <p>To exercise your rights, contact us using the contact information provided below.</p>
 
       <h2>11. Children&apos;s Privacy</h2>
-      <p>POSPro is intended for businesses and their authorized users and is not directed toward children.</p>
+      <p>POSPro One is intended for businesses and their authorized users and is not directed toward children.</p>
       <p>We do not knowingly collect personal information from children for independent use of the service.</p>
       <p>
-        If you believe that a child has provided personal information to POSPro without appropriate authorization,
+        If you believe that a child has provided personal information to POSPro One without appropriate authorization,
         please contact us so that we can take appropriate action.
       </p>
 
@@ -402,13 +402,13 @@ export function PosProPrivacyContent() {
       </p>
 
       <h2>13. Analytics and Product Improvement</h2>
-      <p>We may analyze aggregated or appropriately protected information about how POSPro is used to:</p>
+      <p>We may analyze aggregated or appropriately protected information about how POSPro One is used to:</p>
       <ul>
         <li>Understand which features are popular</li>
         <li>Identify usability problems</li>
         <li>Improve system performance</li>
         <li>Develop new features</li>
-        <li>Understand business categories using POSPro</li>
+        <li>Understand business categories using POSPro One</li>
         <li>Improve the product for different types of businesses</li>
       </ul>
       <p>
@@ -417,7 +417,7 @@ export function PosProPrivacyContent() {
       </p>
 
       <h2>14. International Data Processing</h2>
-      <p>Some POSPro service providers may process or store information outside the Philippines.</p>
+      <p>Some POSPro One service providers may process or store information outside the Philippines.</p>
       <p>
         Where personal information is transferred or processed outside the Philippines, we will take reasonable
         steps to ensure that appropriate safeguards are implemented in accordance with applicable privacy laws.
@@ -425,7 +425,7 @@ export function PosProPrivacyContent() {
 
       <h2>15. Data Breaches and Security Incidents</h2>
       <p>
-        If a security incident involving personal information occurs, POSPro will assess and respond to the
+        If a security incident involving personal information occurs, POSPro One will assess and respond to the
         incident in accordance with applicable laws and our security procedures.
       </p>
       <p>Where notification is legally required, we will provide the appropriate notifications within the required timeframe.</p>
@@ -433,21 +433,21 @@ export function PosProPrivacyContent() {
       <h2>16. Changes to This Privacy Policy</h2>
       <p>We may update this Privacy Policy from time to time to reflect:</p>
       <ul>
-        <li>Changes to POSPro</li>
+        <li>Changes to POSPro One</li>
         <li>New features</li>
         <li>Changes in technology</li>
         <li>Changes in applicable laws</li>
         <li>Changes in our privacy practices</li>
       </ul>
       <p>
-        When significant changes are made, we may provide an appropriate notice through POSPro or other available
+        When significant changes are made, we may provide an appropriate notice through POSPro One or other available
         communication channels.
       </p>
 
       <h2>17. Contact Us</h2>
       <p>For questions, privacy requests, or concerns regarding this Privacy Policy, contact:</p>
       <p>
-        <strong>POSPro</strong>
+        <strong>POSPro One</strong>
         <br />
         Email: <strong>doublea.itsolutions2026@gmail.com</strong>
         <br />
@@ -462,7 +462,7 @@ export function PosProPrivacyContent() {
       <h2>18. Complaints</h2>
       <p>
         If you believe that your personal information has been improperly processed and the matter cannot be
-        resolved directly with POSPro, you may have the right to file a complaint with the Philippine National
+        resolved directly with POSPro One, you may have the right to file a complaint with the Philippine National
         Privacy Commission.
       </p>
       <p>

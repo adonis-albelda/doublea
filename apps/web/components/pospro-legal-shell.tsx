@@ -12,7 +12,7 @@ const TABS = [
   { href: "/pospro/faqs", label: "FAQs" },
 ] as const;
 
-// Standalone legal shell for the POSPro app itself (opened inside the app's
+// Standalone legal shell for the POSPro One app itself (opened inside the app's
 // webview, not the marketing site) — no Nav/Footer on purpose. Tabs are real
 // navigation (Link), so the URL changes when switching documents, not just
 // local state.
@@ -33,12 +33,12 @@ export function PosProLegalShell({ children }: { children: React.ReactNode }) {
             <div className="flex flex-col items-center text-center">
               <Image
                 src="/projects/products/propos/logo.webp"
-                alt="POSPro logo"
+                alt="POSPro One logo"
                 width={64}
                 height={64}
                 className="h-16 w-16 object-contain"
               />
-              <h1 className="mt-4 font-display text-h2 text-foreground">POSPro Privacy</h1>
+              <h1 className="mt-4 font-display text-h2 text-foreground">POSPro One Privacy</h1>
             </div>
 
             <div className="mt-8 flex justify-center gap-2 border-b border-border-sage">

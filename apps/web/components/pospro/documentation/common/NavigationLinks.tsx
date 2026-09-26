@@ -1,15 +1,16 @@
 import Link from "next/link";
 
-import { AUTH_SCREENS } from "@/lib/pospro/auth-data";
+import { AUTH_SCREENS, type ManualScreenLink } from "@/lib/pospro/auth-data";
 
 interface NavigationLinksProps {
   previousScreen?: string;
   nextScreen?: string;
+  screens?: ManualScreenLink[];
 }
 
-export function NavigationLinks({ previousScreen, nextScreen }: NavigationLinksProps) {
-  const prev = AUTH_SCREENS.find((screen) => screen.id === previousScreen);
-  const next = AUTH_SCREENS.find((screen) => screen.id === nextScreen);
+export function NavigationLinks({ previousScreen, nextScreen, screens = AUTH_SCREENS }: NavigationLinksProps) {
+  const prev = screens.find((screen) => screen.id === previousScreen);
+  const next = screens.find((screen) => screen.id === nextScreen);
 
   if (!prev && !next) {
     return null;

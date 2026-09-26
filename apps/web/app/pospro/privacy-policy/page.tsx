@@ -4,8 +4,8 @@ import { PosProLegalShell } from "@/components/pospro-legal-shell";
 import { PosProPrivacyContent } from "@/components/pospro-privacy-content";
 
 export const metadata: Metadata = {
-  title: "POSPro Privacy Policy",
-  description: "How POSPro collects, uses, and protects personal information.",
+  title: "POSPro One Privacy Policy",
+  description: "How POSPro One collects, uses, and protects personal information.",
 };
 
 export default function PosProPrivacyPolicyPage() {

@@ -256,7 +256,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </ScrollReveal>
         )}
 
-        {/* Book a demo — only for our own product (POSPro), not one-off
+        {/* Book a demo — only for our own product (POSPro One), not one-off
             client sites like CareConnect. See book-demo-section.tsx. */}
         {project.hasDemoAccess && (
           <ScrollReveal>
@@ -304,7 +304,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </ScrollReveal>
         )}
 
-        {/* Legal & support links — POSPro's own standalone pages (no site
+        {/* Legal & support links — POSPro One's own standalone pages (no site
             Nav/Footer), see app/pospro/*. */}
         {project.hasDemoAccess && (
           <ScrollReveal>
@@ -331,7 +331,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   >
                     <ShieldCheck className="h-6 w-6 text-primary" aria-hidden="true" />
                     <p className="font-display text-h3 text-foreground">Privacy Policy</p>
-                    <p className="text-sm text-muted-foreground">How POSPro collects and protects your information.</p>
+                    <p className="text-sm text-muted-foreground">How POSPro One collects and protects your information.</p>
                     <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
                       Read policy
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -343,7 +343,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   >
                     <FileText className="h-6 w-6 text-primary" aria-hidden="true" />
                     <p className="font-display text-h3 text-foreground">Terms of Service</p>
-                    <p className="text-sm text-muted-foreground">The terms that govern using POSPro.</p>
+                    <p className="text-sm text-muted-foreground">The terms that govern using POSPro One.</p>
                     <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
                       Read terms
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -355,7 +355,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   >
                     <HelpCircle className="h-6 w-6 text-primary" aria-hidden="true" />
                     <p className="font-display text-h3 text-foreground">FAQs</p>
-                    <p className="text-sm text-muted-foreground">Common questions about running your store on POSPro.</p>
+                    <p className="text-sm text-muted-foreground">Common questions about running your store on POSPro One.</p>
                     <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
                       Browse FAQs
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
