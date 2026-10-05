@@ -38,6 +38,7 @@ import { cn } from "@repo/ui/lib/utils";
 
 import { AUTH_SCREENS, type ManualScreenLink } from "@/lib/pospro/auth-data";
 import { BACKOFFICE_SCREENS } from "@/lib/pospro/backoffice-data";
+import { BUSINESS_SCREENS, BUSINESS_TYPES } from "@/lib/pospro/businesses-data";
 import { MOBILE_APP_SCREENS } from "@/lib/pospro/mobile-app-data";
 import { FEATURE_SCREENS, FEATURE_SECTIONS, FEATURES_INDEX_HREF, type FeatureSection } from "@/lib/pospro/features-data";
 
@@ -59,6 +60,11 @@ type NavGroup = {
 // it mirrors the admin app's section → sub-group menu). Add more flat
 // groups to NAV_GROUPS, same pattern.
 const NAV_GROUPS: NavGroup[] = [
+  {
+    title: "Supported Businesses",
+    screens: BUSINESS_SCREENS,
+    icons: Object.fromEntries(BUSINESS_TYPES.map((business) => [business.id, business.icon])),
+  },
   {
     title: "Get Started",
     screens: AUTH_SCREENS,
@@ -217,7 +223,7 @@ function NavCategories({ pathname, onNavigate }: { pathname: string; onNavigate?
   );
 }
 
-// Top-level category (Get Started, Mobile App Screens, Backoffice) as an accordion — closed by
+// Top-level category (Supported Businesses, Get Started, Mobile App Screens, Backoffice) as an accordion — closed by
 // default so the sidebar opens compact. The category holding the current
 // page opens on its own, so a reader landing on a screen still sees where
 // it lives.

@@ -1,3 +1,4 @@
+import { ContentInProgress } from "./ContentInProgress";
 import { NavigationLinks } from "./NavigationLinks";
 import { ScreenHeader } from "./ScreenHeader";
 import { ScreenScrollArea } from "./ScreenScrollArea";
@@ -13,7 +14,7 @@ import { getScreenHref, type AuthScreenDoc, type ManualScreenLink } from "@/lib/
 // Responsive: on xl+ screenshots sit in a right-hand rail next to the text;
 // below xl (phones, tablets, small laptops) there's no room for the rail, so
 // they render inline after the Overview instead of disappearing. Overview/Components only
-// render once they have content, so stub docs show a "coming soon" note.
+// render once they have content, so stub docs show a ContentInProgress note.
 export function ManualScreenDocs({
   doc,
   screens,
@@ -42,11 +43,7 @@ export function ManualScreenDocs({
         )}
         {doc.emailPreview && <EmailPreviewSection {...doc.emailPreview} />}
         {doc.components.length > 0 && <ComponentsSection components={doc.components} />}
-        {!hasContent && (
-          <p className="rounded-lg border border-dashed border-border-sage bg-card/40 p-6 text-sm text-muted-foreground">
-            Documentation for this screen is coming soon.
-          </p>
-        )}
+        {!hasContent && <ContentInProgress />}
         <NavigationLinks previousScreen={doc.previousScreen} nextScreen={doc.nextScreen} screens={screens} />
       </ScreenScrollArea>
 

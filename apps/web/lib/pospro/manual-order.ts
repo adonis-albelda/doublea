@@ -1,14 +1,17 @@
-// Every manual page in sidebar order (Welcome, Get Started, Mobile App
-// Screens, Backoffice, Features) — used as the reading order that decides
-// whether a page transition slides forward or backward. Keep in step with
-// ManualSidebar's category order.
+// Every manual page in sidebar order (Welcome, Supported Businesses, Get
+// Started, Mobile App Screens, Backoffice, Features) — used as the reading order
+// that decides whether a page transition slides forward or backward. Keep
+// in step with ManualSidebar's category order.
 import { AUTH_SCREENS } from "./auth-data";
 import { BACKOFFICE_INDEX_HREF, BACKOFFICE_SCREENS } from "./backoffice-data";
+import { BUSINESS_SCREENS, BUSINESSES_INDEX_HREF } from "./businesses-data";
 import { FEATURE_SCREENS, FEATURES_INDEX_HREF } from "./features-data";
 import { MOBILE_APP_SCREENS } from "./mobile-app-data";
 
 export const MANUAL_PAGE_ORDER: readonly string[] = [
   "/pospro/manual",
+  BUSINESSES_INDEX_HREF,
+  ...BUSINESS_SCREENS.map((screen) => screen.href),
   "/pospro/manual/mobile/authentication",
   ...AUTH_SCREENS.map((screen) => screen.href),
   ...MOBILE_APP_SCREENS.map((screen) => screen.href),

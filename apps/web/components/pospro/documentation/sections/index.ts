@@ -5,3 +5,4 @@ export * from "./AuthenticationIndex";
 export * from "./BackofficeIndex";
 export * from "./FeaturesIndex";
 export * from "./ManualWelcome";
+export * from "./BusinessesIndex";

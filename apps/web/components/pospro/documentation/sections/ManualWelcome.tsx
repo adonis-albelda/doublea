@@ -3,6 +3,7 @@ import { Check } from "lucide-react";
 
 import { AUTH_SCREENS, type ManualScreenLink } from "@/lib/pospro/auth-data";
 import { BACKOFFICE_INDEX_HREF, BACKOFFICE_SCREENS } from "@/lib/pospro/backoffice-data";
+import { BUSINESS_SCREENS, BUSINESSES_INDEX_HREF } from "@/lib/pospro/businesses-data";
 import { FEATURE_SECTIONS, FEATURES_INDEX_HREF } from "@/lib/pospro/features-data";
 import { MOBILE_APP_SCREENS } from "@/lib/pospro/mobile-app-data";
 import { getProjectBySlug } from "@/lib/projects";
@@ -50,6 +51,12 @@ const FLAT_CATEGORIES: {
   href?: string;
   screens: ManualScreenLink[];
 }[] = [
+  {
+    title: "Supported Businesses",
+    description: "See how the mobile app and web app look for each type of business POSPro One supports.",
+    href: BUSINESSES_INDEX_HREF,
+    screens: BUSINESS_SCREENS,
+  },
   {
     title: "Get Started",
     description: "Create your account, verify your email, sign in, and recover a forgotten password.",
