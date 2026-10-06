@@ -5,10 +5,8 @@ import { notFound } from "next/navigation";
 import {
   ArrowLeft,
   ArrowRight,
-  Bot,
   BookOpen,
   Building2,
-  CheckCircle2,
   Clock,
   FileText,
   HelpCircle,
@@ -40,13 +38,8 @@ import { DemoAccessCard } from "@/components/demo-access-card";
 import { TicketForm } from "@/components/ticket-form";
 import { FeatureCategories } from "@/components/feature-categories";
 import { FeatureGrid } from "@/components/feature-grid";
+import { FeatureShowcase } from "@/components/feature-showcase";
 import { getProjectBySlug, PROJECTS } from "@/lib/projects";
-
-const FEATURE_STAT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  Core: Layers,
-  "AI-powered": Bot,
-  Security: ShieldCheck,
-};
 
 export function generateStaticParams() {
   return PROJECTS.map((project) => ({ slug: project.slug }));
@@ -154,14 +147,26 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           <div className="container">
             <div className="mb-20">
               {project.featureCategories && (
-                <div className="mb-8 grid w-full grid-cols-1 divide-y divide-border-sage rounded-xl border border-border-sage bg-card sm:grid-cols-2 lg:grid-cols-5 lg:divide-x lg:divide-y-0">
+                <div className="mb-8 grid w-full grid-cols-1 divide-y divide-border-sage rounded-xl border border-border-sage bg-card sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x">
+                  {/* Fixed summary tiles, not one per category — the list
+                      grew past what a single row of per-category tiles fits. */}
                   {[
-                    ...project.featureCategories.map((group) => ({
-                      key: group.category,
-                      icon: FEATURE_STAT_ICONS[group.category] ?? CheckCircle2,
-                      value: group.items.length,
-                      label: `${group.category} features`,
-                    })),
+                    ...(project.businessTypesSupported
+                      ? [
+                          {
+                            key: "business-types",
+                            icon: Building2,
+                            value: project.businessTypesSupported,
+                            label: "Kinds of business",
+                          },
+                        ]
+                      : []),
+                    {
+                      key: "groups",
+                      icon: Layers,
+                      value: project.featureCategories.length,
+                      label: "Feature groups",
+                    },
                     {
                       key: "advanced",
                       icon: Zap,
@@ -196,6 +201,29 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             )}
           </div>
         </section>
+
+        {/* Features shown on a phone or laptop */}
+        {project.featureCategories?.some((group) => group.items.some((item) => item.highlight || item.screenshot)) && (
+          <ScrollReveal>
+            <section className="bg-page-wash py-14 lg:py-20">
+              <div className="container">
+                <div className="max-w-2xl">
+                  <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Highlights</p>
+                  <h2 className="mt-3 font-display text-h2 text-foreground">See it for yourself</h2>
+                  <p className="mt-3 text-body text-muted-foreground">
+                    Tap a feature to see how it looks in {project.name} — on the till phone or on the office computer.
+                  </p>
+                </div>
+                <FeatureShowcase
+                  name={project.name}
+                  items={project.featureCategories.flatMap((group) =>
+                    group.items.filter((item) => item.highlight || item.screenshot),
+                  )}
+                />
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
 
         {/* AI spotlight — concrete "ask in plain language" example */}
         {project.aiSpotlight && (

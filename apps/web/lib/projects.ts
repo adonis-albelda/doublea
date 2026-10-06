@@ -48,6 +48,9 @@ export interface Project {
     users: string;
     features: readonly string[];
   }[];
+  // How many kinds of business this project is set up for — shown as its
+  // own tile in the detail page's stats strip when set.
+  businessTypesSupported?: number;
   // Richer, grouped feature list (title + description per item, grouped
   // under categories like "Core"/"AI-powered"/"Security"). When set, the
   // detail page renders this instead of the flat `features` list — `features`
@@ -55,7 +58,16 @@ export interface Project {
   featureCategories?: readonly {
     category: string;
     description: string;
-    items: readonly { title: string; description: string; highlight?: boolean }[];
+    // Every highlight, plus any item with a `screenshot` (path under /public),
+    // appears in the detail page's device showcase, in a phone (default) or
+    // laptop frame per `device`.
+    items: readonly {
+      title: string;
+      description: string;
+      highlight?: boolean;
+      screenshot?: string;
+      device?: "phone" | "laptop";
+    }[];
   }[];
   // Concrete "ask in plain language" examples for AI-powered features — each
   // shown as its own mini chat mock (what the user does -> what the system
@@ -76,25 +88,48 @@ export const PROJECTS: readonly Project[] = [
     logo: "/projects/products/propos/logo.webp",
     category: "personal",
     tagline:
-      "Run your store from anywhere, even without internet — see your real profit, and keep your account safe.",
-    description: "Sales, stock, and reports stay up to date on every register — even without internet. Check on your store anytime, from anywhere.",
+      "One system for all your businesses — sell, track your stock, and see your real profit, even without internet.",
+    description:
+      "Run your stores, branches, and different kinds of businesses from one account. Sales, stock, and reports stay up to date on every register — even without internet.",
     longDescription:
-      "POSPro One keeps your registers and stockroom connected — sales, stock counts, receipts, and reports all stay accurate, whether you're on the floor, at home, or the internet is down. Check in anytime, from anywhere, and always know exactly where your store stands.",
+      "POSPro One puts all your businesses in one place. A hardware store, a water station, and a carinderia can all run on the same account, each with its own branches, prices, and rules. Your registers and stockrooms stay connected — sales, stock counts, receipts, and reports stay correct, whether you're at the counter, at home, or the internet is down.",
     status: "Live",
     timeline: "Built for store owners",
     features: [
-      "See sales from every register",
-      "Stock counts update themselves",
+      "All your businesses in one place",
+      "Every branch, side by side",
+      "Each business keeps its own rules",
+      "Move stock between branches",
+      "Different prices per branch",
+      "Check your shop from anywhere",
       "Still works with no internet",
-      "Cashiers unlock with a PIN",
+      "See sales from every register",
+      "Easy price changes at the counter",
+      "Senior and PWD discounts built in",
+      "Sizes, flavors, and add-ons",
       "Print receipts right away",
       "Your shop's name on every receipt",
+      "Scan barcodes and QR codes",
       "Find products by talking",
-      "Scan and print barcodes",
-      "See your real profit",
-      "Order more stock the smart way",
-      "Track customers and deliveries",
+      "Know who has paid and who hasn't",
+      "Stock counts update themselves",
+      "Know what's running low",
+      "Order from your suppliers",
+      "Every stock change is written down",
+      "Start with a ready-made product list",
       "See your true take-home profit",
+      "See your real profit on every sale",
+      "Money in and money out",
+      "VAT done for you",
+      "Download your reports",
+      "Remember your regular customers",
+      "Reward loyal customers",
+      "Keep track of deliveries",
+      "Staff clock in from their phone",
+      "Cashiers unlock with a PIN",
+      "Water refilling stations",
+      "Windows, doors, and cabinets",
+      "Restaurants and carinderias",
       "Turn a photo into a product list",
       "Set up your shop faster",
       "You approve everything AI adds",
@@ -103,36 +138,83 @@ export const PROJECTS: readonly Project[] = [
       "Cashiers need a PIN to sell",
       "Staff only see what they need",
       "Your shop's data stays private",
+      "Safe photo uploads",
     ],
     highlightFeatures: [
-      "See sales from every register",
+      "All your businesses in one place",
       "Still works with no internet",
       "See your true take-home profit",
+      "Staff clock in from their phone",
+      "Water refilling stations",
+      "Windows, doors, and cabinets",
       "Turn a photo into a product list",
       "Extra login check for safety",
     ],
+    businessTypesSupported: 8,
     featureCategories: [
       {
-        category: "Core",
-        description: "The everyday tools your store uses at the counter and in the stockroom.",
+        category: "All your businesses",
+        description:
+          "One account for everything you own — every business, every branch, every register. No more jumping between different systems.",
         items: [
+          {
+            title: "All your businesses in one place",
+            description:
+              "Run your hardware store, water station, and carinderia from one account. Switch between them with one tap.",
+            highlight: true,
+          },
+          {
+            title: "Every branch, side by side",
+            description: "Look at one branch at a time, or see all your branches added together.",
+          },
+          {
+            title: "Each business keeps its own rules",
+            description:
+              "Discounts, tax, receipts, and customer rewards can be set up differently for each business.",
+          },
+          {
+            title: "Move stock between branches",
+            description:
+              "Send items from one branch or warehouse to another. Both sides update once the items arrive.",
+          },
+          {
+            title: "Different prices per branch",
+            description: "Add a small price increase for one branch without changing your main price list.",
+          },
+          {
+            title: "Check your shop from anywhere",
+            description: "See your sales and stock from your phone or computer, even when you're not at the store.",
+          },
+        ],
+      },
+      {
+        category: "Selling",
+        description: "Everything your cashier needs at the counter — fast, simple, and it never stops working.",
+        items: [
+          {
+            title: "Still works with no internet",
+            description:
+              "Keep selling even when the internet is down. Your sales are kept safe and sent once you're back online.",
+            highlight: true,
+            screenshot: "/projects/products/propos/mobile/Screenshot_1787557268.webp",
+            device: "phone",
+          },
           {
             title: "See sales from every register",
             description: "Watch sales come in from all your registers at once, as they happen.",
-            highlight: true,
           },
           {
-            title: "Stock counts update themselves",
-            description: "Every sale, restock, or transfer updates your stock count automatically. No more counting by hand.",
+            title: "Easy price changes at the counter",
+            description:
+              "Give a customer a lower price when you need to. Every change is saved so you can check it later.",
           },
           {
-            title: "Still works with no internet",
-            description: "Keep selling even when the internet is down. Everything syncs back up once you're online again.",
-            highlight: true,
+            title: "Senior and PWD discounts built in",
+            description: "The right discount and VAT are worked out for you — no need to compute by hand.",
           },
           {
-            title: "Cashiers unlock with a PIN",
-            description: "Each cashier gets their own PIN, so you always know who made each sale.",
+            title: "Sizes, flavors, and add-ons",
+            description: "Sell one product in different sizes or with extras — like large or small, or with an extra egg.",
           },
           {
             title: "Print receipts right away",
@@ -140,32 +222,138 @@ export const PROJECTS: readonly Project[] = [
           },
           {
             title: "Your shop's name on every receipt",
-            description: "Add your logo and shop name so every receipt looks like it came from you.",
+            description: "Add your logo, address, and a thank-you message so every receipt looks like it came from you.",
+          },
+          {
+            title: "Scan barcodes and QR codes",
+            description: "Scan an item to ring it up fast, or print your own labels for your shelves.",
+            screenshot: "/projects/products/propos/laptop/pospro-laptop-05.webp",
+            device: "laptop",
           },
           {
             title: "Find products by talking",
             description: "Say what you're looking for out loud and it gets added to the sale — no typing needed.",
+            screenshot: "/projects/products/propos/mobile/Screenshot_1787557304.webp",
+            device: "phone",
           },
           {
-            title: "Scan and print barcodes",
-            description: "Scan a barcode to ring up a sale, or print new barcode labels for your shelves.",
+            title: "Know who has paid and who hasn't",
+            description: "Cash, GCash, card, or pay later — you always know which customers still owe you.",
+          },
+        ],
+      },
+      {
+        category: "Stock",
+        description: "Always know what you have on your shelves, without counting by hand.",
+        items: [
+          {
+            title: "Stock counts update themselves",
+            description: "Every sale, delivery, or correction changes your stock count for you.",
           },
           {
-            title: "See your real profit",
-            description: "Always know how much you're making after costs and discounts — no guessing.",
+            title: "Know what's running low",
+            description: "See which items you need to order again before they run out.",
+            screenshot: "/projects/products/propos/laptop/pospro-laptop-03.webp",
+            device: "laptop",
           },
           {
-            title: "Order more stock the smart way",
-            description: "Keep track of orders to your suppliers, what you owe them, and when it's due.",
+            title: "Order from your suppliers",
+            description: "Keep track of your orders, what has arrived, what you still owe, and when it's due.",
+            screenshot: "/projects/products/propos/laptop/pospro-laptop-04.webp",
+            device: "laptop",
           },
           {
-            title: "Track customers and deliveries",
-            description: "Save your regular customers and keep an eye on which deliveries are still on the way.",
+            title: "Every stock change is written down",
+            description: "See what changed, who changed it, and when — so nothing goes missing without a trace.",
           },
+          {
+            title: "Start with a ready-made product list",
+            description:
+              "Pick from common items for sari-sari stores, hardware stores, school supplies, and more — no need to type them all in.",
+          },
+        ],
+      },
+      {
+        category: "Money & reports",
+        description: "Clear numbers that tell you how your business is really doing.",
+        items: [
           {
             title: "See your true take-home profit",
-            description: "Log your expenses like rent and wages, so you see what you actually keep, not just total sales.",
+            description:
+              "Write down your rent, wages, and bills, and see what you actually keep — not just what came in.",
             highlight: true,
+            screenshot: "/projects/products/propos/laptop/pospro-laptop-02.webp",
+            device: "laptop",
+          },
+          {
+            title: "See your real profit on every sale",
+            description:
+              "The cost of each item is saved at the moment you sell it, so your old reports never change on you.",
+          },
+          {
+            title: "Money in and money out",
+            description: "See all the money that came into and went out of your business, in one list.",
+          },
+          {
+            title: "VAT done for you",
+            description: "VAT is worked out on every sale and shown on a ready-made report.",
+          },
+          {
+            title: "Download your reports",
+            description: "Save your sales and stock reports as a spreadsheet you can open on your computer.",
+          },
+        ],
+      },
+      {
+        category: "Customers & staff",
+        description: "Take care of the people who buy from you and the people who work for you.",
+        items: [
+          {
+            title: "Remember your regular customers",
+            description: "Save their names, addresses, and phone numbers so checkout is faster next time.",
+          },
+          {
+            title: "Reward loyal customers",
+            description: "Customers earn points every time they buy, and can use them for discounts.",
+          },
+          {
+            title: "Keep track of deliveries",
+            description: "See which orders still need to go out, and who is delivering them.",
+          },
+          {
+            title: "Staff clock in from their phone",
+            description:
+              "A simple attendance page where staff clock in with a PIN — and it can check that they're really at the shop.",
+            highlight: true,
+          },
+          {
+            title: "Cashiers unlock with a PIN",
+            description: "Each cashier has their own PIN, so you always know who made each sale.",
+            screenshot: "/projects/products/propos/mobile/Screenshot_1787557077.webp",
+            device: "phone",
+          },
+        ],
+      },
+      {
+        category: "Made for your business",
+        description:
+          "Some businesses need special tools. Turn them on for the business that needs them — the rest stay simple.",
+        items: [
+          {
+            title: "Water refilling stations",
+            description:
+              "Keep track of borrowed containers and deposits, plan regular deliveries by route, and get reminded when water tests are due.",
+            highlight: true,
+          },
+          {
+            title: "Windows, doors, and cabinets",
+            description:
+              "Make price quotes from measurements, take deposits, plan your cuts, and keep usable leftover pieces.",
+            highlight: true,
+          },
+          {
+            title: "Restaurants and carinderias",
+            description: "Set up your tables and see which ones are taken at a glance.",
           },
         ],
       },
@@ -206,6 +394,8 @@ export const PROJECTS: readonly Project[] = [
           {
             title: "Cashiers need a PIN to sell",
             description: "No shared passwords on the counter — each cashier signs in with their own PIN.",
+            screenshot: "/projects/products/propos/mobile/Screenshot_1787557072.webp",
+            device: "phone",
           },
           {
             title: "Staff only see what they need",
@@ -214,6 +404,10 @@ export const PROJECTS: readonly Project[] = [
           {
             title: "Your shop's data stays private",
             description: "Your shop's information is kept separate from every other shop using POSPro One. No one else can see it.",
+          },
+          {
+            title: "Safe photo uploads",
+            description: "Every picture you upload is checked and cleaned before it's saved, so nothing harmful gets in.",
           },
         ],
       },
@@ -265,13 +459,13 @@ export const PROJECTS: readonly Project[] = [
       },
     ],
     benefits: [
-      "One system for every register — no more comparing numbers by hand at closing",
+      "One system for every business, branch, and register — no more comparing numbers by hand at closing",
       "Stock counts you can trust, no need to recount by hand",
       "Keeps selling even when the internet is spotty, catches up once it's back",
       "See your real take-home profit, not just what came in at the register",
     ],
     targetBusiness:
-      "Store owners with one or more registers who want to know their real stock and sales numbers, not a guess at closing time.",
+      "Owners with one or more stores, branches, or kinds of business who want to see everything in one place — real stock, real sales, and real profit, not a guess at closing time.",
     screenshots: [
       "/projects/products/propos/mobile/Screenshot_1787557053.webp",
       "/projects/products/propos/mobile/Screenshot_1787557068.webp",

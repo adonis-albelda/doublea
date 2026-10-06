@@ -1,6 +1,17 @@
 "use client";
 
-import { Bot, Layers, ShieldCheck, Zap } from "lucide-react";
+import {
+  Bot,
+  Boxes,
+  Building2,
+  Layers,
+  ShieldCheck,
+  ShoppingCart,
+  Store,
+  Users,
+  Wallet,
+  Zap,
+} from "lucide-react";
 
 import { cn } from "@repo/ui/lib/utils";
 
@@ -8,6 +19,12 @@ import { useRevealEach } from "@/hooks/use-reveal";
 
 const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Core: Layers,
+  "All your businesses": Building2,
+  Selling: ShoppingCart,
+  Stock: Boxes,
+  "Money & reports": Wallet,
+  "Customers & staff": Users,
+  "Made for your business": Store,
   "AI-powered": Bot,
   Security: ShieldCheck,
 };
