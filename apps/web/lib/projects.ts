@@ -58,27 +58,23 @@ export interface Project {
   featureCategories?: readonly {
     category: string;
     description: string;
-    // Every highlight, plus any item with a `screenshot` (path under /public),
-    // appears in the detail page's device showcase, in a phone (default) or
-    // laptop frame per `device`.
-    items: readonly {
-      title: string;
-      description: string;
-      highlight?: boolean;
-      screenshot?: string;
-      device?: "phone" | "laptop";
-    }[];
+    items: readonly { title: string; description: string; highlight?: boolean }[];
   }[];
-  // Concrete "ask in plain language" examples for AI-powered features — each
-  // shown as its own mini chat mock (what the user does -> what the system
-  // gives back). Rendered as a carousel when there's more than one.
-  aiSpotlight?: readonly {
-    eyebrow: string;
+  // A few flagship features, each told as problem -> solution with a
+  // screenshot in a phone or laptop frame (detail page "See it for
+  // yourself"). `screenshot` is a path under /public; unset shows a
+  // labelled placeholder. `manualHref` links that feature's manual page.
+  showcase?: readonly {
     title: string;
-    description: string;
-    example: { query: string; response: readonly string[] };
-    note?: string;
+    problem: string;
+    solution: string;
+    points: readonly string[];
+    screenshot?: string;
+    device?: "phone" | "laptop";
+    manualHref?: string;
   }[];
+  // Where "see all features" points, under the showcase.
+  allFeaturesHref?: string;
 }
 
 export const PROJECTS: readonly Project[] = [
@@ -129,7 +125,17 @@ export const PROJECTS: readonly Project[] = [
       "Cashiers unlock with a PIN",
       "Water refilling stations",
       "Windows, doors, and cabinets",
-      "Restaurants and carinderias",
+      "Restaurants, carinderias, and silogan",
+      "Coffee and milk tea shops",
+      "Sari-sari stores",
+      "Clothing shops and boutiques",
+      "Ukay-ukay",
+      "Pharmacies and drugstores",
+      "Hardware and construction supplies",
+      "Motorcycle parts and repair shops",
+      "Grocery stores and mini marts",
+      "School and office supplies",
+      "And many more",
       "Turn a photo into a product list",
       "Set up your shop faster",
       "You approve everything AI adds",
@@ -150,7 +156,7 @@ export const PROJECTS: readonly Project[] = [
       "Turn a photo into a product list",
       "Extra login check for safety",
     ],
-    businessTypesSupported: 8,
+    businessTypesSupported: 12,
     featureCategories: [
       {
         category: "All your businesses",
@@ -196,8 +202,6 @@ export const PROJECTS: readonly Project[] = [
             description:
               "Keep selling even when the internet is down. Your sales are kept safe and sent once you're back online.",
             highlight: true,
-            screenshot: "/projects/products/propos/mobile/Screenshot_1787557268.webp",
-            device: "phone",
           },
           {
             title: "See sales from every register",
@@ -227,14 +231,10 @@ export const PROJECTS: readonly Project[] = [
           {
             title: "Scan barcodes and QR codes",
             description: "Scan an item to ring it up fast, or print your own labels for your shelves.",
-            screenshot: "/projects/products/propos/laptop/pospro-laptop-05.webp",
-            device: "laptop",
           },
           {
             title: "Find products by talking",
             description: "Say what you're looking for out loud and it gets added to the sale — no typing needed.",
-            screenshot: "/projects/products/propos/mobile/Screenshot_1787557304.webp",
-            device: "phone",
           },
           {
             title: "Know who has paid and who hasn't",
@@ -253,14 +253,10 @@ export const PROJECTS: readonly Project[] = [
           {
             title: "Know what's running low",
             description: "See which items you need to order again before they run out.",
-            screenshot: "/projects/products/propos/laptop/pospro-laptop-03.webp",
-            device: "laptop",
           },
           {
             title: "Order from your suppliers",
             description: "Keep track of your orders, what has arrived, what you still owe, and when it's due.",
-            screenshot: "/projects/products/propos/laptop/pospro-laptop-04.webp",
-            device: "laptop",
           },
           {
             title: "Every stock change is written down",
@@ -282,8 +278,6 @@ export const PROJECTS: readonly Project[] = [
             description:
               "Write down your rent, wages, and bills, and see what you actually keep — not just what came in.",
             highlight: true,
-            screenshot: "/projects/products/propos/laptop/pospro-laptop-02.webp",
-            device: "laptop",
           },
           {
             title: "See your real profit on every sale",
@@ -329,15 +323,13 @@ export const PROJECTS: readonly Project[] = [
           {
             title: "Cashiers unlock with a PIN",
             description: "Each cashier has their own PIN, so you always know who made each sale.",
-            screenshot: "/projects/products/propos/mobile/Screenshot_1787557077.webp",
-            device: "phone",
           },
         ],
       },
       {
         category: "Made for your business",
         description:
-          "Some businesses need special tools. Turn them on for the business that needs them — the rest stay simple.",
+          "POSPro One works for almost any shop that sells things. Some kinds of business also get their own special tools — turned on only for the business that needs them, so the rest stay simple.",
         items: [
           {
             title: "Water refilling stations",
@@ -352,8 +344,57 @@ export const PROJECTS: readonly Project[] = [
             highlight: true,
           },
           {
-            title: "Restaurants and carinderias",
-            description: "Set up your tables and see which ones are taken at a glance.",
+            title: "Restaurants, carinderias, and silogan",
+            description:
+              "Set up your tables and see which ones are taken. Add extras like more rice or an extra egg with one tap.",
+          },
+          {
+            title: "Coffee and milk tea shops",
+            description: "Sell drinks in small, medium, and large, with add-ons like pearls or an extra shot.",
+          },
+          {
+            title: "Sari-sari stores",
+            description:
+              "Ring up items fast, see what needs restocking before it runs out, and keep track of who still owes you.",
+          },
+          {
+            title: "Clothing shops and boutiques",
+            description:
+              "Sell one item in many sizes and colors, and print price tags with barcodes for each one.",
+          },
+          {
+            title: "Ukay-ukay",
+            description:
+              "Every piece is one of a kind? Type in the price right at the counter, and still see your total sales for the day.",
+          },
+          {
+            title: "Pharmacies and drugstores",
+            description:
+              "Senior and PWD discounts are worked out for you, and you can find medicines by name or by scanning the box.",
+          },
+          {
+            title: "Hardware and construction supplies",
+            description:
+              "Handle thousands of items, sell by the piece, meter, or box, and keep track of orders from your suppliers.",
+          },
+          {
+            title: "Motorcycle parts and repair shops",
+            description:
+              "Find parts even when the customer doesn't know the exact name, and add labor or service fees that don't count against your stock.",
+          },
+          {
+            title: "Grocery stores and mini marts",
+            description: "Scan barcodes at every register and watch all your counters' sales add up in one place.",
+          },
+          {
+            title: "School and office supplies",
+            description:
+              "Start with a ready-made list of common items, so you're ready before the back-to-school rush.",
+          },
+          {
+            title: "And many more",
+            description:
+              "Bakeries, gift shops, beauty products, pet supplies, farm supplies — if you sell it, POSPro One can keep track of it.",
           },
         ],
       },
@@ -394,8 +435,6 @@ export const PROJECTS: readonly Project[] = [
           {
             title: "Cashiers need a PIN to sell",
             description: "No shared passwords on the counter — each cashier signs in with their own PIN.",
-            screenshot: "/projects/products/propos/mobile/Screenshot_1787557072.webp",
-            device: "phone",
           },
           {
             title: "Staff only see what they need",
@@ -412,52 +451,81 @@ export const PROJECTS: readonly Project[] = [
         ],
       },
     ],
-    aiSpotlight: [
+    showcase: [
       {
-        eyebrow: "AI-Powered POS",
-        title: "Just describe what you need — no need to know the exact product name",
-        description:
-          "Your customers won't always know the exact product name. Just type or say what they're looking for in plain words, and POSPro One finds the closest matches for you.",
-        example: {
-          query: "Do you have paint for metal?",
-          response: [
-            "Rust-Oleum Metal Primer",
-            "Enamel Spray Paint — Metal & Wood",
-            "Anti-Rust Coating 1L",
-          ],
-        },
+        title: "All your businesses and branches in one account",
+        problem:
+          "Own more than one store? You probably use a different notebook, app, or login for each one — and you only see the full picture at the end of the month, if at all.",
+        solution:
+          "Put every business and every branch under one account. Pick one at the top of the screen to see just that store, or pick \"All\" to see everything added together.",
+        points: [
+          "Each business keeps its own discounts, tax, and receipts",
+          "Move stock from one branch to another in a few taps",
+          "Set a different price for one branch without touching the rest",
+        ],
+        device: "laptop",
+        manualHref: "/pospro/manual/features/businesses",
       },
       {
-        eyebrow: "AI-Powered POS",
-        title: "Snap a photo of the supplier invoice, skip the manual typing",
-        description:
-          "When a new delivery comes in, take a photo of the supplier's invoice instead of typing every item by hand. AI reads it and pulls out the items and quantities for you to restock.",
-        example: {
-          query: "📷 Photo uploaded: supplier invoice",
-          response: [
-            "12x Rust-Oleum Metal Primer",
-            "6x Enamel Spray Paint — Metal & Wood",
-            "20x Anti-Rust Coating 1L",
-          ],
-        },
-        note: "Nothing updates your stock until you check it over and approve it.",
+        title: "Know exactly what's on your shelves",
+        problem:
+          "Stock goes missing and no one can say why. Counting by hand takes hours, and the notebook is never quite right.",
+        solution:
+          "Every sale, delivery, transfer, and correction is written down with who did it and when. Your stock count updates by itself, for every branch.",
+        points: [
+          "See which items are running low before they run out",
+          "Know what each item cost you and how much you earn on it",
+          "Spot items that were sold more than you had on hand",
+        ],
+        screenshot: "/projects/products/propos/laptop/pospro-laptop-03.webp",
+        device: "laptop",
+        manualHref: "/pospro/manual/features/inventory",
       },
       {
-        eyebrow: "AI-Powered POS",
-        title: "Import your product list, AI cleans up the messy parts",
-        description:
-          "Onboarding products from a spreadsheet? Upload your CSV file and AI fixes entries that don't match the format — wrong columns, missing units, inconsistent names — so you don't have to clean it up by hand.",
-        example: {
-          query: "📄 CSV uploaded: 214 products",
-          response: [
-            "\"red shirt,m\" → Red Shirt — Size M",
-            "\"12pcs\" → Quantity: 12",
-            "\"150\" → Price: ₱150.00",
-          ],
-        },
-        note: "You can review every fix before it's saved.",
+        title: "Order and receive stock without the guesswork",
+        problem:
+          "Deliveries arrive short, invoices get lost, and it's easy to forget how much you still owe your supplier — or when it's due.",
+        solution:
+          "Write your order in POSPro One. When the delivery arrives, mark what actually came — your stock goes up right away, and the system remembers what you still owe.",
+        points: [
+          "Record deliveries that come in parts",
+          "Split payments into due dates your supplier agreed to",
+          "See your unpaid balance with every supplier at a glance",
+        ],
+        screenshot: "/projects/products/propos/laptop/pospro-laptop-04.webp",
+        device: "laptop",
+        manualHref: "/pospro/manual/features/receive-orders",
+      },
+      {
+        title: "Table plans for restaurants and carinderias",
+        problem:
+          "During the lunch rush, it's hard to remember which table ordered what. Orders get mixed up, and some tables leave without paying the full bill.",
+        solution:
+          "Draw your dining area once. On the till, see every table at a glance — which ones are taken and how much each one still owes. Tap a table to take a deposit or bill it.",
+        points: [
+          "See free and taken tables in one look",
+          "Know what every table still owes",
+          "Move a table's order straight to the counter when they pay",
+        ],
+        device: "phone",
+        manualHref: "/pospro/manual/features/table-plans",
+      },
+      {
+        title: "Staff attendance, right from their phone",
+        problem:
+          "Paper logbooks get signed by friends, times are written in after the fact, and late arrivals are hard to prove.",
+        solution:
+          "Staff clock in and out on a simple page using their own PIN — no app to install. You can also make sure they're really at the shop: the page checks their phone's location.",
+        points: [
+          "Breaks are recorded too",
+          "Works on any phone with a browser",
+          "See everyone's time records in one place",
+        ],
+        device: "phone",
+        manualHref: "/pospro/manual/features/attendance",
       },
     ],
+    allFeaturesHref: "/pospro/manual/features",
     benefits: [
       "One system for every business, branch, and register — no more comparing numbers by hand at closing",
       "Stock counts you can trust, no need to recount by hand",

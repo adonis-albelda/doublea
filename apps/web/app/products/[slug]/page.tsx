@@ -20,7 +20,6 @@ import {
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
 
-import { AiSpotlight } from "@/components/ai-spotlight";
 import { AnimatedCounter } from "@/components/animated-counter";
 import { BenefitsList } from "@/components/benefits-list";
 import { BookDemoCta } from "@/components/book-demo-cta";
@@ -202,8 +201,8 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </div>
         </section>
 
-        {/* Features shown on a phone or laptop */}
-        {project.featureCategories?.some((group) => group.items.some((item) => item.highlight || item.screenshot)) && (
+        {/* Flagship features: problem -> solution, on a phone or laptop */}
+        {project.showcase && project.showcase.length > 0 && (
           <ScrollReveal>
             <section className="bg-page-wash py-14 lg:py-20">
               <div className="container">
@@ -211,38 +210,26 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Highlights</p>
                   <h2 className="mt-3 font-display text-h2 text-foreground">See it for yourself</h2>
                   <p className="mt-3 text-body text-muted-foreground">
-                    Tap a feature to see how it looks in {project.name} — on the till phone or on the office computer.
+                    The problems store owners tell us about most — and how {project.name} solves each one.
                   </p>
                 </div>
-                <FeatureShowcase
-                  name={project.name}
-                  items={project.featureCategories.flatMap((group) =>
-                    group.items.filter((item) => item.highlight || item.screenshot),
-                  )}
-                />
-              </div>
-            </section>
-          </ScrollReveal>
-        )}
-
-        {/* AI spotlight — concrete "ask in plain language" example */}
-        {project.aiSpotlight && (
-          <ScrollReveal>
-            <section className="py-14 lg:py-20">
-              <div className="container">
-                <div className="max-w-2xl">
-                  <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">
-                    AI, put to work
-                  </p>
-                  <h2 className="mt-3 font-display text-h2 text-foreground">See it in action</h2>
-                  <p className="mt-3 text-body text-muted-foreground">
-                    A few real ways the AI in {project.name} saves you from typing, searching, and cleaning up
-                    data by hand.
-                  </p>
-                </div>
-                <div className="mt-10">
-                  <AiSpotlight spotlight={project.aiSpotlight} />
-                </div>
+                <FeatureShowcase name={project.name} items={project.showcase} />
+                {project.allFeaturesHref && (
+                  <div className="mt-14 flex flex-col items-start justify-between gap-4 rounded-xl border border-border-sage bg-card p-6 sm:flex-row sm:items-center">
+                    <div>
+                      <p className="text-body font-medium text-foreground">Want to see all the features?</p>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        The {project.name} manual explains every feature step by step, with pictures.
+                      </p>
+                    </div>
+                    <Button asChild>
+                      <Link href={project.allFeaturesHref}>
+                        View all features
+                        <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
+                      </Link>
+                    </Button>
+                  </div>
+                )}
               </div>
             </section>
           </ScrollReveal>

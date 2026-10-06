@@ -2,26 +2,29 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { ImageIcon, Laptop, Smartphone, Zap } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Check, ImageIcon, Laptop, Smartphone } from "lucide-react";
 
 import { cn } from "@repo/ui/lib/utils";
 
-const ADVANCE_MS = 6000;
+const ADVANCE_MS = 9000;
 
 export interface ShowcaseItem {
   title: string;
-  description: string;
-  highlight?: boolean;
-  // Path under /public. Unset = a labelled placeholder screen, so a
-  // highlight can be listed before its capture exists.
+  problem: string;
+  solution: string;
+  points: readonly string[];
+  // Path under /public. Unset = a labelled placeholder screen, so a feature
+  // can be listed before its capture exists.
   screenshot?: string;
   // Which frame the screenshot sits in. Phone captures are 1080×2400,
   // laptop captures ~3024×1720.
   device?: "phone" | "laptop";
+  manualHref?: string;
 }
 
-// Features shown on a real device — each in a phone or laptop frame, per
-// item. Advances on its own until the visitor picks one.
+// Flagship features told as problem -> solution, each shown in a phone or
+// laptop frame. Advances on its own until the visitor picks one.
 export function FeatureShowcase({ items, name }: { items: readonly ShowcaseItem[]; name: string }) {
   const [index, setIndex] = React.useState(0);
   const [pinned, setPinned] = React.useState(false);
@@ -34,64 +37,84 @@ export function FeatureShowcase({ items, name }: { items: readonly ShowcaseItem[
   }, [pinned, items.length]);
 
   const active = items[index];
-  const device = active?.device ?? "phone";
+  if (!active) return null;
+  const device = active.device ?? "phone";
   // Only screens for the frame on show — the frame itself is remounted
   // (key) when the device changes, so it animates in.
   const screens = items.map((item, i) => ({ item, i })).filter(({ item }) => (item.device ?? "phone") === device);
 
   return (
-    <div className="mt-10 grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:gap-14">
-      <ul className="flex flex-col gap-3" role="tablist" aria-label={`${name} features`}>
+    <div className="mt-10">
+      <div className="flex flex-wrap gap-2" role="tablist" aria-label={`${name} features`}>
         {items.map((item, i) => {
           const DeviceIcon = (item.device ?? "phone") === "laptop" ? Laptop : Smartphone;
           return (
-            <li key={item.title}>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={i === index}
-                onClick={() => {
-                  setIndex(i);
-                  setPinned(true);
-                }}
-                className={cn(
-                  "w-full rounded-lg border p-4 text-left transition-colors duration-300",
-                  i === index
-                    ? "border-accent/60 bg-accent/5"
-                    : "border-border-sage bg-card hover:border-primary/40",
-                )}
-              >
-                <span className="flex items-center gap-2 text-body font-medium text-foreground">
-                  {item.highlight ? (
-                    <Zap
-                      className={cn("h-4 w-4 shrink-0", i === index ? "text-accent" : "text-primary/60")}
-                      aria-hidden="true"
-                    />
-                  ) : null}
-                  <span className="flex-1">{item.title}</span>
-                  <DeviceIcon className="h-4 w-4 shrink-0 text-slate-sage" aria-label={item.device ?? "phone"} />
-                </span>
-                {/* Only the picked one shows its description — keeps the list
-                    short enough to sit beside the device. */}
-                {i === index && <span className="mt-1.5 block text-sm text-muted-foreground">{item.description}</span>}
-              </button>
-            </li>
+            <button
+              key={item.title}
+              type="button"
+              role="tab"
+              aria-selected={i === index}
+              onClick={() => {
+                setIndex(i);
+                setPinned(true);
+              }}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-300",
+                i === index
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border-sage bg-card text-foreground hover:border-primary/40",
+              )}
+            >
+              <DeviceIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
+              {item.title}
+            </button>
           );
         })}
-      </ul>
+      </div>
 
-      {/* Fixed height so the page doesn't jump when the frame changes size. */}
-      <div className="flex min-h-[610px] items-center justify-center">
-        <div key={device} className="w-full motion-safe:animate-[device-in_0.45s_ease-out]">
-          {device === "laptop" ? (
-            <LaptopFrame>
-              <Screens screens={screens} index={index} name={name} sizes="(min-width: 1024px) 620px, 90vw" />
-            </LaptopFrame>
-          ) : (
-            <PhoneFrame>
-              <Screens screens={screens} index={index} name={name} sizes="260px" />
-            </PhoneFrame>
+      <div className="mt-10 grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-14">
+        <div key={active.title} role="tabpanel" className="motion-safe:animate-[device-in_0.45s_ease-out]">
+          <h3 className="font-display text-h3 text-foreground">{active.title}</h3>
+
+          <p className="mt-6 font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">The problem</p>
+          <p className="mt-2 text-body text-muted-foreground">{active.problem}</p>
+
+          <p className="mt-6 font-mono text-caption uppercase tracking-[0.04em] text-primary">How {name} fixes it</p>
+          <p className="mt-2 text-body text-foreground">{active.solution}</p>
+
+          <ul className="mt-5 flex flex-col gap-2.5">
+            {active.points.map((point) => (
+              <li key={point} className="flex items-start gap-2.5 text-body text-foreground">
+                <Check className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                {point}
+              </li>
+            ))}
+          </ul>
+
+          {active.manualHref && (
+            <Link
+              href={active.manualHref}
+              className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+            >
+              Read how it works
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
           )}
+        </div>
+
+        {/* Fixed height so the page doesn't jump when the frame changes size. */}
+        <div className="flex items-center justify-center lg:min-h-[790px]">
+          <div key={device} className="w-full motion-safe:animate-[device-in_0.45s_ease-out]">
+            {device === "laptop" ? (
+              <LaptopFrame>
+                <Screens screens={screens} index={index} name={name} sizes="(min-width: 1024px) 680px, 90vw" />
+              </LaptopFrame>
+            ) : (
+              <PhoneFrame>
+                <Screens screens={screens} index={index} name={name} sizes="340px" />
+              </PhoneFrame>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -141,12 +164,12 @@ function Screens({
 // edge only — deliberately unlike the notched PhoneMockup.
 function PhoneFrame({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative mx-auto w-[260px]">
-      <span className="absolute -right-[3px] top-24 z-10 h-16 w-[3px] rounded-r-sm bg-ink/80" />
-      <span className="absolute -right-[3px] top-44 z-10 h-10 w-[3px] rounded-r-sm bg-ink/80" />
-      <div className="relative overflow-hidden rounded-[2rem] border-[7px] border-ink bg-ink shadow-2xl">
-        <span className="absolute left-1/2 top-2.5 z-10 h-3 w-3 -translate-x-1/2 rounded-full bg-ink ring-2 ring-slate-sage/30" />
-        <div className="relative aspect-[9/20] overflow-hidden rounded-[1.6rem] bg-paper">{children}</div>
+    <div className="relative mx-auto w-full max-w-[340px]">
+      <span className="absolute -right-[3px] top-28 z-10 h-20 w-[3px] rounded-r-sm bg-ink/80" />
+      <span className="absolute -right-[3px] top-52 z-10 h-12 w-[3px] rounded-r-sm bg-ink/80" />
+      <div className="relative overflow-hidden rounded-[2.5rem] border-[8px] border-ink bg-ink shadow-2xl">
+        <span className="absolute left-1/2 top-3 z-10 h-3.5 w-3.5 -translate-x-1/2 rounded-full bg-ink ring-2 ring-slate-sage/30" />
+        <div className="relative aspect-[9/20] overflow-hidden rounded-[2rem] bg-paper">{children}</div>
       </div>
     </div>
   );
@@ -155,7 +178,7 @@ function PhoneFrame({ children }: { children: React.ReactNode }) {
 // Same body as device-mockup.tsx's LaptopMockup, but takes any screen.
 function LaptopFrame({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto w-full max-w-[620px]">
+    <div className="mx-auto w-full max-w-[680px]">
       <div className="relative rounded-t-2xl border-[10px] border-b-0 border-ink bg-ink shadow-2xl">
         <span className="absolute left-1/2 top-1 z-10 h-1 w-1 -translate-x-1/2 rounded-full bg-slate-sage/50" />
         <div className="relative aspect-[3024/1720] overflow-hidden bg-paper">{children}</div>
