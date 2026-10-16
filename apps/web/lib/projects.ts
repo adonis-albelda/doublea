@@ -88,8 +88,8 @@ export const PROJECTS: readonly Project[] = [
     heroImage: {
       src: "/projects/products/propos/pospro-hero.webp",
       alt: "POSPro One on a phone, surrounded by its main features: inventory, suppliers, purchase orders, receiving, attendance, reports, discounts, AI, and more",
-      width: 1671,
-      height: 941,
+      width: 1548,
+      height: 884,
     },
     category: "personal",
     tagline:

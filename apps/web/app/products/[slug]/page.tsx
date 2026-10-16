@@ -92,7 +92,13 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 Back to work
               </Link>
 
-              <div className="mt-8 grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-center">
+              <div
+                className={
+                  project.heroImage
+                    ? "mt-8 grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center lg:gap-10"
+                    : "mt-8 grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-center"
+                }
+              >
                 <div>
                   {project.logo && (
                     <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl border border-border-sage bg-card p-2 shadow-sm">
@@ -141,7 +147,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                     alt={project.heroImage.alt}
                     width={project.heroImage.width}
                     height={project.heroImage.height}
-                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    sizes="(min-width: 1024px) 60vw, 100vw"
                     priority
                     className="h-auto w-full"
                   />
