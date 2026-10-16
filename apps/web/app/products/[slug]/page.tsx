@@ -95,7 +95,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               <div
                 className={
                   project.heroImage
-                    ? "mt-8 grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center lg:gap-10"
+                    ? "mt-8"
                     : "mt-8 grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-center"
                 }
               >
@@ -141,21 +141,27 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   )}
                 </div>
 
-                {project.heroImage ? (
-                  <Image
-                    src={project.heroImage.src}
-                    alt={project.heroImage.alt}
-                    width={project.heroImage.width}
-                    height={project.heroImage.height}
-                    sizes="(min-width: 1024px) 60vw, 100vw"
-                    priority
-                    className="h-auto w-full"
-                  />
-                ) : (
-                  <ProjectShowcase project={project} />
-                )}
+                {!project.heroImage && <ProjectShowcase project={project} />}
               </div>
             </div>
+
+            {/* Hero image: the section's centrepiece, below the copy and
+                outside the container so it can use nearly the full screen.
+                Served as-is (unoptimized) — Next's re-compression visibly
+                softened the small text on its cards. */}
+            {project.heroImage && (
+              <div className="mt-10 px-4 lg:mt-12 lg:px-8">
+                <Image
+                  src={project.heroImage.src}
+                  alt={project.heroImage.alt}
+                  width={project.heroImage.width}
+                  height={project.heroImage.height}
+                  priority
+                  unoptimized
+                  className="mx-auto h-auto max-h-[88vh] w-auto max-w-full"
+                />
+              </div>
+            )}
           </section>
         </ScrollReveal>
 
