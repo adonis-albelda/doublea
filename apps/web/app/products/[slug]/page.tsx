@@ -151,15 +151,20 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   <p className="mt-3 text-body-lg text-muted-foreground">{project.overview.description}</p>
                 </div>
               </div>
-              <div className="mt-10 px-4 lg:mt-12 lg:px-8">
+              {/* Full screen width and height on desktop (the picture is ~16:9,
+                  so it fills a typical screen edge to edge); on phones the
+                  height follows the picture so there's no empty band. */}
+              <div
+                className="relative mt-10 w-full lg:mt-12 lg:aspect-auto lg:h-[100svh]"
+                style={{ aspectRatio: `${project.overview.image.width} / ${project.overview.image.height}` }}
+              >
                 <Image
                   src={project.overview.image.src}
                   alt={project.overview.image.alt}
-                  width={project.overview.image.width}
-                  height={project.overview.image.height}
+                  fill
                   sizes="100vw"
                   quality={95}
-                  className="mx-auto h-auto max-h-[88vh] w-auto max-w-full"
+                  className="object-contain"
                 />
               </div>
             </section>
