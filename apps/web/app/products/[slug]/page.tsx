@@ -92,13 +92,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 Back to work
               </Link>
 
-              <div
-                className={
-                  project.heroImage
-                    ? "mt-8"
-                    : "mt-8 grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-center"
-                }
-              >
+              <div className="mt-8 grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-center">
                 <div>
                   {project.logo && (
                     <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl border border-border-sage bg-card p-2 shadow-sm">
@@ -141,29 +135,36 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   )}
                 </div>
 
-                {!project.heroImage && <ProjectShowcase project={project} />}
+                <ProjectShowcase project={project} />
               </div>
             </div>
+          </section>
+        </ScrollReveal>
 
-            {/* Hero image: the section's centrepiece, below the copy and
-                outside the container so it can use nearly the full screen.
-                Served as-is (unoptimized) — Next's re-compression visibly
-                softened the small text on its cards. */}
-            {project.heroImage && (
+        {/* Overview picture — its own section, right before Features */}
+        {project.overview && (
+          <ScrollReveal>
+            <section className="py-14 lg:py-20">
+              <div className="container">
+                <div className="mx-auto max-w-2xl text-center">
+                  <h2 className="font-display text-h2 text-foreground">{project.overview.title}</h2>
+                  <p className="mt-3 text-body-lg text-muted-foreground">{project.overview.description}</p>
+                </div>
+              </div>
               <div className="mt-10 px-4 lg:mt-12 lg:px-8">
                 <Image
-                  src={project.heroImage.src}
-                  alt={project.heroImage.alt}
-                  width={project.heroImage.width}
-                  height={project.heroImage.height}
-                  priority
-                  unoptimized
+                  src={project.overview.image.src}
+                  alt={project.overview.image.alt}
+                  width={project.overview.image.width}
+                  height={project.overview.image.height}
+                  sizes="100vw"
+                  quality={95}
                   className="mx-auto h-auto max-h-[88vh] w-auto max-w-full"
                 />
               </div>
-            )}
-          </section>
-        </ScrollReveal>
+            </section>
+          </ScrollReveal>
+        )}
 
         {/* Features */}
         <section className="bg-background py-14 lg:py-20">
