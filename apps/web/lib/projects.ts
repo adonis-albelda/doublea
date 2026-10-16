@@ -26,6 +26,9 @@ export interface Project {
   screenshotsDesktop?: readonly string[];
   screenshotsTablet?: readonly string[];
   logo?: string;
+  // Single static image for the detail page hero's right side, in place of
+  // the device-mockup showcase. Path under /public.
+  heroImage?: { src: string; alt: string; width: number; height: number };
   // Real client locations — update the count as new clients sign on.
   storeLocations?: readonly { city: string; stores: number }[];
   // Live demo access exists for this project — the actual admin dashboard
@@ -82,6 +85,12 @@ export const PROJECTS: readonly Project[] = [
     slug: "pospro",
     name: "POSPro One",
     logo: "/projects/products/propos/logo.webp",
+    heroImage: {
+      src: "/projects/products/propos/pospro-hero.webp",
+      alt: "POSPro One on a phone, surrounded by its main features: inventory, suppliers, purchase orders, receiving, attendance, reports, discounts, AI, and more",
+      width: 1671,
+      height: 941,
+    },
     category: "personal",
     tagline:
       "One system for all your businesses — sell, track your stock, and see your real profit, even without internet.",

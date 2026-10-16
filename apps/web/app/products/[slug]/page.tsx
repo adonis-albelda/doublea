@@ -135,7 +135,19 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   )}
                 </div>
 
-                <ProjectShowcase project={project} />
+                {project.heroImage ? (
+                  <Image
+                    src={project.heroImage.src}
+                    alt={project.heroImage.alt}
+                    width={project.heroImage.width}
+                    height={project.heroImage.height}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    priority
+                    className="h-auto w-full"
+                  />
+                ) : (
+                  <ProjectShowcase project={project} />
+                )}
               </div>
             </div>
           </section>
