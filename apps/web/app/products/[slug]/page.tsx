@@ -151,11 +151,11 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   <p className="mt-3 text-body-lg text-muted-foreground">{project.overview.description}</p>
                 </div>
               </div>
-              {/* Full screen width and height on desktop (the picture is ~16:9,
-                  so it fills a typical screen edge to edge); on phones the
-                  height follows the picture so there's no empty band. */}
+              {/* 80% of the screen's width and height on desktop (the picture
+                  is ~16:9, so it fills that box); on phones the height
+                  follows the picture so there's no empty band. */}
               <div
-                className="relative mt-10 w-full lg:mt-12 lg:aspect-auto lg:h-[100svh]"
+                className="relative mx-auto mt-10 w-full lg:mt-12 lg:aspect-auto lg:h-[80svh] lg:w-[80vw]"
                 style={{ aspectRatio: `${project.overview.image.width} / ${project.overview.image.height}` }}
               >
                 <Image
