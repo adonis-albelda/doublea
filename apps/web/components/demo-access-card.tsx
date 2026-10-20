@@ -3,9 +3,20 @@
 import * as React from "react";
 import Link from "next/link";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { SiGoogle } from "@icons-pack/react-simple-icons";
+import { SiApple, SiGoogle, SiGoogleplay } from "@icons-pack/react-simple-icons";
 import { useConvexAuth, useQuery } from "convex/react";
-import { Check, Copy, Download, FlaskConical, Info, Loader2, MessageSquare, ShieldCheck } from "lucide-react";
+import {
+  Check,
+  Copy,
+  Download,
+  Info,
+  Loader2,
+  MessageSquare,
+  Printer,
+  RefreshCw,
+  ShieldCheck,
+  Smartphone,
+} from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
 
@@ -100,11 +111,76 @@ export function DemoAccessCard({ project }: { project: Project }) {
           day to day.
         </p>
 
-        <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-accent/30 bg-accent/5 px-4 py-3">
-          <FlaskConical className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-          <p className="text-sm text-foreground">
-            {project.name} is still in closed testing on Google Play. Until it&apos;s approved there, install it
-            directly with the APK below.
+        <ul className="mt-5 grid gap-3 sm:grid-cols-3">
+          {[
+            { icon: Smartphone, text: "Runs on Android phones and tablets" },
+            { icon: Printer, text: "Prints receipts on Bluetooth printers" },
+            { icon: RefreshCw, text: "Updates arrive through the store" },
+          ].map((item) => (
+            <li key={item.text} className="flex items-start gap-2.5 text-sm text-foreground">
+              <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+              {item.text}
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          {project.playStoreUrl && (
+            <Button size="lg" className="gap-2.5" asChild>
+              <Link href={project.playStoreUrl} target="_blank" rel="noopener noreferrer">
+                <SiGoogleplay className="h-5 w-5" aria-hidden="true" />
+                <span className="flex flex-col items-start leading-tight">
+                  <span className="text-[10px] font-normal uppercase tracking-[0.04em] opacity-80">Get it on</span>
+                  <span>Google Play</span>
+                </span>
+              </Link>
+            </Button>
+          )}
+          {project.appStoreUrl ? (
+            <Button size="lg" className="gap-2.5" asChild>
+              <Link href={project.appStoreUrl} target="_blank" rel="noopener noreferrer">
+                <SiApple className="h-5 w-5" aria-hidden="true" />
+                <span className="flex flex-col items-start leading-tight">
+                  <span className="text-[10px] font-normal uppercase tracking-[0.04em] opacity-80">Download on the</span>
+                  <span>App Store</span>
+                </span>
+              </Link>
+            </Button>
+          ) : (
+            <Button size="lg" variant="outline" className="gap-2.5" disabled aria-label="App Store — coming soon">
+              <SiApple className="h-5 w-5" aria-hidden="true" />
+              <span className="flex flex-col items-start leading-tight">
+                <span className="text-[10px] font-normal uppercase tracking-[0.04em] opacity-80">Coming soon</span>
+                <span>App Store</span>
+              </span>
+            </Button>
+          )}
+        </div>
+        {!project.appStoreUrl && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            The iPhone and iPad version is on the way — we&apos;ll post the App Store link here once it&apos;s live.
+          </p>
+        )}
+
+        {project.slug === "pospro" && (
+          <div className="mt-5 flex items-start gap-2.5 rounded-lg border border-border-sage bg-background px-4 py-3">
+            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+            <p className="text-xs text-muted-foreground">
+              We work hard to keep {project.name} reliable, but no app is perfect. Please keep your own records
+              and daily checks — we can&apos;t cover lost sales or profits if something goes wrong, though we&apos;ll
+              always help you fix it fast. By installing, you agree to our{" "}
+              <Link href="/pospro/terms-of-service" className="text-primary underline-offset-2 hover:underline">
+                Terms of Service
+              </Link>
+              .
+            </p>
+          </div>
+        )}
+
+        <div className="mt-8 border-t border-border-sage pt-6">
+          <p className="text-sm font-medium text-foreground">Prefer to install the APK directly?</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            For Android devices without Google Play, download the installer file instead.
           </p>
         </div>
 
@@ -148,8 +224,8 @@ export function DemoAccessCard({ project }: { project: Project }) {
               <div className="flex items-start gap-2.5">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                 <p className="text-xs text-muted-foreground">
-                  Android will warn about installing outside the Play Store — allow it for this file, since it&apos;s
-                  the closed-testing build.
+                  Android will warn about installing outside the Play Store — allow it for this file. It&apos;s the
+                  same app as the Play Store version.
                 </p>
               </div>
               {project.slug === "pospro" && (
@@ -160,7 +236,7 @@ export function DemoAccessCard({ project }: { project: Project }) {
                     <Link href="/pospro/feedback" className="text-primary underline-offset-2 hover:underline">
                       Send feedback
                     </Link>{" "}
-                    — it helps us fix things before the Play Store release.
+                    — it helps us make the app better.
                   </p>
                 </div>
               )}

@@ -41,6 +41,10 @@ export interface Project {
   // here since anything in this file ships in the client bundle regardless
   // of sign-in state.
   hasDemoAccess?: boolean;
+  // Public store listing. Unset App Store link shows a disabled
+  // "Coming soon" badge on the Try it card instead.
+  playStoreUrl?: string;
+  appStoreUrl?: string;
   // Tints the circle-wipe page-transition (project-transition.tsx) when
   // navigating into this project, to match its brand color. Falls back to
   // the site's own primary (sage) when unset.
@@ -582,6 +586,7 @@ export const PROJECTS: readonly Project[] = [
     ],
     storeLocations: [{ city: "Calbayog City", stores: 2 }],
     hasDemoAccess: true,
+    playStoreUrl: "https://play.google.com/store/apps/details?id=com.doubleaitsolutions.pospro",
     pricingPlans: [
       {
         name: "Starter",

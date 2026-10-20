@@ -1,14 +1,15 @@
 // Full text supplied by the user, verbatim, except two bracketed
 // placeholders from the template ([SUPPORT EMAIL], [BUSINESS ADDRESS]) —
 // filled with the business's real, already-public contact email and
-// Calbayog City address used elsewhere on this site.
+// Calbayog City address used elsewhere on this site. Section 23 (plain-words
+// business-loss explainer) added later at the user's request.
 export function PosProTermsContent() {
   return (
     <div className="prose-legal flex flex-col gap-6 text-body text-muted-foreground [&_h2]:mt-4 [&_h2]:font-display [&_h2]:text-h3 [&_h2]:text-foreground [&_strong]:text-foreground [&_ul]:flex [&_ul]:list-disc [&_ul]:flex-col [&_ul]:gap-2 [&_ul]:pl-5">
       <p>
         <strong>Effective Date:</strong> September 13, 2026
         <br />
-        <strong>Last Updated:</strong> September 13, 2026
+        <strong>Last Updated:</strong> October 20, 2026
       </p>
 
       <p>
@@ -368,7 +369,50 @@ export function PosProTermsContent() {
       </ul>
       <p>Nothing in these Terms is intended to exclude liability that cannot legally be excluded under applicable law.</p>
 
-      <h2>23. Indemnification</h2>
+      <h2>23. Business Losses &mdash; In Plain Words</h2>
+      <p>
+        We built POSPro One to help your business run smoothly, and we take that responsibility seriously. Still,
+        like any software, it can sometimes run into problems we cannot fully prevent &mdash; a bug, a slow or lost
+        internet connection, a device or printer that stops working, a power interruption, or an outage at one of the
+        services we rely on.
+      </p>
+      <p>
+        Because of this, we want to be honest and clear with you from the start: POSPro One and its developers are
+        not responsible for any lost sales, lost profits, or other business losses that happen while using the app,
+        including losses caused by:
+      </p>
+      <ul>
+        <li>The app being slow, unavailable, or not working as expected</li>
+        <li>Errors in prices, stock counts, discounts, or reports</li>
+        <li>Lost, incomplete, or delayed records</li>
+        <li>Mistakes made by you, your employees, or your cashiers</li>
+        <li>Problems with phones, tablets, printers, scanners, or other devices</li>
+        <li>Internet, electricity, or third-party service problems</li>
+        <li>Theft, fraud, or unauthorized use of your account</li>
+      </ul>
+      <p>
+        Running a business always carries some risk, and the final decisions about your store &mdash; your prices,
+        your cash, your stock, and your records &mdash; stay with you. To protect your business, we kindly recommend
+        that you:
+      </p>
+      <ul>
+        <li>Count your cash and check your sales at the end of each day</li>
+        <li>Do physical stock counts from time to time</li>
+        <li>Export your important records regularly and keep your own copy</li>
+        <li>Have a simple backup plan, like a paper receipt book, in case the app or internet is down</li>
+        <li>Give employees only the access they need</li>
+      </ul>
+      <p>
+        If something goes wrong, please tell us right away through the app or by email. While we cannot cover
+        business losses, we will always do our best to help you find the problem, fix it, and get your store running
+        again as quickly as we can.
+      </p>
+      <p>
+        This section explains Section 22 in simpler words. It does not remove any rights you have that cannot be
+        removed under applicable law.
+      </p>
+
+      <h2>24. Indemnification</h2>
       <p>
         To the extent permitted by applicable law, you agree to defend, indemnify, and hold harmless POSPro One and
         its owners, employees, contractors, and service providers from claims, liabilities, damages, losses, and
@@ -383,7 +427,7 @@ export function PosProTermsContent() {
         <li>Unauthorized transactions or business activities conducted through your account</li>
       </ul>
 
-      <h2>24. Changes to These Terms</h2>
+      <h2>25. Changes to These Terms</h2>
       <p>We may update these Terms when necessary to reflect:</p>
       <ul>
         <li>New features</li>
@@ -398,14 +442,14 @@ export function PosProTermsContent() {
         updated Terms, to the extent permitted by applicable law.
       </p>
 
-      <h2>25. Governing Law</h2>
+      <h2>26. Governing Law</h2>
       <p>
         These Terms shall be governed by the laws of the Republic of the Philippines, unless otherwise required by
         applicable law or agreed in writing.
       </p>
       <p>Any dispute shall be handled through the appropriate legal process and jurisdiction applicable under Philippine law.</p>
 
-      <h2>26. Contact</h2>
+      <h2>27. Contact</h2>
       <p>For questions regarding these Terms, contact:</p>
       <p>
         <strong>POSPro One</strong>
@@ -415,7 +459,7 @@ export function PosProTermsContent() {
         Business Address: <strong>Calbayog City, Samar, Philippines</strong>
       </p>
 
-      <h2>27. Agreement</h2>
+      <h2>28. Agreement</h2>
       <p>By creating an account or using POSPro One, you acknowledge that:</p>
       <ul>
         <li>You have read these Terms</li>
@@ -425,7 +469,7 @@ export function PosProTermsContent() {
       </ul>
 
       <p className="font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">
-        Last Updated: September 13, 2026
+        Last Updated: October 20, 2026
       </p>
     </div>
   );
