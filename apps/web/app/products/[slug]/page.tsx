@@ -95,7 +95,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
 
               <div
                 className={`mt-8 grid gap-12 lg:items-center ${
-                  project.heroImage ? "lg:grid-cols-[0.8fr_1.4fr] lg:gap-8" : "lg:grid-cols-[1fr_1.05fr]"
+                  project.heroImage ? "lg:grid-cols-[1fr_1.2fr] lg:gap-12" : "lg:grid-cols-[1fr_1.05fr]"
                 }`}
               >
                 <div>

@@ -83,6 +83,30 @@
   }
 }
 
+/* Product hero picture gently bobbing, like it's floating above the page. */
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+/* Its ground shadow shrinks/fades as the picture rises. */
+@keyframes hero-float-shadow {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleX(0.85);
+    opacity: 0.3;
+  }
+}
+
 @keyframes spin-y {
   from {
     transform: rotateY(0deg);
