@@ -94,7 +94,7 @@ export function Hero() {
 
         <div className="relative mx-auto aspect-square w-full max-w-md [perspective:1200px] lg:max-w-none">
           <Image
-            src="/logo-3d.png"
+            src="/logo-3d.webp"
             alt="Double-A IT Solutions"
             fill
             priority

@@ -39,7 +39,7 @@ export function Footer() {
     <footer className="border-t border-border-sage bg-sage-100 py-12">
       <div className="container grid gap-10 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
         <div className="flex items-start gap-3">
-          <Image src="/logo.png" alt="" width={28} height={28} className="mt-0.5 h-7 w-7 shrink-0" />
+          <Image src="/logo.webp" alt="" width={28} height={28} className="mt-0.5 h-7 w-7 shrink-0" />
           <div>
             <p className="font-display text-sm font-medium text-foreground">
               Double-A IT Solutions

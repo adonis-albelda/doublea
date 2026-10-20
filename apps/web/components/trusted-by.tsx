@@ -6,7 +6,7 @@ const TRUSTED_BY = [
   { name: "Client Two", logo: "/trusted/logo2.jpg" },
   { name: "Client Three", logo: "/trusted/logo3.webp" },
   { name: "Client Four", logo: "/trusted/logo4.webp" },
-  { name: "Client Five", logo: "/trusted/logo5.png" },
+  { name: "Client Five", logo: "/trusted/logo5.webp" },
 ] as const;
 
 function LogoStrip({ ariaHidden }: { ariaHidden?: boolean }) {

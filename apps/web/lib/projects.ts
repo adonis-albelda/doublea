@@ -59,6 +59,7 @@ export interface Project {
     priceNote?: string;
     features: readonly string[];
     // Button override — defaults to "Get started" linking to #book-demo.
+    // An absolute (http) href opens in a new tab.
     cta?: { label: string; href: string };
   }[];
   // How many kinds of business this project is set up for — shown as its
@@ -100,7 +101,7 @@ export const PROJECTS: readonly Project[] = [
       description:
         "Selling, stock, suppliers, staff, and reports — everything your shops need, in one place, on your phone and on your computer.",
       image: {
-        src: "/projects/products/propos/hero-section.png",
+        src: "/projects/products/propos/hero-section.webp",
         alt: "POSPro One on a phone, surrounded by its main features: inventory, suppliers, purchase orders, receiving, attendance, reports, discounts, AI, and more",
         width: 1671,
         height: 941,
@@ -610,7 +611,7 @@ export const PROJECTS: readonly Project[] = [
           "No payment needed to start",
           "Need more time? Ask us to extend your trial",
         ],
-        cta: { label: "Start free trial", href: "#try-it" },
+        cta: { label: "Start free trial", href: "https://pospro.doubleadigitalsolutions.store/auth/register" },
       },
       {
         name: "Monthly",

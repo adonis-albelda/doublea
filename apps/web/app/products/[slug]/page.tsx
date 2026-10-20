@@ -47,7 +47,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const project = getProjectBySlug(params.slug);
   if (!project) return {};
-  const ogImage = project.logo ?? "/logo-3d.png";
+  const ogImage = project.logo ?? "/logo-3d.webp";
   return {
     title: project.name,
     description: project.description,

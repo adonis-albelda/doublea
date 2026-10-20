@@ -38,13 +38,13 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: `${SITE_NAME} — Custom software, websites, web apps, automation`,
     description: SITE_DESCRIPTION,
-    images: [{ url: "/logo-3d.png", width: 1204, height: 1204, alt: SITE_NAME }],
+    images: [{ url: "/logo-3d.webp", width: 1204, height: 1204, alt: SITE_NAME }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} — Custom software, websites, web apps, automation`,
     description: SITE_DESCRIPTION,
-    images: ["/logo-3d.png"],
+    images: ["/logo-3d.webp"],
   },
   alternates: {
     canonical: "/",
@@ -56,7 +56,7 @@ const ORGANIZATION_JSON_LD = {
   "@type": "Organization",
   name: SITE_NAME,
   url: SITE_URL,
-  logo: `${SITE_URL}/logo-3d.png`,
+  logo: `${SITE_URL}/logo-3d.webp`,
   email: "doublea.itsolutions2026@gmail.com",
   telephone: "+639264450238",
   address: {

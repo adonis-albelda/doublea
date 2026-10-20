@@ -73,7 +73,10 @@ export function PricingSection({ project }: { project: Project }) {
                     Talk to our team
                   </Link>
                 ) : (
-                  <Link href={plan.cta?.href ?? "#book-demo"}>
+                  <Link
+                    href={plan.cta?.href ?? "#book-demo"}
+                    {...(plan.cta?.href.startsWith("http") && { target: "_blank", rel: "noopener noreferrer" })}
+                  >
                     <Check className="h-4 w-4" aria-hidden="true" />
                     {plan.cta?.label ?? "Get started"}
                   </Link>
