@@ -388,7 +388,11 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   >
                     <FileText className="h-6 w-6 text-primary" aria-hidden="true" />
                     <p className="font-display text-h3 text-foreground">Terms of Service</p>
-                    <p className="text-sm text-muted-foreground">The terms that govern using POSPro One.</p>
+                    <p className="text-sm text-muted-foreground">
+                      We work hard to keep POSPro One reliable, but no app is perfect. Please keep your own records
+                      and daily checks — we can&apos;t cover lost sales or profits if something goes wrong, though
+                      we&apos;ll always help you fix it fast. By installing, you agree to our Terms of Service.
+                    </p>
                     <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
                       Read terms
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />

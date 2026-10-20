@@ -3,8 +3,9 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, ImageIcon, Laptop, Smartphone } from "lucide-react";
+import { ArrowRight, Check, ImageIcon, Laptop, Maximize2, Smartphone } from "lucide-react";
 
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@repo/ui/components/ui/dialog";
 import { cn } from "@repo/ui/lib/utils";
 
 const ADVANCE_MS = 9000;
@@ -28,6 +29,7 @@ export interface ShowcaseItem {
 export function FeatureShowcase({ items, name }: { items: readonly ShowcaseItem[]; name: string }) {
   const [index, setIndex] = React.useState(0);
   const [pinned, setPinned] = React.useState(false);
+  const [zoomed, setZoomed] = React.useState(false);
 
   React.useEffect(() => {
     if (pinned || items.length <= 1) return;
@@ -108,6 +110,15 @@ export function FeatureShowcase({ items, name }: { items: readonly ShowcaseItem[
             {device === "laptop" ? (
               <LaptopFrame>
                 <Screens screens={screens} index={index} name={name} sizes="(min-width: 1024px) 680px, 90vw" />
+                {active.screenshot && (
+                  <ZoomButton
+                    title={active.title}
+                    onClick={() => {
+                      setZoomed(true);
+                      setPinned(true);
+                    }}
+                  />
+                )}
               </LaptopFrame>
             ) : (
               <PhoneFrame>
@@ -117,7 +128,47 @@ export function FeatureShowcase({ items, name }: { items: readonly ShowcaseItem[
           </div>
         </div>
       </div>
+
+      {/* Full-size view of the screenshot on show — click the frame to open. */}
+      <Dialog open={zoomed} onOpenChange={setZoomed}>
+        <DialogContent className="flex max-h-[90vh] max-w-[calc(100%-2rem)] flex-col gap-0 overflow-hidden p-0 sm:max-w-[min(92vw,1600px)]">
+          <div className="shrink-0 border-b border-border-sage px-6 pb-4 pt-6 pr-12">
+            <DialogTitle>{active.title}</DialogTitle>
+            <DialogDescription>{name}</DialogDescription>
+          </div>
+          {active.screenshot && (
+            <div className="relative min-h-0 flex-1 overflow-auto bg-paper">
+              <Image
+                src={active.screenshot}
+                alt={`${name}: ${active.title}`}
+                width={3022}
+                height={1716}
+                sizes="(min-width: 1024px) 1600px, 92vw"
+                quality={95}
+                className="h-auto w-full"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
+  );
+}
+
+// Transparent hit area over the laptop screen, with a hint badge on hover.
+function ZoomButton({ title, onClick }: { title: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={`View larger: ${title}`}
+      className="group absolute inset-0 z-10 cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+    >
+      <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-ink/75 px-3 py-1.5 text-xs font-medium text-paper opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+        <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
+        Click to enlarge
+      </span>
+    </button>
   );
 }
 

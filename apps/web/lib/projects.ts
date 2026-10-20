@@ -49,15 +49,14 @@ export interface Project {
   // navigating into this project, to match its brand color. Falls back to
   // the site's own primary (sage) when unset.
   accentColor?: string;
-  // Subscription pricing — prices are real, everything else (user counts,
-  // per-plan feature tiering) is DUMMY placeholder data. Swap for the real
-  // tier breakdown and subscriber numbers once they exist.
+  // Subscription pricing — real plans and prices, set for the current year.
   pricingPlans?: readonly {
     name: string;
     price: string | null; // null = "Contact us" tier, no listed price
     priceNote?: string;
-    users: string;
     features: readonly string[];
+    // Button override — defaults to "Get started" linking to #book-demo.
+    cta?: { label: string; href: string };
   }[];
   // How many kinds of business this project is set up for — shown as its
   // own tile in the detail page's stats strip when set.
@@ -485,6 +484,7 @@ export const PROJECTS: readonly Project[] = [
           "Move stock from one branch to another in a few taps",
           "Set a different price for one branch without touching the rest",
         ],
+        screenshot: "/projects/products/propos/see-it-yourself/all-business.png",
         device: "laptop",
         manualHref: "/pospro/manual/features/businesses",
       },
@@ -499,7 +499,7 @@ export const PROJECTS: readonly Project[] = [
           "Know what each item cost you and how much you earn on it",
           "Spot items that were sold more than you had on hand",
         ],
-        screenshot: "/projects/products/propos/laptop/pospro-laptop-03.webp",
+        screenshot: "/projects/products/propos/see-it-yourself/inventory.png",
         device: "laptop",
         manualHref: "/pospro/manual/features/inventory",
       },
@@ -514,7 +514,7 @@ export const PROJECTS: readonly Project[] = [
           "Split payments into due dates your supplier agreed to",
           "See your unpaid balance with every supplier at a glance",
         ],
-        screenshot: "/projects/products/propos/laptop/pospro-laptop-04.webp",
+        screenshot: "/projects/products/propos/see-it-yourself/purchase-order.png",
         device: "laptop",
         manualHref: "/pospro/manual/features/receive-orders",
       },
@@ -529,7 +529,8 @@ export const PROJECTS: readonly Project[] = [
           "Know what every table still owes",
           "Move a table's order straight to the counter when they pay",
         ],
-        device: "phone",
+        screenshot: "/projects/products/propos/see-it-yourself/table-plans.png",
+        device: "laptop",
         manualHref: "/pospro/manual/features/table-plans",
       },
       {
@@ -543,7 +544,8 @@ export const PROJECTS: readonly Project[] = [
           "Works on any phone with a browser",
           "See everyone's time records in one place",
         ],
-        device: "phone",
+        screenshot: "/projects/products/propos/see-it-yourself/attendance.png",
+        device: "laptop",
         manualHref: "/pospro/manual/features/attendance",
       },
     ],
@@ -589,48 +591,28 @@ export const PROJECTS: readonly Project[] = [
     playStoreUrl: "https://play.google.com/store/apps/details?id=com.doubleaitsolutions.pospro",
     pricingPlans: [
       {
-        name: "Starter",
-        price: "₱500",
-        priceNote: "every month",
-        users: "120+ stores use this",
+        name: "Free Trial",
+        price: "Free",
+        priceNote: "for 14 days",
         features: [
-          "1 terminal account",
-          "1 admin account",
-          "1 store branch",
-          "No AI features",
-          "See your sales as they happen",
-          "See what's in your stock",
-          "Print receipts with a Bluetooth printer",
-          "Help by email",
+          "Every feature unlocked — nothing held back",
+          "Try sales, inventory, reports, and more with your own products",
+          "As many businesses and branches as you want to test",
+          "No payment needed to start",
+          "Need more time? Ask us to extend your trial",
         ],
+        cta: { label: "Start free trial", href: "#try-it" },
       },
       {
-        name: "Business",
-        price: "₱1,000",
+        name: "Monthly",
+        price: "₱200 – ₱1,500",
         priceNote: "every month",
-        users: "45+ stores use this",
         features: [
-          "As many terminal accounts as you need",
-          "3 admin accounts",
-          "2 store branches",
-          "Everything in Starter",
-          "Scan and print barcodes",
-          "Keep track of orders to your suppliers",
-          "Find products by talking to it (limited uses, resets every week)",
-          "Faster help through chat",
-        ],
-      },
-      {
-        name: "Enterprise",
-        price: null,
-        priceNote: "Talk to us about the price",
-        users: "12+ stores use this",
-        features: [
-          "As many terminal accounts as you need",
-          "Everything in Business",
-          "See reports for all your store locations",
-          "Your shop's name and logo on every receipt",
-          "A real person to help you, anytime",
+          "Every feature included, on every price",
+          "Price depends on how many transactions you make each month",
+          "And on how many businesses you run",
+          "Small store? You pay closer to ₱200",
+          "Grow anytime — your plan grows with you",
         ],
       },
     ],
