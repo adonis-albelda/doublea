@@ -3,7 +3,7 @@ import { NavigationLinks } from "./NavigationLinks";
 import { ScreenHeader } from "./ScreenHeader";
 import { ScreenScrollArea } from "./ScreenScrollArea";
 import { ScreenshotsRail } from "./ScreenshotsRail";
-import { ComponentsSection, EmailPreviewSection, OverviewSection } from "../sections";
+import { ComponentsSection, EmailPreviewSection, HighlightsSection, OverviewSection, VideoSection } from "../sections";
 
 import { getScreenHref, type AuthScreenDoc, type ManualScreenLink } from "@/lib/pospro/auth-data";
 
@@ -24,7 +24,9 @@ export function ManualScreenDocs({
   screens: ManualScreenLink[];
   eyebrow: string;
 }) {
-  const hasContent = doc.overview.userFlow.length > 0 || doc.components.length > 0;
+  const hasContent = doc.overview.userFlow.length > 0 || doc.components.length > 0 || !!doc.video || !!doc.highlights;
+  // A how-to video replaces the screenshots rail entirely.
+  const showScreenshots = !doc.video && doc.screenshots.length > 0;
 
   return (
     <div className="flex h-full min-h-0">
@@ -33,8 +35,10 @@ export function ManualScreenDocs({
         nextHref={getScreenHref(doc.nextScreen, screens)}
       >
         <ScreenHeader title={doc.title} description={doc.description} eyebrow={eyebrow} />
+        {doc.highlights && <HighlightsSection {...doc.highlights} />}
+        {doc.video && <VideoSection {...doc.video} />}
         {doc.overview.userFlow.length > 0 && <OverviewSection {...doc.overview} />}
-        {doc.screenshots.length > 0 && (
+        {showScreenshots && (
           <section className="xl:hidden">
             <div className="mx-auto max-w-[280px] sm:max-w-xs">
               <ScreenshotsRail screenshots={doc.screenshots} />
@@ -47,7 +51,7 @@ export function ManualScreenDocs({
         <NavigationLinks previousScreen={doc.previousScreen} nextScreen={doc.nextScreen} screens={screens} />
       </ScreenScrollArea>
 
-      {doc.screenshots.length > 0 && (
+      {showScreenshots && (
         <aside className="hidden w-[460px] shrink-0 overflow-y-auto border-l border-border-sage bg-card/30 px-6 py-10 xl:block">
           <ScreenshotsRail screenshots={doc.screenshots} />
         </aside>

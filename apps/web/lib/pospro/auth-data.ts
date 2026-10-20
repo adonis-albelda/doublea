@@ -60,6 +60,14 @@ export type EmailPreview = {
   path: StaticImageData;
 };
 
+// A how-to video embedded in the doc's main column. When set, the page drops
+// the screenshots rail and shows the video instead.
+export type ScreenVideo = {
+  youtubeId: string;
+  title: string;
+  intro: string;
+};
+
 export type ValidationRule = {
   field: string;
   clientSide: string[];
@@ -92,6 +100,9 @@ export type AuthScreenDoc = {
   components: ScreenComponentSpec[];
   screenshots: ScreenshotSpec[];
   emailPreview?: EmailPreview;
+  video?: ScreenVideo;
+  // Plain-language benefits, shown as a checklist above the video/overview.
+  highlights?: { intro: string; items: string[] };
   // Rendered nowhere currently (screen docs show Overview, Components,
   // Screenshots, Email Preview only) — optional so new screens don't need to
   // fabricate content just to satisfy the type. Left populated on existing

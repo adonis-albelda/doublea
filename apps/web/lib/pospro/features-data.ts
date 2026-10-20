@@ -56,7 +56,7 @@ export type FeatureItem = {
   title: string;
   description: string;
   icon: LucideIcon;
-  doc?: Partial<Pick<AuthScreenDoc, "overview" | "components" | "screenshots" | "emailPreview">>;
+  doc?: Partial<Pick<AuthScreenDoc, "overview" | "components" | "screenshots" | "emailPreview" | "video" | "highlights">>;
 };
 
 /** A sub-heading inside a section (e.g. "Catalog"), or null for a bare list with no sub-heading. */
@@ -238,7 +238,32 @@ export const FEATURE_SECTIONS: FeatureSection[] = [
         label: null,
         items: [
           { id: "company", title: "Company", icon: Store, description: "Shop name, logo, receipt footer" },
-          { id: "businesses", title: "Businesses", icon: Briefcase, description: "Manage the company's businesses" },
+          {
+            id: "businesses",
+            title: "Businesses",
+            icon: Briefcase,
+            description: "Manage the company's businesses",
+            doc: {
+              highlights: {
+                intro:
+                  "Run all your businesses from one place. Whether you own a sari-sari store, a hardware shop, and a carinderia — or several branches of the same store — you can add as many businesses as you need and manage them all from a single POSPro One account. No more separate apps, notebooks, or logins for each one.",
+                items: [
+                  "Add as many businesses as you want, and as many branches under each one",
+                  "Switch between businesses from the top of the screen in one tap",
+                  "Pick \"All\" to see the sales, stock, and profit of every business added together",
+                  "Each business keeps its own products, prices, discounts, tax, and receipts",
+                  "Give each staff member access only to the business and branch they work in",
+                  "One login, one dashboard, one subscription — everything in one platform",
+                ],
+              },
+              video: {
+                youtubeId: "EeDhRqXEg1Y",
+                title: "How to create a new business in POSPro One",
+                intro:
+                  "Please watch the video below to see how to create a new business, step by step. It walks you through opening Businesses, filling in your business details, and saving it so it's ready to use.",
+              },
+            },
+          },
           { id: "locations", title: "Locations", icon: Store, description: "Branches and warehouses" },
         ],
       },
@@ -291,6 +316,8 @@ export function getFeatureDoc(id: string): { doc: AuthScreenDoc; eyebrow: string
       components: item.doc?.components ?? [],
       screenshots: item.doc?.screenshots ?? [{ id: item.id, title: item.title, paths: {} }],
       emailPreview: item.doc?.emailPreview,
+      video: item.doc?.video,
+      highlights: item.doc?.highlights,
     },
   };
 }
