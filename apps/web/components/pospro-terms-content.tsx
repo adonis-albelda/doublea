@@ -20,6 +20,15 @@ export function PosProTermsContent() {
       <p>By creating an account, accessing, or using POSPro One, you agree to these Terms.</p>
       <p>If you do not agree with these Terms, you should not use POSPro One.</p>
 
+      <div className="rounded-xl border border-primary/30 bg-primary/5 px-5 py-4 text-foreground">
+        <p>
+          We work hard to keep POSPro One reliable, but no app is perfect. Please keep your own records and daily
+          checks &mdash; we can&apos;t cover lost sales or profits if something goes wrong, though we&apos;ll always
+          help you fix it fast. By installing, you agree to these Terms of Service. See Sections 22 and 23 for the
+          details.
+        </p>
+      </div>
+
       <h2>1. About POSPro One</h2>
       <p>POSPro One is a point-of-sale and business management platform that may provide features including:</p>
       <ul>

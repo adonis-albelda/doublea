@@ -26,6 +26,9 @@ export interface Project {
   screenshotsDesktop?: readonly string[];
   screenshotsTablet?: readonly string[];
   logo?: string;
+  // Static picture for the detail page hero, shown instead of the animated
+  // laptop/tablet/phone ProjectShowcase. `src` is a path under /public.
+  heroImage?: { src: string; alt: string; width: number; height: number };
   // Big overview picture in its own section, between the hero and Features
   // on the detail page. `image.src` is a path under /public.
   overview?: {
@@ -484,7 +487,7 @@ export const PROJECTS: readonly Project[] = [
           "Move stock from one branch to another in a few taps",
           "Set a different price for one branch without touching the rest",
         ],
-        screenshot: "/projects/products/propos/see-it-yourself/all-business.png",
+        screenshot: "/projects/products/propos/see-it-yourself/all-business.webp",
         device: "laptop",
         manualHref: "/pospro/manual/features/businesses",
       },
@@ -499,7 +502,7 @@ export const PROJECTS: readonly Project[] = [
           "Know what each item cost you and how much you earn on it",
           "Spot items that were sold more than you had on hand",
         ],
-        screenshot: "/projects/products/propos/see-it-yourself/inventory.png",
+        screenshot: "/projects/products/propos/see-it-yourself/inventory.webp",
         device: "laptop",
         manualHref: "/pospro/manual/features/inventory",
       },
@@ -514,7 +517,7 @@ export const PROJECTS: readonly Project[] = [
           "Split payments into due dates your supplier agreed to",
           "See your unpaid balance with every supplier at a glance",
         ],
-        screenshot: "/projects/products/propos/see-it-yourself/purchase-order.png",
+        screenshot: "/projects/products/propos/see-it-yourself/purchase-order.webp",
         device: "laptop",
         manualHref: "/pospro/manual/features/receive-orders",
       },
@@ -529,7 +532,7 @@ export const PROJECTS: readonly Project[] = [
           "Know what every table still owes",
           "Move a table's order straight to the counter when they pay",
         ],
-        screenshot: "/projects/products/propos/see-it-yourself/table-plans.png",
+        screenshot: "/projects/products/propos/see-it-yourself/table-plans.webp",
         device: "laptop",
         manualHref: "/pospro/manual/features/table-plans",
       },
@@ -544,7 +547,7 @@ export const PROJECTS: readonly Project[] = [
           "Works on any phone with a browser",
           "See everyone's time records in one place",
         ],
-        screenshot: "/projects/products/propos/see-it-yourself/attendance.png",
+        screenshot: "/projects/products/propos/see-it-yourself/attendance.webp",
         device: "laptop",
         manualHref: "/pospro/manual/features/attendance",
       },
@@ -586,6 +589,12 @@ export const PROJECTS: readonly Project[] = [
       "/projects/products/propos/tablet/Screenshot_1787559268.webp",
       "/projects/products/propos/tablet/Screenshot_1787559275.webp",
     ],
+    heroImage: {
+      src: "/projects/products/propos/main-section.webp",
+      alt: "POSPro One backoffice dashboard on a laptop, showing sales, sales by hour, and money charts",
+      width: 1536,
+      height: 1024,
+    },
     storeLocations: [{ city: "Calbayog City", stores: 2 }],
     hasDemoAccess: true,
     playStoreUrl: "https://play.google.com/store/apps/details?id=com.doubleaitsolutions.pospro",
