@@ -34,6 +34,7 @@ export function BusinessGallery({ id }: { id: string }) {
       <ScreenScrollArea
         previousHref={getScreenHref(previous, BUSINESS_SCREENS)}
         nextHref={getScreenHref(next, BUSINESS_SCREENS)}
+        nextTitle={BUSINESS_SCREENS.find((screen) => screen.id === next)?.title}
       >
         <ScreenHeader
           title={business.title}

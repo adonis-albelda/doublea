@@ -38,6 +38,7 @@ import { TicketForm } from "@/components/ticket-form";
 import { FeatureCategories } from "@/components/feature-categories";
 import { FeatureGrid } from "@/components/feature-grid";
 import { FeatureShowcase } from "@/components/feature-showcase";
+import { HeroTiltImage } from "@/components/hero-tilt-image";
 import { getProjectBySlug, PROJECTS } from "@/lib/projects";
 
 export function generateStaticParams() {
@@ -92,7 +93,11 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 Back to work
               </Link>
 
-              <div className="mt-8 grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-center">
+              <div
+                className={`mt-8 grid gap-12 lg:items-center ${
+                  project.heroImage ? "lg:grid-cols-[0.8fr_1.4fr] lg:gap-8" : "lg:grid-cols-[1fr_1.05fr]"
+                }`}
+              >
                 <div>
                   {project.logo && (
                     <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl border border-border-sage bg-card p-2 shadow-sm">
@@ -136,16 +141,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 </div>
 
                 {project.heroImage ? (
-                  <Image
-                    src={project.heroImage.src}
-                    alt={project.heroImage.alt}
-                    width={project.heroImage.width}
-                    height={project.heroImage.height}
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    quality={95}
-                    priority
-                    className="h-auto w-full"
-                  />
+                  <HeroTiltImage {...project.heroImage} />
                 ) : (
                   <ProjectShowcase project={project} />
                 )}
@@ -164,20 +160,17 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                   <p className="mt-3 text-body-lg text-muted-foreground">{project.overview.description}</p>
                 </div>
               </div>
-              {/* 80% of the screen's width and height on desktop (the picture
-                  is ~16:9, so it fills that box); on phones the height
-                  follows the picture so there's no empty band. */}
-              <div
-                className="relative mx-auto mt-10 w-full lg:mt-12 lg:aspect-auto lg:h-[80svh] lg:w-[80vw]"
-                style={{ aspectRatio: `${project.overview.image.width} / ${project.overview.image.height}` }}
-              >
+              {/* Capped near the picture's own width (1671px) so it's never
+                  stretched past its real pixels and goes soft. */}
+              <div className="container">
                 <Image
                   src={project.overview.image.src}
                   alt={project.overview.image.alt}
-                  fill
-                  sizes="100vw"
+                  width={project.overview.image.width}
+                  height={project.overview.image.height}
+                  sizes="(min-width: 1024px) 1024px, 100vw"
                   quality={95}
-                  className="object-contain"
+                  className="mx-auto mt-10 h-auto w-full max-w-5xl lg:mt-12"
                 />
               </div>
             </section>

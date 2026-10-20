@@ -33,6 +33,7 @@ export function ManualScreenDocs({
       <ScreenScrollArea
         previousHref={getScreenHref(doc.previousScreen, screens)}
         nextHref={getScreenHref(doc.nextScreen, screens)}
+        nextTitle={screens.find((screen) => screen.id === doc.nextScreen)?.title}
       >
         <ScreenHeader title={doc.title} description={doc.description} eyebrow={eyebrow} />
         {doc.highlights && <HighlightsSection {...doc.highlights} />}
