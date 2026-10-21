@@ -24,6 +24,7 @@ import { AnimatedCounter } from "@/components/animated-counter";
 import { BenefitsList } from "@/components/benefits-list";
 import { BookDemoCta } from "@/components/book-demo-cta";
 import { BookDemoSection } from "@/components/book-demo-section";
+import { PosiBackground } from "@/components/posi-background";
 import { PricingSection } from "@/components/pricing-section";
 import { CtaBand } from "@/components/cta-band";
 import { Footer } from "@/components/footer";
@@ -80,7 +81,8 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
   return (
     <>
       <Nav />
-      <main className="bg-page-wash">
+      <main className="relative bg-page-wash">
+        {project.slug === "pospro" && <PosiBackground />}
         {/* Hero — name + interactive device showcase, per the brief. */}
         <ScrollReveal>
           <section className="py-14 lg:py-20">
