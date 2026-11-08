@@ -3,12 +3,14 @@
 import * as React from "react";
 import Image from "next/image";
 import {
+  AlertCircle,
   ArrowRight,
   Bot,
   ChevronLeft,
   ChevronRight,
   Boxes,
   Building2,
+  CheckCircle2,
   Layers,
   ShieldCheck,
   ShoppingCart,
@@ -17,8 +19,10 @@ import {
   Wallet,
 } from "lucide-react";
 
+import { Button } from "@repo/ui/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
@@ -33,6 +37,7 @@ const POSI_SRC = "/projects/products/propos/posi/posi-wave.webp";
 // Categories with many short, similar items (one per kind of business) show
 // as a swipeable carousel instead of the timeline grid, to save space.
 const CAROUSEL_CATEGORIES = new Set(["Made for your business"]);
+const AUTO_ADVANCE_MS = 3500;
 
 const CATEGORY_ICONS: Record<
   string,
@@ -106,6 +111,7 @@ export function FeatureCategories({
                 details={details}
                 onOpen={setOpenTitle}
                 label={group.category}
+                paused={openTitle !== null}
               />
             ) : (
               /* 2-per-row grid, tied together by a center spine on sm+ (each
@@ -223,47 +229,86 @@ export function FeatureCategories({
         onOpenChange={(open) => !open && setOpenTitle(null)}
       >
         {openDetail && openTitle && (
-          <DialogContent className="max-w-lg">
-            <div className="flex items-center gap-3 pr-8">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <openDetail.icon className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <DialogTitle className="text-xl leading-snug">
-                {openTitle}
-              </DialogTitle>
-            </div>
-            <DialogDescription className="sr-only">
-              A real-life problem and how {projectName ?? "we"} solves it.
-            </DialogDescription>
-
-            <div className="mt-5 rounded-lg border border-border-sage bg-page-wash p-4">
-              <p className="font-mono text-[0.7rem] uppercase tracking-[0.06em] text-slate-sage">
-                The problem
+          <DialogContent className="max-w-lg gap-0 overflow-hidden p-0">
+            {/* Header — tinted band with the feature's icon and name */}
+            <div className="border-b border-border-sage bg-secondary px-6 pb-5 pt-6 pr-12">
+              <p className="font-mono text-[0.7rem] uppercase tracking-[0.08em] text-slate-sage">
+                See how it helps
               </p>
-              <p className="mt-1.5 text-body text-foreground">
-                {openDetail.problem}
-              </p>
+              <div className="mt-3 flex items-center gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+                  <openDetail.icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <DialogTitle className="text-xl leading-snug">
+                  {openTitle}
+                </DialogTitle>
+              </div>
+              <DialogDescription className="sr-only">
+                A real-life problem and how {projectName ?? "we"} solves it.
+              </DialogDescription>
             </div>
 
-            <div className="mt-3 flex items-end gap-3 rounded-lg border border-primary/30 bg-primary/5 p-4">
-              <div className="flex-1">
-                <p className="font-mono text-[0.7rem] uppercase tracking-[0.06em] text-primary">
-                  How {projectName ?? "we"} helps
-                </p>
-                <p className="mt-1.5 text-body text-foreground">
-                  {openDetail.answer}
+            {/* Body — problem, then answer, joined by a dashed line */}
+            <div className="px-6 py-6">
+              <div className="relative flex gap-4">
+                <span
+                  className="absolute bottom-[-1.5rem] left-[17px] top-10 w-px border-l border-dashed border-border-sage"
+                  aria-hidden="true"
+                />
+                <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+                  <AlertCircle
+                    className="h-[18px] w-[18px]"
+                    aria-hidden="true"
+                  />
+                </span>
+                <div className="pt-1">
+                  <p className="font-mono text-[0.7rem] uppercase tracking-[0.08em] text-accent">
+                    The problem
+                  </p>
+                  <p className="mt-1.5 text-body text-muted-foreground">
+                    {openDetail.problem}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 flex gap-4">
+                <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <CheckCircle2
+                    className="h-[18px] w-[18px]"
+                    aria-hidden="true"
+                  />
+                </span>
+                <div className="pt-1">
+                  <p className="font-mono text-[0.7rem] uppercase tracking-[0.08em] text-primary">
+                    How {projectName ?? "we"} helps
+                  </p>
+                  <p className="mt-1.5 text-body font-medium text-foreground">
+                    {openDetail.answer}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer — POSI + close */}
+            <div className="flex items-center justify-between gap-4 border-t border-border-sage bg-background px-6 py-4">
+              <div className="flex items-center gap-3">
+                {showPosi && (
+                  <Image
+                    src={POSI_SRC}
+                    alt="POSI, the POSPro One mascot, waving"
+                    width={400}
+                    height={410}
+                    sizes="48px"
+                    className="h-auto w-11 shrink-0 motion-safe:animate-[hero-float_4s_ease-in-out_infinite]"
+                  />
+                )}
+                <p className="text-sm text-muted-foreground">
+                  Problem solved, the easy way.
                 </p>
               </div>
-              {showPosi && (
-                <Image
-                  src={POSI_SRC}
-                  alt="POSI, the POSPro One mascot, waving"
-                  width={400}
-                  height={410}
-                  sizes="72px"
-                  className="h-auto w-16 shrink-0 motion-safe:animate-[hero-float_4s_ease-in-out_infinite] sm:w-[72px]"
-                />
-              )}
+              <DialogClose asChild>
+                <Button size="sm">Got it</Button>
+              </DialogClose>
             </div>
           </DialogContent>
         )}
@@ -279,13 +324,25 @@ function FeatureCarousel({
   details,
   onOpen,
   label,
+  paused = false,
 }: {
   items: readonly { title: string; description: string; highlight?: boolean }[];
   details?: Record<string, FeatureDetail>;
   onOpen: (title: string) => void;
   label: string;
+  // External pause (e.g. while the "See how it helps" dialog is open).
+  paused?: boolean;
 }) {
+  const rootRef = React.useRef<HTMLDivElement>(null);
   const trackRef = React.useRef<HTMLUListElement>(null);
+  // Auto-advance stops while the visitor is hovering, focused inside, or
+  // touching the row, and while it's off screen. After a manual swipe or
+  // arrow click it waits a full interval before moving again.
+  const [hovering, setHovering] = React.useState(false);
+  const [focused, setFocused] = React.useState(false);
+  const [inView, setInView] = React.useState(false);
+  const [reducedMotion, setReducedMotion] = React.useState(false);
+  const [interactedAt, setInteractedAt] = React.useState(0);
   const [canPrev, setCanPrev] = React.useState(false);
   const [canNext, setCanNext] = React.useState(true);
 
@@ -302,21 +359,86 @@ function FeatureCarousel({
     return () => window.removeEventListener("resize", updateArrows);
   }, [updateArrows]);
 
+  React.useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onChange = () => setReducedMotion(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  React.useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry!.isIntersecting),
+      {
+        threshold: 0.4,
+      },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const scrollByPage = (dir: 1 | -1) => {
     const el = trackRef.current;
     if (!el) return;
     el.scrollBy({ left: dir * el.clientWidth * 0.9, behavior: "smooth" });
   };
 
+  // One card per tick; at the end, glide back to the first card.
+  const advance = React.useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4;
+    if (atEnd) {
+      el.scrollTo({ left: 0, behavior: "smooth" });
+      return;
+    }
+    const card = el.querySelector("li");
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
+    const step = card
+      ? card.getBoundingClientRect().width + gap
+      : el.clientWidth * 0.9;
+    el.scrollBy({ left: step, behavior: "smooth" });
+  }, []);
+
+  const autoPlaying =
+    inView && !hovering && !focused && !paused && !reducedMotion;
+
+  React.useEffect(() => {
+    if (!autoPlaying) return;
+    const id = window.setInterval(() => {
+      if (document.visibilityState === "visible") advance();
+    }, AUTO_ADVANCE_MS);
+    return () => window.clearInterval(id);
+  }, [autoPlaying, advance, interactedAt]);
+
+  const markInteraction = () => setInteractedAt(Date.now());
+
   const arrowClass =
     "flex h-9 w-9 items-center justify-center rounded-full border border-border-sage bg-card text-foreground shadow-sm transition hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
   return (
     <div
+      ref={rootRef}
       className="mt-6"
       role="region"
       aria-roledescription="carousel"
       aria-label={label}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+      onFocus={(e) => {
+        // Keyboard focus only — a mouse click on an arrow shouldn't freeze it.
+        if ((e.target as HTMLElement).matches(":focus-visible"))
+          setFocused(true);
+      }}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null))
+          setFocused(false);
+      }}
+      onTouchStart={markInteraction}
+      onWheel={markInteraction}
     >
       <div className="mb-3 flex items-center justify-between gap-4">
         <p className="text-xs text-slate-sage">
@@ -326,7 +448,10 @@ function FeatureCarousel({
           <button
             type="button"
             className={arrowClass}
-            onClick={() => scrollByPage(-1)}
+            onClick={() => {
+              markInteraction();
+              scrollByPage(-1);
+            }}
             disabled={!canPrev}
             aria-label="Previous"
           >
@@ -335,7 +460,10 @@ function FeatureCarousel({
           <button
             type="button"
             className={arrowClass}
-            onClick={() => scrollByPage(1)}
+            onClick={() => {
+              markInteraction();
+              scrollByPage(1);
+            }}
             disabled={!canNext}
             aria-label="Next"
           >
