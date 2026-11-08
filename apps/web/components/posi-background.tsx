@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 
 const POSI_SRC = "/projects/products/propos/posi/posi-wave.webp";
-const POSI_COUNT = 4;
+const POSI_COUNT = 8;
 
 type Placement = { top: number; left: number; size: number; rotate: number; delay: number; flip: boolean };
 

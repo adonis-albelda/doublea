@@ -1,6 +1,9 @@
 "use client";
 
+import * as React from "react";
+import Image from "next/image";
 import {
+  ArrowRight,
   Bot,
   Boxes,
   Building2,
@@ -10,12 +13,15 @@ import {
   Store,
   Users,
   Wallet,
-  Zap,
 } from "lucide-react";
 
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@repo/ui/components/ui/dialog";
 import { cn } from "@repo/ui/lib/utils";
 
 import { useRevealEach } from "@/hooks/use-reveal";
+import { FEATURE_DETAILS } from "@/lib/feature-details";
+
+const POSI_SRC = "/projects/products/propos/posi/posi-wave.webp";
 
 const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Core: Layers,
@@ -31,7 +37,14 @@ const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>
 
 export function FeatureCategories({
   categories,
+  projectSlug,
+  projectName,
 }: {
+  // Picks the per-card icon + problem/answer detail from FEATURE_DETAILS.
+  // Looked up here (not passed from the server page) because icon components
+  // can't cross the server -> client boundary.
+  projectSlug?: string;
+  projectName?: string;
   categories: readonly {
     category: string;
     description: string;
@@ -40,6 +53,10 @@ export function FeatureCategories({
 }) {
   const totalItems = categories.reduce((sum, group) => sum + group.items.length, 0);
   const { setRef, visible } = useRevealEach<HTMLLIElement>(totalItems);
+  const details = projectSlug ? FEATURE_DETAILS[projectSlug] : undefined;
+  const showPosi = projectSlug === "pospro";
+  const [openTitle, setOpenTitle] = React.useState<string | null>(null);
+  const openDetail = openTitle && details ? details[openTitle] : undefined;
   let index = 0;
 
   return (
@@ -65,6 +82,8 @@ export function FeatureCategories({
               />
               {group.items.map((item) => {
                 const i = index++;
+                const detail = details?.[item.title];
+                const FloatIcon = detail?.icon;
                 const isLeftCol = i % 2 === 0;
                 return (
                   <li
@@ -98,17 +117,41 @@ export function FeatureCategories({
 
                     <div
                       className={cn(
-                        "flex-1 rounded-lg border p-5",
+                        "relative flex-1 rounded-lg border p-5",
+                        FloatIcon && "pr-12",
                         item.highlight ? "border-accent/50 bg-accent/5" : "border-border-sage bg-card hover:border-primary/40",
                       )}
                     >
+                      {/* floating icon, top-right — gently bobs, pops on card hover */}
+                      {FloatIcon && (
+                        <span
+                          className="absolute -right-3 -top-4 z-10 motion-safe:animate-[hero-float_5s_ease-in-out_infinite]"
+                          style={{ animationDelay: `-${(i % 5) * 0.9}s` }}
+                          aria-hidden="true"
+                        >
+                          <span
+                            className={cn(
+                              "flex h-11 w-11 items-center justify-center rounded-full border shadow-md transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110",
+                              item.highlight
+                                ? "border-accent/60 bg-accent text-accent-foreground"
+                                : "border-border-sage bg-card text-primary",
+                            )}
+                          >
+                            <FloatIcon className="h-5 w-5" />
+                          </span>
+                        </span>
+                      )}
                       <p className="text-body font-medium text-foreground">{item.title}</p>
                       <p className="mt-1.5 text-sm text-muted-foreground">{item.description}</p>
-                      {item.highlight && (
-                        <span className="mt-3 inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-0.5 font-mono text-[0.65rem] font-medium uppercase tracking-wide text-accent-foreground">
-                          <Zap className="h-3 w-3" aria-hidden="true" />
-                          Advanced feature
-                        </span>
+                      {detail && (
+                        <button
+                          type="button"
+                          onClick={() => setOpenTitle(item.title)}
+                          className="mt-3 inline-flex items-center gap-1 rounded-full text-sm font-medium text-primary underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        >
+                          See how it helps
+                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                        </button>
                       )}
                     </div>
                   </li>
@@ -118,6 +161,46 @@ export function FeatureCategories({
           </div>
         );
       })}
+
+      <Dialog open={!!openDetail} onOpenChange={(open) => !open && setOpenTitle(null)}>
+        {openDetail && openTitle && (
+          <DialogContent className="max-w-lg">
+            <div className="flex items-center gap-3 pr-8">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <openDetail.icon className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <DialogTitle className="text-xl leading-snug">{openTitle}</DialogTitle>
+            </div>
+            <DialogDescription className="sr-only">
+              A real-life problem and how {projectName ?? "we"} solves it.
+            </DialogDescription>
+
+            <div className="mt-5 rounded-lg border border-border-sage bg-page-wash p-4">
+              <p className="font-mono text-[0.7rem] uppercase tracking-[0.06em] text-slate-sage">The problem</p>
+              <p className="mt-1.5 text-body text-foreground">{openDetail.problem}</p>
+            </div>
+
+            <div className="mt-3 flex items-end gap-3 rounded-lg border border-primary/30 bg-primary/5 p-4">
+              <div className="flex-1">
+                <p className="font-mono text-[0.7rem] uppercase tracking-[0.06em] text-primary">
+                  How {projectName ?? "we"} helps
+                </p>
+                <p className="mt-1.5 text-body text-foreground">{openDetail.answer}</p>
+              </div>
+              {showPosi && (
+                <Image
+                  src={POSI_SRC}
+                  alt="POSI, the POSPro One mascot, waving"
+                  width={400}
+                  height={410}
+                  sizes="72px"
+                  className="h-auto w-16 shrink-0 motion-safe:animate-[hero-float_4s_ease-in-out_infinite] sm:w-[72px]"
+                />
+              )}
+            </div>
+          </DialogContent>
+        )}
+      </Dialog>
     </div>
   );
 }

@@ -230,9 +230,30 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               )}
             </div>
             <p className="mt-6 font-mono text-caption uppercase tracking-[0.04em] text-slate-sage">Features</p>
-            <h2 className="mt-3 font-display text-h2 text-foreground">Everything you need, already built in</h2>
+            <div className="mt-3 flex items-end justify-between gap-4">
+              <h2 className="font-display text-h2 text-foreground">Everything you need, already built in</h2>
+              {project.slug === "pospro" && (
+                <Image
+                  src="/projects/products/propos/posi/posi-wave.webp"
+                  alt="POSI, the POSPro One mascot, waving"
+                  width={400}
+                  height={410}
+                  sizes="96px"
+                  className="h-auto w-16 shrink-0 motion-safe:animate-[hero-float_5s_ease-in-out_infinite] sm:w-24"
+                />
+              )}
+            </div>
+            {project.slug === "pospro" && (
+              <p className="mt-3 max-w-2xl text-body text-muted-foreground">
+                Tap &ldquo;See how it helps&rdquo; on any card — POSI will show you a real problem and how POSPro One fixes it.
+              </p>
+            )}
             {project.featureCategories ? (
-              <FeatureCategories categories={project.featureCategories} />
+              <FeatureCategories
+                categories={project.featureCategories}
+                projectSlug={project.slug}
+                projectName={project.name}
+              />
             ) : (
               <FeatureGrid features={project.features} highlightFeatures={project.highlightFeatures} />
             )}
